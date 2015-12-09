@@ -1,31 +1,78 @@
+#CC = /usr/bin/i586-mingw32msvc-g++
+
+
+WXVERSION = 3.0
+WXFLAGS   = `wx-config --version=$(WXVERSION) --cxxflags`
+WXLIBS    = `wx-config --version=$(WXVERSION) --libs all --gl-libs`
+
+INCDIR   = include
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
+LIBDIR   = lib
+EXEFILE  = KittyWx 
+
 CC = g++
-CFLAGS = -std=c++11 `wx-config --version=2.8 --cxxflags` -Wall -Iinclude -I/home/pranphy/MyRoot/include/SOIL
-LINKDIR = /home/pranphy/MyRoot/lib/
-LINKER = `wx-config --version=2.8 --libs --gl-libs` -L$(LINKDIR) -lglut -lGL -lGLU -lSOIL 
-SRCDIR = src
-OBJDIR = obj/Debug
-SOURCE =  $(SRCDIR)/CardStuffs.cpp\
-		  $(SRCDIR)/DisplayCanvas.cpp\
-		  $(SRCDIR)/Mathematical.cpp\
-		  $(SRCDIR)/ScoresAndDisplays.cpp\
-		  $(SRCDIR)/KittyWxMain.cpp\
-		  $(SRCDIR)/KittyWxApp.cpp\
-		  $(SRCDIR)/common.cpp
 
-OBJECT=   $(OBJDIR)/CardStuffs.o\
-		  $(OBJDIR)/DisplayCanvas.o\
-		  $(OBJDIR)/Mathematical.o\
-		  $(OBJDIR)/ScoresAndDisplays.o\
-		  $(OBJDIR)/KittyWxApp.o\
-		  $(OBJDIR)/KittyWxMain.o\
-		  $(OBJDIR)/common.o
 
-EXE = bin/Debug/KittyWx
+INCLUDES  =  -I./include -I/opt/include
+#DYNLIB    =  -Wl,-rpath='$$ORIGIN/../../lib' -lwxcode_gtk2u_wxsqlite3-3.0
+OGLIB     =  -lglut -lGLU -lGL -lSOIL -lpng
 
-$(EXE):$(OBJECT)
-	$(CC) -o $@ $^ $(LINKER)
-$(OBJECT):$(SOURCE)
-	$(CC) $(CFLAGS) -c $^
-	mv *.o obj/Debug
+
+FLAGS     =  -Wall -g -Os -std=c++11  $(INCLUDES) $(WXFLAGS) 
+LINKER    =  -L$(LIBDIR) -L/opt/lib $(WXLIBS) $(DYNLIB) $(OGLIB) 
+
+HEADERS   =   $(shell find . -name '*.h')
+SOURCE    =   $(shell find ./src -name '*.cpp')
+
+
+#Target specific variables for Debug version.
+DFLAG    = -DDEBUG
+DBINDIR  =  bin/Debug
+DOBJDIR  =  obj/Debug
+DEXE     =  $(DBINDIR)/$(EXEFILE)
+DOBJECTS = $(shell echo $(SOURCE) | sed s%$(SRCDIR)%$(DOBJDIR)%g | sed s/.cpp/.o/g )
+
+
+#Target Specific variables for Release Version
+RFLAG    = -DNDEBUG
+RBINDIR  =  bin/Release
+REXE     =  $(RBINDIR)/$(EXEFILE)
+ROBJDIR  =  obj/Release
+ROBJECTS = $(shell echo $(SOURCE) | sed s%$(SRCDIR)%$(ROBJDIR)%g | sed s/.cpp/.o/g)
+
+
+#Default build is Debug
+Debug:$(DEXE)
+	
+$(DEXE):$(DOBJECTS)
+	mkdir -p bin $(DBINDIR)
+	$(CC) -o $(DEXE) $(DOBJECTS) $(LINKER)
+
+.ONESHELL:
+$(DOBJECTS): $(SOURCE) $(HEADERS)
+	mkdir -p obj $(DOBJDIR)
+	for File in $(SOURCE)
+	do
+		$(CC) $(FLAGS) $(DFLAG) $(INCLUDE) -c $$File -o `echo $$File | sed s/.cpp/.o/g | sed s%$(SRCDIR)%$(DOBJDIR)%g`
+	done
+
+
+#Exact replica for release build
+Release: $(REXE)
+
+$(REXE):$(ROBJECTS)
+	mkdir -p bin $(RBINDIR)
+	$(CC) -o $(REXE) $(ROBJECTS) $(LINKER)
+
+.ONESHELL:
+$(ROBJECTS): $(SOURCE) $(HEADERS)
+	mkdir -p obj $(ROBJDIR)
+	for File in $(SOURCE)
+	do
+		$(CC) $(FLAGS) $(RFLAG) $(INCLUDE) -c $$File -o `echo $$File | sed s/.cpp/.o/g | sed s%$(SRCDIR)%$(ROBJDIR)%g`
+	done
+	
 clean:
-	rm $(OBJECT) $(EXE)
+	rm  -f $(DOBJECTS) $(DEXE) $(ROBJECTS) $(REXE)

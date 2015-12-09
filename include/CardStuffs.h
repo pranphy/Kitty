@@ -80,19 +80,19 @@ class Taas
 {
 public:
 	Taas(int=52);
-        void SetPostition(float,float);
+	void SetPostition(float,float);
 	void SetTexture(GLuint);
 	void SetValue(int);
-        void DrawIt(float);
-        int CardNumber, Value, Type;
+	void DrawIt(float);
+	int CardNumber, Value, Type;
 
 	//pahila yaha private: rakhya thyo ahile hataideko.. naramro programming .. tuk tuk
 private:
-        float PositionX,PositionY;
+	float PositionX,PositionY;
 	GLuint CardTexture;
 
 	int ConvertToCard(void);
-        bool SetImage(char*);
+	bool SetImage(char*);
 	void GetIt(int&,int&);
 	int GetNumber();
 
@@ -101,7 +101,7 @@ private:
 
 struct  RankAndArray
 {
-	int*   IndexArray;
+	int*    IndexArray;
 	float*  RankArray;
 };
 

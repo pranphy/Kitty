@@ -7,6 +7,7 @@
 #include <GL/glut.h>
 #include <string>
 #include <sstream>
+#include<vector>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ using namespace std;
 class DisplayCanvas : public wxGLCanvas
 {
 public:
-	DisplayCanvas(wxFrame*);
+	DisplayCanvas(wxWindow*);
 
 	void OnPaint       (wxPaintEvent&);
 	void DrawTriangle  ();
@@ -46,6 +47,7 @@ public:
 	void   LoadAllImages              ();
 	void   ShuffleCards               ();
 	void   DisplayCards               ();
+	void Initialize();
 
 
 protected:
@@ -57,11 +59,15 @@ private:
 	static int ActiveCard;
 	Taas Card[54],tmp;
 	GLuint Image[54];
-	int Flipped=0, BackId=1,Scrambled=1;
+	bool Flipped, Scrambled;
+	int BackId=1;
+	wxGLContext* MyContext;
 
-	void Initialize();
+
 	static const long ID_DisplayCanvas;
 	void OnKeyPress(wxKeyEvent&);
+	GLuint LoadImageFile(string);
+	void DisplaySinglePhoto(float,float,GLuint);
 };
 
 #endif // DISPLAYCANVAS_H

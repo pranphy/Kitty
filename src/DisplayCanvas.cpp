@@ -11,26 +11,38 @@ BEGIN_EVENT_TABLE(DisplayCanvas,wxGLCanvas)
 END_EVENT_TABLE()
 
 
-DisplayCanvas::DisplayCanvas(wxFrame*Parent):
+DisplayCanvas::DisplayCanvas(wxWindow*Parent):
     wxGLCanvas(Parent, ID_DisplayCanvas,  wxDefaultPosition, wxSize(150,100), 0, wxT("GLCanvas"))
 {
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
     glutInit(&argc,argv);
-    //LoadAllImages();
-    ShuffleCards();
-
+    MyContext = new wxGLContext(this);
+    Scrambled = true;
 }
+
+void DisplayCanvas::Initialize()
+{
+	SetCurrent(*MyContext);
+	//LoadAllImages();
+	//ShuffleCards();
+}
+
 
 void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-    SetCurrent();
-
+	SetCurrent();
+	static bool OneTime = false;
+	if(OneTime == false)
+	{
+		LoadAllImages();
+		ShuffleCards();
+		OneTime = true;
+	}
     glClearColor(0.0f,0.5f,0.4f,0);
     glClear(GL_COLOR_BUFFER_BIT);
-    DrawTriangle();
+    //DrawTriangle();
     Render();
-    //DrawCube();
     glFlush();
     SwapBuffers();
 }
@@ -42,14 +54,34 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
     int Key = event.GetUnicodeKey();
     if(Key == 13)
     {
-        wxMessageBox(wxT(" You pressed enter "),wxT(" Ain't that great ??"));
+        //wxMessageBox(wxT(" You pressed enter "),wxT(" Ain't that great ??"));
+        ShuffleCards();
+        Scrambled = true;
     }
     else if (Key >= '1' and Key <= '9')
     {
         ActiveCard = Key - '1';
         //wxMessageBox(wxT("And yo pressed one "),wxT(" that's great "));
     }
+    else if(Key == 'f' or Key == 'F')
+	{
+		Flipped = (Flipped ? false : true);
+	}
+	else if(Key == 'u' or Key == 'U')
+	{
+		//wxMessageBox(wxT(" Unscrambling trying now "),wxT(" Tyring tto unscrambe"));
+		if(Scrambled){
+				//wxMessageBox(wxT(" Unscrambling now "),wxT(" Tyring to unscrambe"));
 
+                Scrambled = false;
+                Arrange(Card,Image);
+				//wxMessageBox(wxT(" Unscrambling done"),wxT(" done"));
+            }
+	}
+	else if(Key == 'r' or Key == 'R')
+	{
+		BackId = (BackId ? 0 : 1);
+	}
     switch(event.GetKeyCode())
     {
     case WXK_LEFT:
@@ -80,22 +112,15 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
         break;
 
     }
-
-    //SetCurrent();
-    //glutPostRedisplay();
     wxPaintEvent Dummy = wxPaintEvent();
     OnPaint(Dummy);
 }
 
-void DisplayCanvas::Initialize()
-{
-}
 
 void DisplayCanvas::DrawTriangle()
 {
     glPushMatrix();
-    //glClearColor(0.0, 0.0, 0.0, 0.0);
-    //
+
     glViewport(0, 0, (GLint)GetSize().x, (GLint)GetSize().y);
     glShadeModel(GL_SMOOTH);
     glBegin(GL_TRIANGLES);
@@ -108,6 +133,7 @@ void DisplayCanvas::DrawTriangle()
         glColor3ub((GLubyte)0,(GLubyte)0,(GLubyte)255);
         glVertex3f(-0.50f, -0.9000f, -0.0f);
     glEnd();
+    glColor3ub((GLubyte)255,(GLubyte)255,(GLubyte)255); //reset white color.
     glPopMatrix();
 }
 
@@ -137,9 +163,9 @@ void DisplayCanvas::DisplayCards()
         y=0.5;
         if(i==ActiveCard)
         {
-            glColor3f(0.5,0.6,0.7);
+            //glColor3f(0.5,0.6,0.7);
             y+=0.02;
-            angle-=5;
+            angle-=1;
         }
         Card[i].SetPostition(x,y);
         Card[i].DrawIt(angle);
@@ -153,7 +179,7 @@ void DisplayCanvas::DisplayCards()
             cst=REDBACK;
         else
             cst=BLUEBACK;
-        int index=cst*(1-Flipped)+i*Flipped;
+        int index = (Flipped ? i:cst);
         float x=0.0,y=0.0,angle=0.0;
         x=0.9-(i-9)*SaperationIndex+Group;
         y=-0.5;
@@ -165,41 +191,26 @@ void DisplayCanvas::DisplayCards()
 
 void DisplayCanvas::LoadAllImages()
 {
-    //wxMessageBox(wxT("Loading Images"),wxT("Bravo !!"));
-    /*
-	for(int i=0; i<52; i++)
+    for(int i=0; i<52; i++)
     {
         ostringstream ImageName;
         ImageName << "./Files/AllCards/Ascending/";
         ImageName<<"C"<<i+1<<".png";
-        Image[i]=LoadImage(const_cast<char*>(ImageName.str().c_str()));
-        //system("cls");
-        //cout<<"Loading ..."<< static_cast<int>(i/52.*100)<<"% completed "<<endl;
+        GLuint CurrentImage = LoadImageFile(ImageName.str());
+        Image[i] = CurrentImage;
     }
-	*/
-    //Image[REDBACK]=LoadPhoto(const_cast<char*>("/home/pranphy/Files/AllCards/Back/RedBack.bmp"));
-    //system("clear");
-    //cout<<"Loading ..."<<99<<"% completed "<<endl;
-    //Image[BLUEBACK]=LoadPhoto(const_cast<char*>("/home/pranphy/Files/AllCards/Back/BlueBack.bmp"));
-    //system("cls");
-    //cout<<"Loading ..."<<100<<"% completed "<<endl;
-    //wxMessageBox(wxT("Loaded images all "),wxT("Bravooo !! "));
+    Image[52] = LoadImageFile(string("./Files/AllCards/Back/RedBack.png"));
+    Image[53] = LoadImageFile(string("./Files/AllCards/Back/BlueBack.png"));
 }
-/*
-SOILTexture DisplayCanvas::LoadSOILImage(string ImageName)
-{
-	wxMessageBox(wxT(" I am safe until here "),wxT(" Bravoo "));
-	SOILTexture Texture;
-	Texture.Image = SOIL_load_image(ImageName.c_str(),&Texture.width,&Texture.height,0,SOIL_LOAD_RGB);
-	wxMessageBox(wxT(" But alas not here "),wxT(" Bravoo "));
-	return Texture;
-}
-*/
 
 void DisplayCanvas::Render()
 {
 
     DisplayCards();
+    //Image[i] =
+    //GLuint OneImage = LoadImageFile(string("./Files/AllCards/Ascending/C41.png"));
+    //cout<<" While OneImage has "<<OneImage<<endl;
+    //DisplaySinglePhoto(0,0,OneImage);
 
     glPushMatrix();
     ostringstream Info;
@@ -207,10 +218,35 @@ void DisplayCanvas::Render()
         Info<<" Selected Card :- "<<ActiveCard+1;
     else
         Info<<"Press 1 through  9 to select corresponding card ";
-    glColor3f(0.0,0.8,1.0);
+    //glColor3f(0.0,0.8,1.0);
     Cout(const_cast<char*>(Info.str().c_str()),-.8,0,0); //Printing function
     glPopMatrix();
 
+}
+
+void DisplayCanvas::DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture)
+{
+	glPushMatrix();
+    //glLoadIdentity();
+    //glColor3f(1.0,1.0,1.0);
+    //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
+
+	float PictureWidth = 100;
+	float PictureHeight = 300;
+	float Factor = 0.002;
+
+    glTranslatef(PositionX,PositionY,0);
+    glRotatef(0,0,0,1);
+    glBindTexture(GL_TEXTURE_2D,ImageTexture);
+
+    glEnable(GL_TEXTURE_2D);
+    glBegin(GL_QUADS);
+        glTexCoord3f(1.0f,0.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
+        glTexCoord3f(1.0f,1.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,Factor*PictureHeight/2,0);
+        glTexCoord3f(0.0f,1.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,Factor*PictureHeight/2,0);
+        glTexCoord3f(0.0f,0.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
+    glEnd();
+    glPopMatrix();
 }
 
 void DisplayCanvas::StartDrawing(void)
@@ -228,109 +264,6 @@ void DisplayCanvas::ChangeSize(int w, int h)
     gluPerspective(45.0, (double)w / (double)h, 0.2, 200.0);
 }
 
-void DisplayCanvas::WhenKeyIsPressed(unsigned char key, int x, int y)
-{
-    switch(key)
-    {
-    case 27:
-        exit(0);
-        break;
-    case 13:
-        ShuffleCards();
-        Scrambled=1;
-        //Flipped=0;
-        break;
-    case '0':
-        ActiveCard=-1;
-        break;
-    case '1':
-        ActiveCard=0;
-        break;
-    case '2':
-        ActiveCard=1;
-        break;
-    case '3':
-        ActiveCard=2;
-        break;
-    case '4':
-        ActiveCard=3;
-        break;
-    case '5':
-        ActiveCard=4;
-        break;
-    case '6':
-        ActiveCard=5;
-        break;
-    case '7':
-        ActiveCard=6;
-        break;
-    case '8':
-        ActiveCard=7;
-        break;
-    case '9':
-        ActiveCard=8;
-        break;
-    case 'r':
-        if(!BackId)
-            BackId=1;
-        else
-            BackId=0;
-        break;
-    case 'f':
-    case'F':
-        if(!Flipped)
-            Flipped=1;
-        else
-            Flipped=0;
-        break;
-    case 'u':
-        if(Scrambled)
-        {
-            Scrambled=0;
-            Arrange(Card,Image);
-        }
-        break;
-
-    default:
-        break;
-    }
-    glutPostRedisplay();
-}
-
-void DisplayCanvas::WhenSpecialKeysPressed(int key,int x,int y)
-{
-    switch (key)
-    {
-    case GLUT_KEY_DOWN:
-        ActiveCard=-1;
-        break;
-    case GLUT_KEY_LEFT:
-        if(ActiveCard<8 && ActiveCard>=0)
-        {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard+1];
-            Card[ActiveCard+1]=tmp;
-            ActiveCard++;
-        }
-        break;
-    case GLUT_KEY_RIGHT:
-        if(ActiveCard>0)
-        {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard-1];
-            Card[ActiveCard-1]=tmp;
-            ActiveCard--;
-        }
-
-        break;
-    case GLUT_KEY_UP:
-        ActiveCard=8;
-        break;
-    default:
-        break;
-    }
-}
-
 
 void DisplayCanvas::TimerFunc(int value)
 {
@@ -341,36 +274,64 @@ void DisplayCanvas::TimerFunc(int value)
 
 void DisplayCanvas::DrawCube()
 {
-    glBegin(GL_QUADS);
-    glNormal3f( 0.0f, 0.0f, 1.0f);
-    glVertex3f( 0.5f, 0.5f, 0.5f);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-    glVertex3f(-0.5f,-0.5f, 0.5f);
-    glVertex3f( 0.5f,-0.5f, 0.5f);
-    glNormal3f( 0.0f, 0.0f,-1.0f);
-    glVertex3f(-0.5f,-0.5f,-0.5f);
-    glVertex3f(-0.5f, 0.5f,-0.5f);
-    glVertex3f( 0.5f, 0.5f,-0.5f);
-    glVertex3f( 0.5f,-0.5f,-0.5f);
-    glNormal3f( 0.0f, 1.0f, 0.0f);
-    glVertex3f( 0.5f, 0.5f, 0.5f);
-    glVertex3f( 0.5f, 0.5f,-0.5f);
-    glVertex3f(-0.5f, 0.5f,-0.5f);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-    glNormal3f( 0.0f,-1.0f, 0.0f);
-    glVertex3f(-0.5f,-0.5f,-0.5f);
-    glVertex3f( 0.5f,-0.5f,-0.5f);
-    glVertex3f( 0.5f,-0.5f, 0.5f);
-    glVertex3f(-0.5f,-0.5f, 0.5f);
-    glNormal3f( 1.0f, 0.0f, 0.0f);
-    glVertex3f( 0.5f, 0.5f, 0.5f);
-    glVertex3f( 0.5f,-0.5f, 0.5f);
-    glVertex3f( 0.5f,-0.5f,-0.5f);
-    glVertex3f( 0.5f, 0.5f,-0.5f);
-    glNormal3f(-1.0f, 0.0f, 0.0f);
-    glVertex3f(-0.5f,-0.5f,-0.5f);
-    glVertex3f(-0.5f,-0.5f, 0.5f);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-    glVertex3f(-0.5f, 0.5f,-0.5f);
-    glEnd();
+	//
+}
+
+GLuint DisplayCanvas::LoadImageFile(string FileName)
+{
+	//wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
+	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	GLubyte *bitmapData=img->GetData();
+	GLubyte *alphaData=img->GetAlpha();
+
+	int bytesPerPixel = img->HasAlpha() ?  4 : 3;
+	int imageWidth = img->GetWidth();
+	int imageHeight = img->GetHeight();
+
+	int imageSize = imageWidth * imageHeight * bytesPerPixel;
+	GLubyte *imageData=new GLubyte[imageSize];
+
+	int rev_val=imageHeight-1;
+
+	for(int y=0; y<imageHeight; y++)
+	{
+		for(int x=0; x<imageWidth; x++)
+		{
+			imageData[(x+y*imageWidth)*bytesPerPixel+0]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3];
+
+			imageData[(x+y*imageWidth)*bytesPerPixel+1]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 1];
+
+			imageData[(x+y*imageWidth)*bytesPerPixel+2]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 2];
+
+			if(bytesPerPixel==4) imageData[(x+y*imageWidth)*bytesPerPixel+3]=
+					alphaData[ x+(rev_val-y)*imageWidth ];
+		}
+	}
+
+	glTexImage2D(GL_TEXTURE_2D,
+					0,
+					bytesPerPixel,
+					imageWidth,
+					imageHeight,
+					0,
+					img->HasAlpha() ?  GL_RGBA : GL_RGB,
+					GL_UNSIGNED_BYTE,
+					imageData);
+
+	delete[] imageData;
+	wxDELETE(img);
+
+	return texture;
 }

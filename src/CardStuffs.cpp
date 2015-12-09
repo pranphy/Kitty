@@ -60,7 +60,7 @@ void Taas::DrawIt(float angle)
     glPushMatrix();
     //glLoadIdentity();
     //glColor3f(1.0,1.0,1.0);
-    cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
+    //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
 
     glTranslatef(PositionX,PositionY,0);
     glRotatef(angle,0,0,1);
@@ -81,9 +81,9 @@ void Taas::DrawIt(float angle)
 void Arrange(Taas* Card,GLuint* Image)
 {
     int Array[9];
-    Card=Card+9; // To arrange latter nine cards. Leaving behind first nine cards
+    Card = Card + 9; // To arrange latter nine cards. Leaving behind first nine cards
     for(int i=0; i<9; i++)
-        Array[i]=Card[i].CardNumber;
+        Array[i] = Card[i].CardNumber;
 
     int* DoneArray=ArrangeKitty(Array);
     for(int i=0; i<9; i++)
@@ -97,7 +97,7 @@ void Arrange(Taas* Card,GLuint* Image)
 int* ArrangeKitty(int*NineCards)
 {
     //cout<<" Calling Rank Make Rank File "<<endl;
-    RankAndArray RankStruct=MakeRankFile(NineCards);
+    RankAndArray RankStruct = MakeRankFile(NineCards);
     //cout<<" Made Rank File "<<endl;
     int* RankArray=AnalyzeStruct(&RankStruct);
     //GenerateTopTen();
@@ -208,7 +208,7 @@ RankAndArray MakeRankFile(int*Array)
     int Nos=84*20;
     short int a;
     int RtTas[9], Taas[9];
-    int*RetTas=new int[9];
+    int* RetTas=new int[9];
     float RtRankArray[3];
     float* RetRankArray=new float[3];
     float HRank=0.0,AvRank=0.0;
@@ -221,8 +221,8 @@ RankAndArray MakeRankFile(int*Array)
         for(int j=0; j<9; j++)
         {
             Combination.read(reinterpret_cast<char*>(&a),sizeof(a));
-            RtTas[j]=a;
-            Taas[j]=Array[a];
+            RtTas[j] = a;
+            Taas[j] = Array[a];
         }
         float Rank=0.0;
         for(int i=0; i<9 ; i+=3)
@@ -243,10 +243,10 @@ RankAndArray MakeRankFile(int*Array)
         if (Rank > HRank)
         {
             HRank = Rank;
-            for(int i=0; i<9; i++)
-                RetTas[i]=RtTas[i];
+            for(int i = 0; i<9; i++)
+                RetTas[i] = RtTas[i];
             for(int i=0; i<3; i++)
-                RetRankArray[i]=RtRankArray[i];
+                RetRankArray[i] = RtRankArray[i];
         }
     }
     GroupRank.close();

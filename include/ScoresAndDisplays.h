@@ -10,7 +10,7 @@ class Player
         char *Name;
         int Lives, Scores;
     public:
-        Player(char* ='\0',int=3,int=0);
+        Player(char*,int=3,int=0);
 
 };
 
