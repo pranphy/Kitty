@@ -14,12 +14,12 @@
 */
 void Cout(char *String,float x,float y,float z)
 {
-	char *CurrentCharacter=String;
-	glRasterPos3f(x,y,z);
-	for (;*CurrentCharacter!= '\0'; CurrentCharacter++)
-	{
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *CurrentCharacter);
-	}
+    char *CurrentCharacter=String;
+    glRasterPos3f(x,y,z);
+    for (; *CurrentCharacter!= '\0'; CurrentCharacter++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *CurrentCharacter);
+    }
 }
 
 

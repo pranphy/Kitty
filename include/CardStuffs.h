@@ -13,7 +13,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include "common.h"
+#include <string>
+
 #include "src/SOIL.h"
 
 
@@ -61,7 +62,7 @@ bool    IsJoute        (int,int,int);
 int     compare        (int,int,int,int,int,int);
 int     rndm           (int);
 
-GLuint  LoadPhoto      (char* imagename);
+GLuint  LoadPhoto      (string ImageName);
 
 
 class Taas

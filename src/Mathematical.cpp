@@ -27,7 +27,7 @@ void ConvertDimension(int Height, int Width, float& OldX, float& OldY)
 }
 
 
- // returns an integer array of random numbers
+// returns an integer array of random numbers
 // the address of array random numbers(consecutive integers)  of length lng from lb to ub (inclusive) is returned.
 // , if rpt=TRUE==1 the numbers may be repeated and if rpt=FALSE==0 the random numbers are not repeated
 int* RandIntArray(int lb,int ub, int lng, int rpt)
@@ -35,7 +35,7 @@ int* RandIntArray(int lb,int ub, int lng, int rpt)
     initrand();
     int cnt=0,num;
     int *ary = new int[lng];
-    for(;cnt<lng;cnt++)
+    for(; cnt<lng; cnt++)
     {
         if(!rpt)
         {
@@ -58,7 +58,7 @@ int* RandIntArray(int lb,int ub, int lng, int rpt)
 int ChkNumInAry(int num,int lng, int *ary) // check whether num exists in the array of length lng with array base address ary
 {
     int cnt=0,flag=0;
-    for(;cnt<lng;cnt++)
+    for(; cnt<lng; cnt++)
     {
         if(*(ary+cnt)==num)
         {

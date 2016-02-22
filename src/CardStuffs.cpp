@@ -1,7 +1,7 @@
 /*************************************************/
 /** Author        : @PrakashGautam               */
 /** First Written : Dec 30, 2012                 */
-/** Last Updated  : Oct 28, 2013                 */
+/** Last Updated  : Oct 28, 2013, May 3, 2015    */
 /** fb.com/pranphy<>http://pranphy.wordpress.com */
 /*************************************************/
 
@@ -59,13 +59,18 @@ void Taas::DrawIt(float angle)
     //glTranslatef(0,0,-5);
     glTranslatef(PositionX,PositionY,-5);
     glRotatef(angle,0,0,1);
+    //glColor3f(0.2,0.3,0.4);
     glBindTexture(GL_TEXTURE_2D,CardTexture);
     glEnable(GL_TEXTURE_2D);
-        glBegin(GL_QUADS);
-        glTexCoord3f(1.0f,0.0f,0.0f);           glVertex3f(factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(1.0f,1.0f,0.0f);           glVertex3f(factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(0.0f,1.0f,0.0f);           glVertex3f(-factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(0.0f,0.0f,0.0f);           glVertex3f(-factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
+    glBegin(GL_QUADS);
+    glTexCoord3f(1.0f,0.0f,0.0f);
+    glVertex3f(factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
+    glTexCoord3f(1.0f,1.0f,0.0f);
+    glVertex3f(factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
+    glTexCoord3f(0.0f,1.0f,0.0f);
+    glVertex3f(-factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
+    glTexCoord3f(0.0f,0.0f,0.0f);
+    glVertex3f(-factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
     glEnd();
 }
 
@@ -75,10 +80,16 @@ void Arrange(Taas* Card,GLuint* Image)
 {
     int Array[9];
     Card=Card+9; // To arrange latter nine cards. Leaving behind first nine cards
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         Array[i]=Card[i].CardNumber;
+
+    //cout<<" Calling Arrange Kitty "<<endl;
+
     int* DoneArray=ArrangeKitty(Array);
-    for(int i=0;i<9;i++)
+
+    //cout<<" Arranged kitty "<<endl;
+
+    for(int i=0; i<9; i++)
     {
         Card[i].SetValue(Array[DoneArray[i]]);
         Card[i].SetTexture(Image[Array[DoneArray[i]]-1]);
@@ -88,10 +99,12 @@ void Arrange(Taas* Card,GLuint* Image)
 
 int* ArrangeKitty(int*NineCards)
 {
+    //cout<<" Calling Rank Make Rank File "<<endl;
     RankAndArray RankStruct=MakeRankFile(NineCards);
+    //cout<<" Made Rank File "<<endl;
     int* RankArray=AnalyzeStruct(&RankStruct);
-        //GenerateTopTen();
-        //DisplayTopTen(); //yo chai console ma dekhauna lai ho ouput analyze garna. no use for graphics
+    GenerateTopTen();
+    DisplayTopTen(); //yo chai console ma dekhauna lai ho ouput analyze garna. no use for graphics
 
     // yaha kaam garnu parchha aba
     // tyo top ten ma 3tai ko rank halnu parchha generate function le // yo kaam gariyo
@@ -118,27 +131,45 @@ int* AnalyzeStruct(RankAndArray* RankStruct)
     */
     float a=RankArray[0],b=RankArray[1],c=RankArray[2];
     int p[3];
-    if(a>=b&&b>=c){
-        p[0]=1;p[1]=2;p[2]=3;
+    if(a>=b&&b>=c)
+    {
+        p[0]=1;
+        p[1]=2;
+        p[2]=3;
     }
-    else if(a>=c&&c>=b){
-        p[0]=1;p[1]=3;p[2]=2;
+    else if(a>=c&&c>=b)
+    {
+        p[0]=1;
+        p[1]=3;
+        p[2]=2;
     }
-    else if(b>=a&&a>=c){
-        p[0]=2;p[1]=1;p[2]=3;
+    else if(b>=a&&a>=c)
+    {
+        p[0]=2;
+        p[1]=1;
+        p[2]=3;
     }
-    else if(b>=c&&c>=a){
-        p[0]=2;p[1]=3;p[2]=1;
+    else if(b>=c&&c>=a)
+    {
+        p[0]=2;
+        p[1]=3;
+        p[2]=1;
     }
-    else if(c>=a&&a>=b){
-        p[0]=3;p[1]=1;p[2]=2;
+    else if(c>=a&&a>=b)
+    {
+        p[0]=3;
+        p[1]=1;
+        p[2]=2;
     }
-    else if(c>=b&&b>=a){
-        p[0]=3;p[1]=2;p[2]=1;
+    else if(c>=b&&b>=a)
+    {
+        p[0]=3;
+        p[1]=2;
+        p[2]=1;
     }
     int* RetArray=new int[9];
 
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         RetArray[i]=CombinationArray[3*(p[static_cast<int>(i/3)]-1)+i%3];
     delete CombinationArray;
     delete RankArray;
@@ -148,47 +179,76 @@ int* AnalyzeStruct(RankAndArray* RankStruct)
 
 RankAndArray MakeRankFile(int*Array)
 {
-    ifstream Combination(".\\Files\\Input\\combination.dat");
-    ofstream GroupRank(".\\Files\\Output\\GroupRank.dat",ios::out|ios::binary);
+
+    ofstream TestFile("TestFileForHere.dat");
+    /*if(TestFile){
+        cout<<" New Test file created"<<endl;
+    } else {
+        cout<<"Couldn't write test file "<<endl;
+        exit(1);
+    }
+    */
+    string CombinationFile = "./Files/Input/Combination.dat";
+    string RankFile = "./Files/Output/GroupRank.dat";
+
+    ifstream Combination(CombinationFile);
+    /*if(!Combination){
+        cout<<"Couldn't OpenCombination File "<<endl;
+    } else {
+        cout<<" Combination Opened Successfully"<<endl;
+    }*/
+    ofstream GroupRank(RankFile,ios::out|ios::binary);
+//    if(GroupRank){
+//        cout<<" GroupRank OutputFile Written"<<endl;
+//    } else {
+//        cout<<" Couldn't write groupRank ouptup file "<<endl;
+//    }
     /*Writing the card values to the rank file*/
-    for(int i=0;i<9;i++)
+
+    for(int i=0; i<9; i++)
         GroupRank.write(reinterpret_cast<char*>(Array+i),sizeof(Array[i]));
     /*C(9,3)=84 and C(6,3)=20 ie 84*20 is the number of possibel kitty combinations*/
-    int Nos=84*20; short int a;
+    int Nos=84*20;
+    short int a;
     int RtTas[9], Taas[9];
     int*RetTas=new int[9];
     float RtRankArray[3];
     float* RetRankArray=new float[3];
     float HRank=0.0,AvRank=0.0;
     RankAndArray RetStruct;
-    for(int i=0;i<Nos;i++)
+
+    //cout<<" Making rank file now "<<endl;
+
+    for(int i=0; i<Nos ; i++)
     {
-        for(int j=0;j<9;j++)
+        for(int j=0; j<9; j++)
         {
             Combination.read(reinterpret_cast<char*>(&a),sizeof(a));
             RtTas[j]=a;
             Taas[j]=Array[a];
         }
         float Rank=0.0;
-        for(int i=0;i<9;i+=3)
+        for(int i=0; i<9 ; i+=3)
         {
-            float MiniRank=GetMiniRank(Taas[i],Taas[i+1],Taas[i+2]);
-            Rank+=MiniRank;
+            float MiniRank = GetMiniRank(Taas[i],Taas[i+1],Taas[i+2]);
+            Rank += MiniRank;
             short int a1,a2,a3;
-            a1=RtTas[i],a2=RtTas[i+1],a3=RtTas[i+2];
+            a1 = RtTas[i], a2 = RtTas[i+1], a3 = RtTas[i+2];
+
             RtRankArray[i/3]=MiniRank;
+
             GroupRank.write(reinterpret_cast<char*>(&a1),sizeof(a1));
             GroupRank.write(reinterpret_cast<char*>(&a2),sizeof(a2));
             GroupRank.write(reinterpret_cast<char*>(&a3),sizeof(a3));
             GroupRank.write(reinterpret_cast<char*>(&MiniRank),sizeof(MiniRank));
         }
-        AvRank+=Rank; //for statical purposes to find out the average ranks of all cards.
-        if (Rank>HRank)
+        AvRank += Rank; //for statical purposes to find out the average ranks of all cards.
+        if (Rank > HRank)
         {
-            HRank=Rank;
-            for(int i=0;i<9;i++)
+            HRank = Rank;
+            for(int i=0; i<9; i++)
                 RetTas[i]=RtTas[i];
-            for(int i=0;i<3;i++)
+            for(int i=0; i<3; i++)
                 RetRankArray[i]=RtRankArray[i];
         }
     }
@@ -205,8 +265,8 @@ RankAndArray MakeRankFile(int*Array)
 float GetRank(int*NineCards)
 {
     float Rank=0.0;
-    for(int i=0;i<9;i+=3)
-        Rank+=GetMiniRank(NineCards[i],NineCards[i+1],NineCards[i+2]);
+    for(int i=0; i<9; i+=3)
+        Rank += GetMiniRank(NineCards[i],NineCards[i+1],NineCards[i+2]);
     return Rank;
 }
 
@@ -218,27 +278,32 @@ float GetMiniRank(int a,int b,int c)
     GetCard(c,v3,t3);
     if(IsTrial(a,b,c))
         return 600+v1/13.*100;
-    else if(IsDoubleRun(a,b,c)){
+    else if(IsDoubleRun(a,b,c))
+    {
         int Grt=GreatOfThree(v1,v2,v3);
         int sg=sec_grtthree(v1,v2,v3);
         return 500+Grt/13.*100+sg/13.*10;
     }
-    else if(IsRun(a,b,c)){
+    else if(IsRun(a,b,c))
+    {
         int Grt=GreatOfThree(v1,v2,v3);
         int sg=sec_grtthree(v1,v2,v3);
         return 400+Grt/13.*100+sg/13.*10;
     }
-    else if(IsColour(a,b,c)){
+    else if(IsColour(a,b,c))
+    {
         int Grt=GreatOfThree(v1,v2,v3);
         int sg=sec_grtthree(v1,v2,v3);
         return 300+Grt/13.*100+sg/13.*10;
     }
-    else if(IsJoute(a,b,c)){
+    else if(IsJoute(a,b,c))
+    {
         int Com=FindCommon(v1,v2,v3);
         int sg=sec_grtthree(v1,v2,v3);
         return 200+Com/13.*100+sg/13.*10;
     }
-    else{
+    else
+    {
         int Grt=GreatOfThree(v1,v2,v3);
         int sg=sec_grtthree(v1,v2,v3);
         return 100+Grt/13.*100+sg/13.*10;
@@ -248,22 +313,29 @@ float GetMiniRank(int a,int b,int c)
 
 void GenerateTopTen(void)
 {
-    ifstream GroupRank(".\\Files\\Output\\GroupRank.dat");
-    ofstream TopTen(".\\Files\\Output\\TopTen.dat",ios::out|ios::binary);
+    string RankFile = "./Files/Output/GroupRank.dat";
+    string TopTenFile = "./Files/Output/TopTen.dat";
+    ifstream GroupRank(RankFile);
+//    if(GroupRank){
+//        cout<<" Opened GroupRank file successfully "<<endl;
+//    } else {
+//        cout<<" Failure in opening GroupRank file "<<endl;
+//    }
+    ofstream TopTen(TopTenFile,ios::out|ios::binary);
     int CardValue[9];
     /*Reading the card values from the group rank file*/
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         GroupRank.read(reinterpret_cast<char*>(CardValue+i),sizeof(CardValue[i]));
     /*Re writing the same card values on the top ten as well exactly the same*/
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         TopTen.write(reinterpret_cast<char*>(CardValue+i),sizeof(CardValue[i]));
 
     int RecordNumber=24; //No of records in the top ten file
     /*The following for loop generates a garbage file with zero rank and 1 througb nine as corresponding array*/
-    for(int i=0;i<RecordNumber;i++)
+    for(int i=0; i<RecordNumber; i++)
     {
         float flt=0.0;
-        for(int j=0;j<9;j+=3)
+        for(int j=0; j<9; j+=3)
         {
             TopTen.write(reinterpret_cast<char*>(&j),sizeof(j));
             TopTen.write(reinterpret_cast<char*>(&j+1),sizeof(j));
@@ -274,11 +346,11 @@ void GenerateTopTen(void)
     TopTen.close();
     /*Creating a garbabge containing file completed here*/
     int Nos=84*20;
-    for(int i=0;i<Nos;i++)
+    for(int i=0; i<Nos; i++)
     {
-        short int CurrentArray[9]={0,0,0,0,0,0,0,0,0};
-        float  RankArray[3]={0.0,0.0,0.0};
-        for(int j=0;j<9;j+=3)
+        short int CurrentArray[9]= {0,0,0,0,0,0,0,0,0};
+        float  RankArray[3]= {0.0,0.0,0.0};
+        for(int j=0; j<9; j+=3)
         {
             short int a1,a2,a3;
             float Rank;
@@ -303,24 +375,24 @@ void UpdateTopTen(short int*Array,float* ReceivedRankArray)
     *  communication  is not upto  the standards so I have avoided it actually
     *  from the analysis
     */
-    char OldFileName[100]=".\\Files\\Output\\TopTen.dat";
-    char NewFileName[100]=".\\Files\\Output\\TempTopTen.dat";
+    string OldFileName = "./Files/Output/TopTen.dat";
+    string NewFileName = "./Files/Output/TempTopTen.dat";
     ifstream TopTen(OldFileName);
     ofstream Temp(NewFileName);
     int CardValue[9];
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         TopTen.read(reinterpret_cast<char*>(CardValue+i),sizeof(CardValue[i]));
-    for(int i=0;i<9;i++)
+    for(int i=0; i<9; i++)
         Temp.write(reinterpret_cast<char*>(CardValue+i),sizeof(CardValue[i]));
 
     int Count=0;
     int RecordNumber=24;
-    for(int i=0;i<RecordNumber;i++)
+    for(int i=0; i<RecordNumber; i++)
     {
         float RankSum=0.0;
-        short int CurrentArray[9]={0,0,0,0,0,0,0,0,0};
-        float RankArray[3]={0.0,0.0,0.0};
-        for(int j=0;j<9;j+=3)
+        short int CurrentArray[9]= {0,0,0,0,0,0,0,0,0};
+        float RankArray[3]= {0.0,0.0,0.0};
+        for(int j=0; j<9; j+=3)
         {
             TopTen.read(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[j]));
             TopTen.read(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[j]));
@@ -332,22 +404,23 @@ void UpdateTopTen(short int*Array,float* ReceivedRankArray)
         float ReceivedRank=ReceivedRankArray[0]+ReceivedRankArray[1]+ReceivedRankArray[2];
         if(ReceivedRank>RankSum)
         {
-            for(int j=0;j<9;j+=3)
+            for(int j=0; j<9; j+=3)
             {
                 Temp.write(reinterpret_cast<char*>(Array+j),sizeof(Array[0]));
                 Temp.write(reinterpret_cast<char*>(Array+j+1),sizeof(Array[0]));
                 Temp.write(reinterpret_cast<char*>(Array+j+2),sizeof(Array[0]));
                 Temp.write(reinterpret_cast<char*>(ReceivedRankArray+j/3),sizeof(ReceivedRankArray[0]));
             }
-            for(int k=0;k<RecordNumber-Count;k++)
+            for(int k=0; k<RecordNumber-Count; k++)
             {
-                for(int j=0;j<9;j+=3){
+                for(int j=0; j<9; j+=3)
+                {
                     Temp.write(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
                     Temp.write(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
                     Temp.write(reinterpret_cast<char*>(CurrentArray+j+2),sizeof(CurrentArray[0]));
                     Temp.write(reinterpret_cast<char*>(RankArray+j/3),sizeof(RankArray+j/3));
                 }
-                for(int j=0;j<9;j+=3)
+                for(int j=0; j<9; j+=3)
                 {
                     TopTen.read(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
                     TopTen.read(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
@@ -359,7 +432,7 @@ void UpdateTopTen(short int*Array,float* ReceivedRankArray)
         }
         else
         {
-            for(int j=0;j<9;j+=3)
+            for(int j=0; j<9; j+=3)
             {
                 Temp.write(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
                 Temp.write(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
@@ -370,14 +443,16 @@ void UpdateTopTen(short int*Array,float* ReceivedRankArray)
     }
     TopTen.close();
     Temp.close();
-    remove(OldFileName);
-    rename(NewFileName,OldFileName);
+    remove(OldFileName.data());
+    rename(NewFileName.c_str(),OldFileName.c_str());
 }
 
 void DisplayTopTen()
 {
-    system("cls");
-    ifstream TopTen(".\\Files\\Output\\TopTen.dat");
+
+    /*
+    string TopTenFile = "./Files/Output/TopTen.dat";
+    ifstream TopTen(TopTenFile);
     int CardValue[9];
     for(int i=0;i<9;i++)
         TopTen.read(reinterpret_cast<char*>(CardValue+i),sizeof(CardValue[i]));
@@ -415,6 +490,7 @@ void DisplayTopTen()
     }
     cout<<"---------------------------------------------------------------"<<endl;
     cout<<" Top "<<RecordNumber<<" rank combinations "<<endl;
+    */
 }
 /*
 *  The following function was initially written in C (not c++)
@@ -449,7 +525,7 @@ bool IsTrial(int a, int b, int c)
     return((v1==v2)&&(v2==v3));
 }
 
- bool IsRun(int p1, int q, int r)
+bool IsRun(int p1, int q, int r)
 {
     int a,t1,b,t2,c,t3;
     GetCard(p1,a,t1);
@@ -613,12 +689,12 @@ int compare(int a1, int a2, int a3, int b1, int b2, int b3)
     p=IsTrial(a1,a2,a3);
     q=IsTrial(b1,b2,b3);
     if (p==1&&q==1)
-        {
-            if (a1>b1)
-                return 1;
-            else
-                return 2;
-        }
+    {
+        if (a1>b1)
+            return 1;
+        else
+            return 2;
+    }
     else if (p==1&&q==0)
         return 1;
     else if (p==0&&q==1)
@@ -673,21 +749,21 @@ int compare(int a1, int a2, int a3, int b1, int b2, int b3)
 }
 
 
-GLuint LoadPhoto(char* imagename)
+GLuint LoadPhoto(string imagename)
 {
-    cout<< " Searching for >>  "<<imagename;
+    //cout<< " Searching for >>  "<<imagename;
     GLuint tex_2d = SOIL_load_OGL_texture
-    (
-        imagename,
-        SOIL_LOAD_AUTO,
-        SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-    );
+                    (
+                        imagename.c_str(),
+                        SOIL_LOAD_AUTO,
+                        SOIL_CREATE_NEW_ID,
+                        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+                    );
 
-   if(!tex_2d)
-           cout<< " NotFound "<<endl;
-    else
-        cout<<" Found. Load Success"<<endl;
+//    if(!tex_2d)
+//        cout<< " NotFound "<<endl;
+//    else
+//        cout<<" Found. Load Success"<<endl;
     //cls();
     return tex_2d;
 

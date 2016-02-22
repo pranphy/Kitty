@@ -13,8 +13,10 @@
 #ifndef COMMON_H_INCLUDED
 #define COMMON_H_INCLUDED
 
-#include<cstdio>
 #include<cstdlib>
+#include <cstdio>
+using namespace std;
+
 #define lnx
 
 void locate(int,int); // moves the coursor to the desired position in the console
