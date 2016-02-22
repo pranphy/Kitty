@@ -194,13 +194,13 @@ void DisplayCanvas::LoadAllImages()
     for(int i=0; i<52; i++)
     {
         ostringstream ImageName;
-        ImageName << "./Files/AllCards/Ascending/";
+        ImageName << "./res/Files/AllCards/Ascending/";
         ImageName<<"C"<<i+1<<".png";
         GLuint CurrentImage = LoadImageFile(ImageName.str());
         Image[i] = CurrentImage;
     }
-    Image[52] = LoadImageFile(string("./Files/AllCards/Back/RedBack.png"));
-    Image[53] = LoadImageFile(string("./Files/AllCards/Back/BlueBack.png"));
+    Image[52] = LoadImageFile(string("./res/Files/AllCards/Back/RedBack.png"));
+    Image[53] = LoadImageFile(string("./res/Files/AllCards/Back/BlueBack.png"));
 }
 
 void DisplayCanvas::Render()
