@@ -1,3 +1,11 @@
+/*************************************************/
+/** Author        : @PrakashGautam               */
+/** First Written : Dec 30, 2012                 */
+/** Last Updated  : Oct 28, 2013                 */
+/** fb.com/pranphy<>http://pranphy.wordpress.com */
+/*************************************************/
+
+
 #include <iostream>
 #include <GL/glut.h>
 #include <time.h>
@@ -10,39 +18,39 @@
 #include "common.h"
 
 
-#define REDBACK    53
-#define BLUEBACK   52
-
+#define REDBACK    0x34
+#define BLUEBACK   0x35
+#define MENUMODE   0x36
+#define PLAYMODE   0x37
 using namespace std;
 
-void DrawBoundary();
-void WhenKeyIsPressed(unsigned char,int,int );
-void WhenSpecialKeysPressed(int,int,int);
-void TimerFunc(int);
-void ControlWithMouse(int,int,int,int);
-void StartDrawing();
-void ChangeSize(int,int);
-void Render();
-void Initialize();
-void LoadAllImages();
-void ShuffleCards();
-void DisplayCards();
+
+void   WhenKeyIsPressed           (unsigned char,int,int);
+void   WhenSpecialKeysPressed     (int,int,int);
+void   TimerFunc                  (int);
+void   ControlWithMouse           (int,int,int,int);
+void   StartDrawing               ();
+void   ChangeSize                 (int,int);
+void   Render                     ();
+void   Initialize                 ();
+void   LoadAllImages              ();
+void   ShuffleCards               ();
+void   DisplayCards               ();
 
 
 
 namespace
 {
-    int WindowWidth=1320, WindowHeight=650;
-    float Dummy=0.0;
+    int WindowWidth=1200, WindowHeight=600;
 }
 
 namespace
 {
-    GLuint OnePhoto;
+    //GLuint OnePhoto;
     static int ActiveCard=-1;
     Taas Card[54],tmp;
     GLuint Image[54];
-    int Flipped=0, BackId=1;
+    int Flipped=0, BackId=1,Scrambled=1;
 }
 
 
@@ -54,44 +62,37 @@ int main(int argc, char** argv)
     glutCreateWindow("Kitty v1.00");
     glutReshapeFunc(ChangeSize);
     Initialize(); /*For some activities that should be carried only once in each program execution*/
-
     glutKeyboardFunc(WhenKeyIsPressed);
     glutMouseFunc(ControlWithMouse);
     glutDisplayFunc(Render);
     glutSpecialFunc(WhenSpecialKeysPressed);
-
     glutTimerFunc(10, TimerFunc, 0);
-
     glClearColor(1.0f,1.0f,1.0f,2);
     glutMainLoop();
 }
-
-
 
 void Initialize()
 {
     glEnable(GL_DEPTH_TEST);
     LoadAllImages();
-    ShuffleCards()   ;
-
+    ShuffleCards();
     initrand();
 }
 
 void ShuffleCards()
 {
-    int *Number;
-    RandIntArray(1,52,52,&Number,0);
+    int *Number=RandIntArray(1,52,52,0);
     for(int i=0;i<52;i++)
     {
-        Card[i].SetValue(*(Number+i));
-        Card[i].SetTexture(Image[*(Number+i)-1]);
+        Card[i].SetValue(Number[i]);
+        Card[i].SetTexture(Image[Number[i]-1]);
     }
     Card[52].SetTexture(Image[52]);
     Card[53].SetTexture(Image[53]);
 }
+
 void DisplayCards()
 {
-
     for(int i=0;i<9;i++)
     {
         float x=0,y=0,angle=0;
@@ -104,16 +105,17 @@ void DisplayCards()
         Card[i].SetPostition(x,y);
         Card[i].DrawIt(angle);
     }
+
     for(int i=9;i<18;i++)
     {
-        int cst;
+        int cst; float Group=0.0,SaperationIndex=.7;
         if(BackId)
             cst=REDBACK;
         else
             cst=BLUEBACK;
-        int index= cst*(1-Flipped)+i*(Flipped-0);
-        float x=0,y=0,angle=0;
-        x=2.9-(i-9)*.7; y=-1.1;
+        int index=cst*(1-Flipped)+i*Flipped;
+        float x=0.0,y=0.0,angle=0.0;
+        x=2.9-(i-9)*SaperationIndex+Group; y=-1.1;
         Card[index].SetPostition(x,y);
         Card[index].DrawIt(angle);
     }
@@ -121,39 +123,36 @@ void DisplayCards()
 
 void LoadAllImages()
 {
-
     for(int i=0;i<52;i++)
     {
         char imgnm[70];
-        sprintf(imgnm,"/home/pranphy/Files/AllCards/Ascending/C%d.bmp",i+1);
+        sprintf(imgnm,"./Files/AllCards/Ascending/CRD%d.JPG",i+1);
         Image[i]=LoadPhoto(imgnm);
+        system("clear");
+            cout<<"Loading ..."<< static_cast<int>(i/52.*100)<<"% completed "<<endl;
     }
-
-    Image[53]=LoadPhoto("./Files/AllCards/Back/RedBack.bmp");
-    Image[52]=LoadPhoto("./Files/AllCards/Back/BlueBack.bmp");
+    Image[REDBACK]=LoadPhoto(const_cast<char*>("./Files/AllCards/Back/RedBack.JPG"));
+        system("clear");
+        cout<<"Loading ..."<<99<<"% completed "<<endl;
+    Image[BLUEBACK]=LoadPhoto(const_cast<char*>("./Files/AllCards/Back/BlueBack.JPG"));
+        system("clear");
+        cout<<"Loading ..."<<100<<"% completed "<<endl;
 }
-
 
 void Render()
 {
-
     StartDrawing();
     DisplayCards();
-    char num[80]; //cout<<"Got here successfully ";cin>>Dummy;
+    char num[60];
     if(ActiveCard>-1)
         sprintf(num," Selected Card :- %d",ActiveCard+1);
     else
         sprintf(num," No Card Selected Press 1 through  9 to select corresponding card ");
-
     glColor3f(0.0,0.8,1.0);
-
-    Cout(num,0,.8,-5);
+    Cout(num,-3,.8,-30); //Printing function
     glColor3f(1.0,1.0,1.0);
     glutSwapBuffers();
-
 }
-
-
 
 void StartDrawing(void)
 {
@@ -162,8 +161,6 @@ void StartDrawing(void)
 	glLoadIdentity();
 }
 
-
-
 void ChangeSize(int w, int h)
 {
     glViewport(0, 0, w, h);
@@ -171,8 +168,6 @@ void ChangeSize(int w, int h)
     glLoadIdentity();
     gluPerspective(45.0, (double)w / (double)h, 0.2, 200.0);
 }
-
-
 
 void WhenKeyIsPressed(unsigned char key, int x, int y)
 {
@@ -183,6 +178,8 @@ void WhenKeyIsPressed(unsigned char key, int x, int y)
             break;
         case 13:
             ShuffleCards();
+            Scrambled=1;
+            //Flipped=0;
             break;
         case '0':
             ActiveCard=-1;
@@ -226,12 +223,20 @@ void WhenKeyIsPressed(unsigned char key, int x, int y)
                 Flipped=1;
             else
                 Flipped=0;
+            break;
+        case 'u':
+            if(Scrambled){
+                Scrambled=0;
+                Arrange(Card,Image);
+            }
+            break;
 
         default:
             break;
     }
     glutPostRedisplay();
 }
+
 void WhenSpecialKeysPressed(int key,int x,int y)
 {
     switch (key)
@@ -247,17 +252,15 @@ void WhenSpecialKeysPressed(int key,int x,int y)
                 Card[ActiveCard+1]=tmp;
                 ActiveCard++;
             }
-
             break;
         case GLUT_KEY_RIGHT:
              if(ActiveCard>0)
              {
-                 tmp=Card[ActiveCard];
+                tmp=Card[ActiveCard];
                 Card[ActiveCard]=Card[ActiveCard-1];
                 Card[ActiveCard-1]=tmp;
                 ActiveCard--;
              }
-                //Taas tmp(0);
 
             break;
         case GLUT_KEY_UP:
@@ -298,21 +301,6 @@ void ControlWithMouse(int button, int state, int x, int y)
     }
     glutPostRedisplay();
 }
-
-
-/*The following function is to test the converted coordinates in teh output window  */
-
-void DrawBoundary()
-{
-    glLoadIdentity();
-    glTranslatef(0.0,0.0,-5);
-    glColor3f(1.0,0.0,0.0);
-    glRectf(-3.19,1.9,3.19,-1.90);//     Base of the wall lying along x axis
-
-}
-
-
-
 
 
 void TimerFunc(int value)

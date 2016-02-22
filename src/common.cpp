@@ -8,6 +8,13 @@
     }
 #endif
 
+#ifdef windows
+    #include<windows.h>
+    void cls(void)
+    {
+        system("CLS");
+    }
+#endif
 
 
 /* Below is a console function */

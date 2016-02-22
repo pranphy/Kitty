@@ -14,8 +14,8 @@
 #define COMMON_H_INCLUDED
 
 #include<cstdio>
-
-#define windows
+#include<cstdlib>
+#define lnx
 
 void locate(int,int); // moves the coursor to the desired position in the console
 void cls(void);

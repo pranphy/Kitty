@@ -9,7 +9,6 @@ class Player
     private:
         char *Name;
         int Lives, Scores;
-        //Snake Sarpa;
     public:
         Player(char* ='\0',int=3,int=0);
 

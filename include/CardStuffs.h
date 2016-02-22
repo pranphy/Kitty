@@ -1,55 +1,76 @@
+/*************************************************/
+/** Author        : @PrakashGautam               */
+/** First Written : Dec 30, 2012                 */
+/** Last Updated  : Oct 28, 2013                 */
+/** fb.com/pranphy<>http://pranphy.wordpress.com */
+/*************************************************/
+
+
 #ifndef CARDSTUFFS_H_INCLUDED
 #define CARDSTUFFS_H_INCLUDED
-#include<GL/glut.h>
-#include<cstdlib>
-#include"common.h"
-#include"src/SOIL.h"
-#include<iostream>
+
+#include <GL/glut.h>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include "common.h"
+#include "src/SOIL.h"
+
+
 using namespace std;
+/*
+*  The following constants correspond to ASCII codes of the corresponding shapes.
+*/
+#define SPADE          0x03
+#define CLUB           0x04
+#define DIAMOND        0x05
+#define HEART          0x06
 
-
-#define SPADE          0x1f
-#define CLUB           0x2f
-#define DIAMOND        0x3f
-#define HEART          0x4f
+/*
+* The follwing factors and dimensions are crude and used just by hit-and-trial
+* method. No specific reasons of why exaclty the following values
+*/
 
 #define CARD_WIDTH     0257
 #define CARD_HEIGHT    0353
 #define factor         0.01
 #define factorcard     0.54
 
-int whichgreat(int,int,int,int,int,int); // compares two suit of cards
-int istrial(int, int, int);
-int isrun(int,int,int); // given three card number ;; are they run yes returns 1 no returns 0
-void GetCard(int,int&,int&); // convert the number into a card
-// getcard definition
+void    GetCard        (int,int&,int&);
+float   GetRank        (int*);
+float   GetMiniRank    (int,int,int);
+/*Generates random number in the range. Look definion on .cpp for more information on this function*/
+int*    RandIntArray   (int,int,int,int);
+/*checks whether the given number is already among teh array contents*/
+int     ChkNumInAry    (int,int, int*);
+/*seeds the standard rand function with the current time(in seconds)*/
+void    initrand       ();
+/*Generates a random integer in the range 0 to (paramater passed)*/
+int     Random         (int);
+/*Finds teh greatest of three given numbers.*/
+int     GreatOfThree   (int,int,int);
+/*Function takes 3 integers of which at least two (or possibly all) are equal as arguments and returns one of the equal numbers*/
+int     FindCommon     (int,int,int);
+int     sec_grtthree   (int,int,int);
+int     leastofthree   (int,int,int);
+bool    IsTrial        (int,int,int);
+bool    IsRun          (int,int,int);
+bool    IsDoubleRun    (int,int,int);
+bool    IsColour       (int,int,int);
+bool    IsJoute        (int,int,int);
+int     compare        (int,int,int,int,int,int);
+int     rndm           (int);
 
-int grtofthree(int,int,int); // greatest of three numbers
-int sec_grtthree(int,int,int);
-int chkdouble(int,int,int);
-bool IsColour(int,int,int);
-bool IsDoubleRun(int,int,int);
-int leastofthree(int,int,int);
-int findgrtofcom(int,int,int,int,int,int);
-
-int findcommon(int,int,int);
-int finduncommon(int,int,int);
-int compare(int,int,int,int,int,int);
-
-int winner(int, int, int, int, int, int, int, int, int, int, int, int); // find the winner of four sets of cards
-
-int rndm(int);
-
-GLuint LoadPhoto(char* imagename);
+GLuint  LoadPhoto      (char* imagename);
 
 
 class Taas
 {
-    private:
+    public:
         int CardNumber, Value, Type;
         float PositionX,PositionY;
         GLuint CardTexture;
-    public:
+    //pahila yaha private: rakhya thyo ahile hataideko.. naramro programming .. tuk tuk
         Taas(int=52);
         int ConvertToCard(void);
         void SetPostition(float,float);
@@ -60,5 +81,23 @@ class Taas
         void DrawIt(float);
         int GetNumber();
 
+
 };
+
+struct  RankAndArray
+{
+    int*   IndexArray;
+    float*  RankArray;
+};
+
+
+void            Arrange        (Taas*,GLuint*);
+int*            ArrangeKitty   (int*);
+RankAndArray    MakeRankFile   (int*);
+int*            AnalyzeStruct  (RankAndArray*);
+void            UpdateTopTen   (short int*,float*);
+void            GenerateTopTen (void);
+void            DisplayTopTen  (void);
+
+
 #endif // CARDSTUFFS_H_INCLUDED
