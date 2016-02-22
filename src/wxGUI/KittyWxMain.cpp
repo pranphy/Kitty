@@ -7,7 +7,7 @@
  * License:
  **************************************************************/
 
-#include "KittyWxMain.h"
+#include "wxGUI/KittyWxMain.h"
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(KittyWxFrame)
@@ -43,7 +43,7 @@ KittyWxFrame::KittyWxFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, _("Welcome Kitty 15.04.0.2"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
-    SetClientSize(wxSize(800,450));
+    SetClientSize(wxSize(400,439));
     SetMinSize(wxSize(400,300));
     AuiManager1 = new wxAuiManager(this, wxAUI_MGR_DEFAULT);
     KittyPanel = new wxPanel(this, ID_KittyPanel, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_KittyPanel"));

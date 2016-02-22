@@ -10,7 +10,7 @@
 #ifndef KITTYWXMAIN_H
 #define KITTYWXMAIN_H
 
-#include "DisplayCanvas.h"
+#include "wxGUI/DisplayCanvas.h"
 
 //(*Headers(KittyWxFrame)
 #include <wx/combobox.h>

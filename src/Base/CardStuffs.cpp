@@ -5,7 +5,7 @@
  ** fb.com/pranphy<>http://pranphy.wordpress.com **
  **************************************************/
 
-#include "CardStuffs.h"
+#include "Base/CardStuffs.h"
 
 
 Taas::Taas(int num):CardNumber(num)

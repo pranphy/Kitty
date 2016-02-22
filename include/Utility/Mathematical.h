@@ -1,7 +1,7 @@
 #ifndef MATHEMATICAL_H_INCLUDED
 #define MATHEMATICAL_H_INCLUDED
 
-#include "CardStuffs.h"
+#include "Base/CardStuffs.h"
 
 #include<GL/glut.h>
 #include<ctime>

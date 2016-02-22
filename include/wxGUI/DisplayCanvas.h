@@ -13,10 +13,10 @@ using namespace std;
 
 
 
-#include "Mathematical.h"
-#include "ScoresAndDisplays.h"
-#include "CardStuffs.h"
-#include "ImageLoader.h"
+#include "Utility/Mathematical.h"
+#include "Base/ScoresAndDisplays.h"
+#include "Base/CardStuffs.h"
+#include "Utility/ImageLoader.h"
 
 
 #define REDBACK    0x34

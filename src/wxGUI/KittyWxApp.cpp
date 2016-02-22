@@ -7,10 +7,10 @@
  * License:
  **************************************************************/
 
-#include "KittyWxApp.h"
-#include "DisplayCanvas.h"
+#include "wxGUI/KittyWxApp.h"
+#include "wxGUI/DisplayCanvas.h"
 //(*AppHeaders
-#include "KittyWxMain.h"
+#include "wxGUI/KittyWxMain.h"
 #include <wx/image.h>
 //*)
 

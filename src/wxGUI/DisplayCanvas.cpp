@@ -1,4 +1,4 @@
-#include "DisplayCanvas.h"
+#include "wxGUI/DisplayCanvas.h"
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
 int DisplayCanvas::ActiveCard = -1;
