@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="KittyWx" />
+		<Option makefile_is_custom="1" />
+		<Option execution_dir="../../wxKitty" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/KittyWx" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-I/home/pranphy/MyRoot/include" />
+					<Add option="`wx-config --version=3.0 --cxxflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --version=3.0 --libs all --gl-libs`" />
+					<Add option="-lglut" />
+					<Add option="-lGL" />
+					<Add option="-lGLU" />
+					<Add option="-L/home/pranphy/MyRoot/lib" />
+					<Add option="-lSOIL" />
+					<Add option="-lpng" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/KittyWx" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-I./include" />
+			<Add option="`wx-config --version=3.0 --cxxflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`wx-config --version=3.0 --libs --gl-libs`" />
+			<Add option="-L/opt/lib" />
+			<Add option="-lSOIL" />
+		</Linker>
+		<Unit filename="../include/Base/CardStuffs.h" />
+		<Unit filename="../include/Utility/ImageLoader.h" />
+		<Unit filename="../include/Utility/Mathematical.h" />
+		<Unit filename="../include/Base/ScoresAndDisplays.h" />
+		<Unit filename="../include/Utility/common.h" />
+		<Unit filename="../include/wxGUI/DisplayCanvas.h" />
+		<Unit filename="../include/wxGUI/KittyWxApp.h" />
+		<Unit filename="../include/wxGUI/KittyWxMain.h" />
+		<Unit filename="../src/Base/CardStuffs.cpp" />
+		<Unit filename="../src/Utility/ImageLoader.cpp" />
+		<Unit filename="../src/Utility/Mathematical.cpp" />
+		<Unit filename="../src/Base/ScoresAndDisplays.cpp" />
+		<Unit filename="../src/Utility/common.cpp" />
+		<Unit filename="../src/wxGUI/DisplayCanvas.cpp" />
+		<Unit filename="../src/wxGUI/KittyWxApp.cpp" />
+		<Unit filename="../src/wxGUI/KittyWxMain.cpp" />
+		<Unit filename="wxsmith/KittyWxframe.wxs" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="../src/wxGUI/KittyWxApp.cpp" main="KittyWxFrame" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxFrame wxs="wxsmith/KittyWxframe.wxs" src="../src/wxGUI/KittyWxMain.cpp" hdr="../include/wxGUI/KittyWxMain.h" fwddecl="0" i18n="1" name="KittyWxFrame" language="CPP" />
+				</resources>
+			</wxsmith>
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -7,7 +7,7 @@
 #include <GL/glut.h>
 #include <string>
 #include <sstream>
-#include<vector>
+#include <vector>
 
 using namespace std;
 

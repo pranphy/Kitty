@@ -113,6 +113,3 @@ void KittyWxFrame::OnAbout(wxCommandEvent& event)
     wxString msg = wxT("This is a message ");
     wxMessageBox(msg, _("Welcome to..."));
 }
-
-
-
