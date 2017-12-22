@@ -1,4 +1,4 @@
-WXVERSION = 3.0
+WXVERSION = 3.1
 WXFLAGS   = `wx-config --version=$(WXVERSION) --cxxflags`
 WXLIBS    = `wx-config --version=$(WXVERSION) --libs all --gl-libs`
 

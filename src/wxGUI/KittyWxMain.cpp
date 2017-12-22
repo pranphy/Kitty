@@ -89,7 +89,9 @@ KittyWxFrame::KittyWxFrame(wxWindow* parent,wxWindowID id)
     //*)
 
 
-    KittyCanvas = new DisplayCanvas(KittyPanel);
+    wxGLAttributes dispAttrs;
+    dispAttrs.PlatformDefaults().DoubleBuffer().EndList();
+    KittyCanvas = new DisplayCanvas(KittyPanel,dispAttrs);
 
     KittySBSizer->Add(KittyCanvas,1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL,5);
      //KittyCanvas->Show();

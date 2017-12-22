@@ -11,8 +11,8 @@ BEGIN_EVENT_TABLE(DisplayCanvas,wxGLCanvas)
 END_EVENT_TABLE()
 
 
-DisplayCanvas::DisplayCanvas(wxWindow*Parent):
-    wxGLCanvas(Parent, ID_DisplayCanvas,  wxDefaultPosition, wxSize(150,100), 0, wxT("GLCanvas"))
+DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
+    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(150,100), 0, wxT("GLCanvas"))
 {
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
@@ -23,7 +23,6 @@ DisplayCanvas::DisplayCanvas(wxWindow*Parent):
 
 void DisplayCanvas::Initialize()
 {
-	SetCurrent(*MyContext);
 	//LoadAllImages();
 	//ShuffleCards();
 }
@@ -31,7 +30,7 @@ void DisplayCanvas::Initialize()
 
 void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-	SetCurrent();
+	SetCurrent(*MyContext);
 	static bool OneTime = false;
 	if(OneTime == false)
 	{

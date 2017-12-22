@@ -29,7 +29,7 @@ using namespace std;
 class DisplayCanvas : public wxGLCanvas
 {
 public:
-	DisplayCanvas(wxWindow*);
+	DisplayCanvas(wxWindow*,wxGLAttributes&);
 
 	void OnPaint       (wxPaintEvent&);
 	void DrawTriangle  ();
