@@ -73,7 +73,7 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 				//wxMessageBox(wxT(" Unscrambling now "),wxT(" Tyring to unscrambe"));
 
                 Scrambled = false;
-                Arrange(Card,Image);
+                Arrange(Cards,Image);
 				//wxMessageBox(wxT(" Unscrambling done"),wxT(" done"));
             }
 	}
@@ -86,18 +86,18 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
     case WXK_LEFT:
         if(ActiveCard<8 && ActiveCard>=0)
         {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard+1];
-            Card[ActiveCard+1]=tmp;
+            tmp=Cards[ActiveCard];
+            Cards[ActiveCard]=Cards[ActiveCard+1];
+            Cards[ActiveCard+1]=tmp;
             ActiveCard++;
         }
         break;
     case WXK_RIGHT:
         if(ActiveCard>0)
         {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard-1];
-            Card[ActiveCard-1]=tmp;
+            tmp=Cards[ActiveCard];
+            Cards[ActiveCard]=Cards[ActiveCard-1];
+            Cards[ActiveCard-1]=tmp;
             ActiveCard--;
         }
 
@@ -139,14 +139,14 @@ void DisplayCanvas::DrawTriangle()
 
 void DisplayCanvas::ShuffleCards()
 {
-    int *Number=RandIntArray(1,52,52,0);
+    std::vector<int> Number = RandIntArray(1,52,52,0);
     for(int i=0; i<52; i++)
     {
-        Card[i].SetValue(Number[i]);
-        Card[i].SetTexture(Image[Number[i]-1]);
+        Cards[i].SetValue(Number[i]);
+        Cards[i].SetTexture(Image[Number[i]-1]);
     }
-    Card[52].SetTexture(Image[52]);
-    Card[53].SetTexture(Image[53]);
+    Cards[52].SetTexture(Image[52]);
+    Cards[53].SetTexture(Image[53]);
 }
 
 void DisplayCanvas::DisplayCards()
@@ -166,8 +166,8 @@ void DisplayCanvas::DisplayCards()
             y+=0.02;
             angle-=1;
         }
-        Card[i].SetPostition(x,y);
-        Card[i].DrawIt(angle);
+        Cards[i].SetPostition(x,y);
+        Cards[i].DrawIt(angle);
     }
 
     for(int i=9; i<18; i++)
@@ -182,8 +182,8 @@ void DisplayCanvas::DisplayCards()
         float x=0.0,y=0.0,angle=0.0;
         x=0.9-(i-9)*SaperationIndex+Group;
         y=-0.5;
-        Card[index].SetPostition(x,y);
-        Card[index].DrawIt(angle);
+        Cards[index].SetPostition(x,y);
+        Cards[index].DrawIt(angle);
     }
 
 }
@@ -267,6 +267,7 @@ void DisplayCanvas::ChangeSize(int w, int h)
 void DisplayCanvas::TimerFunc(int value)
 {
     glutPostRedisplay();
+    value++;
     //glutTimerFunc(10, TimerFunc, 0);
 }
 

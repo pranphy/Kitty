@@ -21,7 +21,7 @@ void     RotateObjects     (void);
 template <class tin>
 void Swap(tin&,tin&);
 
-int*     RandIntArray     (int,int,int,int);
+std::vector<int>     RandIntArray     (int,int,int,int);
 bool     ChkNumInAry      (int,int,int);
 
 void     ArrangeKitty     (int*,int);

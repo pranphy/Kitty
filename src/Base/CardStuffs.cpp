@@ -6,6 +6,7 @@
  **************************************************/
 
 #include "Base/CardStuffs.h"
+#include <algorithm>
 
 
 Taas::Taas(int num):CardNumber(num)
@@ -13,6 +14,11 @@ Taas::Taas(int num):CardNumber(num)
     PositionX=0, PositionY=0;
     //CardTexture=0;
     GetCard(CardNumber, Value, Type);
+}
+
+int Taas::GetValue()
+{
+    return CardNumber;
 }
 
 void Taas::SetValue(int value)
@@ -74,13 +80,19 @@ void Taas::DrawIt(float angle)
 
 
 
-void Arrange(std::vector<Taas> Cards,GLuint* Image)
+void Arrange(std::vector<Taas>& Cards,GLuint* Image)
 {
     //int Array[9];
-    std::vector<int> Array(Cards.begin()+9,Cards.end());
+    //std::vector<int> Array(Cards.begin()+9,Cards.end());
+    std::vector<int> Array;
+    
+    //std::vector<int> Array = {1,2,3,4,5,6,7,8,9};
     //Card = Card + 9; // To arrange latter nine cards. Leaving behind first nine cards
-    //for(int i=0; i<9; i++)
-    //    Array[i] = Card[i].CardNumber;
+    int  i = 0;
+    for(auto it=Cards.begin()+9; it<Cards.end(); it++)
+        Array[i++] = it->CardNumber;
+
+    //std::for_each(auto it=Cards.begin()+9,it <Cards.end(),Array.push_back(it->CardNumber));
 
     std::vector<int> DoneArray=ArrangeKitty(Array);
     for(int i=0; i<9; i++)
@@ -123,7 +135,7 @@ std::vector<int> AnalyzeStruct(RankAndArray& RankStruct)
     *  but anyway i've used this way here. I don't seem to be interested right now to thinking other ways around
     */
     float a=RankArray[0],b=RankArray[1],c=RankArray[2];
-    vector<int> p={0,1,2};
+    std::vector<int> p={0,1,2};
     if(a>=b&&b>=c)
     {
         p[0]=1;
@@ -334,13 +346,14 @@ void GenerateTopTen(void)
             TopTen.write(reinterpret_cast<char*>(&flt),sizeof(flt));
         }
     }
+
     TopTen.close();
     /*Creating a garbabge containing file completed here*/
     int Nos=84*20;
     for(int i=0; i<Nos; i++)
     {
-        short int CurrentArray[9]= {0,0,0,0,0,0,0,0,0};
-        float  RankArray[3]= {0.0,0.0,0.0};
+        std::vector<short> CurrentArray = {0,0,0,0,0,0,0,0,0};
+        std::vector<float>  RankArray = {0.0,0.0,0.0};
         for(int j=0; j<9; j+=3)
         {
             short int a1,a2,a3;
@@ -357,7 +370,7 @@ void GenerateTopTen(void)
 }
 
 
-void UpdateTopTen(short int& Array,float& ReceivedRankArray)
+void UpdateTopTen(std::vector<short>& Array,std::vector<float>& ReceivedRankArray)
 {
     /*
     *  For statistical purpose i wished to find out the top ranked combination
@@ -397,26 +410,26 @@ void UpdateTopTen(short int& Array,float& ReceivedRankArray)
         {
             for(int j=0; j<9; j+=3)
             {
-                Temp.write(reinterpret_cast<char*>(Array+j),sizeof(Array[0]));
-                Temp.write(reinterpret_cast<char*>(Array+j+1),sizeof(Array[0]));
-                Temp.write(reinterpret_cast<char*>(Array+j+2),sizeof(Array[0]));
-                Temp.write(reinterpret_cast<char*>(ReceivedRankArray+j/3),sizeof(ReceivedRankArray[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j+1]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j+2]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&ReceivedRankArray[j/3]),sizeof(ReceivedRankArray[0]));
             }
             for(int k=0; k<RecordNumber-Count; k++)
             {
                 for(int j=0; j<9; j+=3)
                 {
-                    Temp.write(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
-                    Temp.write(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
-                    Temp.write(reinterpret_cast<char*>(CurrentArray+j+2),sizeof(CurrentArray[0]));
-                    Temp.write(reinterpret_cast<char*>(RankArray+j/3),sizeof(RankArray+j/3));
+                    Temp.write(reinterpret_cast<char*>(&Array[j]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&Array[j+1]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&Array[j+2]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&ReceivedRankArray[j/3]),sizeof(ReceivedRankArray[0]));
                 }
                 for(int j=0; j<9; j+=3)
                 {
-                    TopTen.read(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
-                    TopTen.read(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
-                    TopTen.read(reinterpret_cast<char*>(CurrentArray+j+2),sizeof(CurrentArray[0]));
-                    TopTen.read(reinterpret_cast<char*>(RankArray+j/3),sizeof(RankArray[0]));
+                    Temp.write(reinterpret_cast<char*>(&Array[j]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&Array[j+1]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&Array[j+2]),sizeof(Array[0]));
+                    Temp.write(reinterpret_cast<char*>(&ReceivedRankArray[j/3]),sizeof(ReceivedRankArray[0]));
                 }
             }
             break;
@@ -425,10 +438,10 @@ void UpdateTopTen(short int& Array,float& ReceivedRankArray)
         {
             for(int j=0; j<9; j+=3)
             {
-                Temp.write(reinterpret_cast<char*>(CurrentArray+j),sizeof(CurrentArray[0]));
-                Temp.write(reinterpret_cast<char*>(CurrentArray+j+1),sizeof(CurrentArray[0]));
-                Temp.write(reinterpret_cast<char*>(CurrentArray+j+2),sizeof(CurrentArray[0]));
-                Temp.write(reinterpret_cast<char*>(RankArray+j/3),sizeof(RankArray[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j+1]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&Array[j+2]),sizeof(Array[0]));
+                Temp.write(reinterpret_cast<char*>(&ReceivedRankArray[j/3]),sizeof(ReceivedRankArray[0]));
             }
         }
     }

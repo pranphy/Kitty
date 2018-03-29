@@ -84,6 +84,7 @@ public:
 	void SetPostition(float,float);
 	void SetTexture(GLuint);
 	void SetValue(int);
+    int GetValue();
 	void DrawIt(float);
 	int CardNumber, Value, Type;
 
@@ -107,11 +108,11 @@ struct  RankAndArray
 };
 
 
-void               Arrange        (Taas&,GLuint*);
+void               Arrange        (std::vector<Taas>&,GLuint*);
 std::vector<int>   ArrangeKitty   (std::vector<int>);
 RankAndArray       MakeRankFile   (std::vector<int>);
 std::vector<int>   AnalyzeStruct  (RankAndArray&);
-void               UpdateTopTen   (std::vector<short int>,std::vector<float>);
+void               UpdateTopTen   (std::vector<short int>&,std::vector<float>&);
 void               GenerateTopTen (void);
 void               DisplayTopTen  (void);
 

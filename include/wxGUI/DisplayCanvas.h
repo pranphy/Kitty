@@ -57,7 +57,8 @@ private:
 
 	//int WindowWidth=800, WindowHeight=600;
 	static int ActiveCard;
-	Taas Card[54],tmp;
+    std::vector<Taas> Cards;
+    Taas tmp;
 	GLuint Image[54];
 	bool Flipped, Scrambled;
 	int BackId=1;
