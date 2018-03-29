@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 //#include <wx/msgdlg.h>
 
 #include "SOIL/SOIL.h"
@@ -48,12 +49,12 @@ public:
 
 
 void    GetCard        (int,int&,int&);
-float   GetRank        (int*);
+float   GetRank        (std::vector<int>);
 float   GetMiniRank    (int,int,int);
 /*Generates random number in the range. Look definion on .cpp for more information on this function*/
-int*    RandIntArray   (int,int,int,int);
+std::vector<int>    RandIntArray   (int,int,int,int);
 /*checks whether the given number is already among teh array contents*/
-int     ChkNumInAry    (int,int, int*);
+int     ChkNumInAry    (int,int, std::vector<int>);
 /*seeds the standard rand function with the current time(in seconds)*/
 void    initrand       ();
 /*Generates a random integer in the range 0 to (paramater passed)*/
@@ -92,7 +93,7 @@ private:
 	GLuint CardTexture;
 
 	int ConvertToCard(void);
-	bool SetImage(char*);
+	bool SetImage(std::string);
 	void GetIt(int&,int&);
 	int GetNumber();
 
@@ -101,18 +102,18 @@ private:
 
 struct  RankAndArray
 {
-	int*    IndexArray;
-	float*  RankArray;
+    std::vector<int>    IndexArray;
+    std::vector<float>  RankArray;
 };
 
 
-void            Arrange        (Taas*,GLuint*);
-int*            ArrangeKitty   (int*);
-RankAndArray    MakeRankFile   (int*);
-int*            AnalyzeStruct  (RankAndArray*);
-void            UpdateTopTen   (short int*,float*);
-void            GenerateTopTen (void);
-void            DisplayTopTen  (void);
+void               Arrange        (Taas&,GLuint*);
+std::vector<int>   ArrangeKitty   (std::vector<int>);
+RankAndArray       MakeRankFile   (std::vector<int>);
+std::vector<int>   AnalyzeStruct  (RankAndArray&);
+void               UpdateTopTen   (std::vector<short int>,std::vector<float>);
+void               GenerateTopTen (void);
+void               DisplayTopTen  (void);
 
 
 #endif // CARDSTUFFS_H_INCLUDED

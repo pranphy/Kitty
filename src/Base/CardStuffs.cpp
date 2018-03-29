@@ -37,14 +37,10 @@ void Taas::SetTexture(GLuint texture)
     CardTexture=texture;
 }
 
-bool Taas::SetImage(char* imagnam)
+bool Taas::SetImage(std::string imagnam)
 {
 
-    CardTexture=LoadPhoto(imagnam);
-    if(CardTexture)
-        return true;
-    else
-        return false;
+    return LoadPhoto(imagnam);
 
 }
 
@@ -78,28 +74,28 @@ void Taas::DrawIt(float angle)
 
 
 
-void Arrange(Taas* Card,GLuint* Image)
+void Arrange(std::vector<Taas> Cards,GLuint* Image)
 {
-    int Array[9];
-    Card = Card + 9; // To arrange latter nine cards. Leaving behind first nine cards
-    for(int i=0; i<9; i++)
-        Array[i] = Card[i].CardNumber;
+    //int Array[9];
+    std::vector<int> Array(Cards.begin()+9,Cards.end());
+    //Card = Card + 9; // To arrange latter nine cards. Leaving behind first nine cards
+    //for(int i=0; i<9; i++)
+    //    Array[i] = Card[i].CardNumber;
 
-    int* DoneArray=ArrangeKitty(Array);
+    std::vector<int> DoneArray=ArrangeKitty(Array);
     for(int i=0; i<9; i++)
     {
-        Card[i].SetValue(Array[DoneArray[i]]);
-        Card[i].SetTexture(Image[Array[DoneArray[i]]-1]);
+        Cards[9+i].SetValue(Array[DoneArray[i]]);
+        Cards[9+i].SetTexture(Image[Array[DoneArray[i]]-1]);
     }
-    delete[] DoneArray;
 }
 
-int* ArrangeKitty(int*NineCards)
+std::vector<int> ArrangeKitty(std::vector<int> NineCards)
 {
     //cout<<" Calling Rank Make Rank File "<<endl;
     RankAndArray RankStruct = MakeRankFile(NineCards);
     //cout<<" Made Rank File "<<endl;
-    int* RankArray=AnalyzeStruct(&RankStruct);
+    std::vector<int> RankArray=AnalyzeStruct(RankStruct);
     //GenerateTopTen();
     //DisplayTopTen(); //yo chai console ma dekhauna lai ho ouput analyze garna. no use for graphics
 
@@ -119,15 +115,15 @@ int* ArrangeKitty(int*NineCards)
     return RankArray;
 }
 
-int* AnalyzeStruct(RankAndArray* RankStruct)
+std::vector<int> AnalyzeStruct(RankAndArray& RankStruct)
 {
-    int* CombinationArray=RankStruct->IndexArray;
-    float* RankArray=RankStruct->RankArray;
+    std::vector<int> CombinationArray=RankStruct.IndexArray;
+    std::vector<float> RankArray=RankStruct.RankArray;
     /* I don't know whether this is the best way to find the order of numbers in a array without actually sorting them
     *  but anyway i've used this way here. I don't seem to be interested right now to thinking other ways around
     */
     float a=RankArray[0],b=RankArray[1],c=RankArray[2];
-    int p[3];
+    vector<int> p={0,1,2};
     if(a>=b&&b>=c)
     {
         p[0]=1;
@@ -164,17 +160,15 @@ int* AnalyzeStruct(RankAndArray* RankStruct)
         p[1]=2;
         p[2]=1;
     }
-    int* RetArray=new int[9];
+    std::vector<int> RetArray={0,1,2,3,4,5,6,7,8};
 
     for(int i=0; i<9; i++)
         RetArray[i]=CombinationArray[3*(p[static_cast<int>(i/3)]-1)+i%3];
-    delete CombinationArray;
-    delete RankArray;
     return RetArray;
 }
 
 
-RankAndArray MakeRankFile(int*Array)
+RankAndArray MakeRankFile(std::vector<int>Array)
 {
 
     ofstream TestFile("TestFileForHere.dat");
@@ -203,14 +197,14 @@ RankAndArray MakeRankFile(int*Array)
     /*Writing the card values to the rank file*/
 
     for(int i=0; i<9; i++)
-        GroupRank.write(reinterpret_cast<char*>(Array+i),sizeof(Array[i]));
+        GroupRank.write(reinterpret_cast<char*>(&Array[i]),sizeof(Array[i]));
     /*C(9,3)=84 and C(6,3)=20 ie 84*20 is the number of possibel kitty combinations*/
     int Nos=84*20;
     short int a;
     int RtTas[9], Taas[9];
-    int* RetTas=new int[9];
+    std::vector<int> RetTas={0,1,2,3,4,5,6,7,8};
     float RtRankArray[3];
-    float* RetRankArray=new float[3];
+    std::vector<float> RetRankArray = {0,1,2};
     float HRank=0.0,AvRank=0.0;
     RankAndArray RetStruct;
 
@@ -259,7 +253,7 @@ RankAndArray MakeRankFile(int*Array)
 
 
 
-float GetRank(int*NineCards)
+float GetRank(std::vector<int> NineCards)
 {
     float Rank=0.0;
     for(int i=0; i<9; i+=3)
@@ -363,7 +357,7 @@ void GenerateTopTen(void)
 }
 
 
-void UpdateTopTen(short int*Array,float* ReceivedRankArray)
+void UpdateTopTen(short int& Array,float& ReceivedRankArray)
 {
     /*
     *  For statistical purpose i wished to find out the top ranked combination

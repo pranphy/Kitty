@@ -17,7 +17,8 @@ def GetStdFlags():
     '-fexceptions',
     '-DNDEBUG',
     '-std=c++11',
-    #'-I','/opt/ROOT/include'
+    '-I','include',
+    '-I','/home/pranphy/MyRoot/include',
     ]
     return flags
 
