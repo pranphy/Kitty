@@ -16,7 +16,6 @@ using namespace std;
 #include "Utility/Mathematical.h"
 #include "Base/ScoresAndDisplays.h"
 #include "Base/CardStuffs.h"
-#include "Utility/ImageLoader.h"
 
 
 #define REDBACK    0x34

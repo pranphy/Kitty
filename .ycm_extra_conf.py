@@ -18,7 +18,7 @@ def GetStdFlags():
     '-DNDEBUG',
     '-std=c++11',
     '-I','include',
-    '-I','/home/pranphy/MyRoot/include',
+    '-I','~/MyRoot/usr/include',
     ]
     return flags
 
@@ -30,7 +30,7 @@ def GetConfigParams(config):
 
 
 def FlagsForFile( filename, **kwargs ):
-    config ="wx-config --cxxflags"
+    config ="wx-config --cflags"
     flags = GetStdFlags() + GetConfigParams(config)
     rmap =  {
         'flags': flags,

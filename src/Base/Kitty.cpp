@@ -1,86 +1,52 @@
-/**************************************************
- ** Author        : @PrakashGautam               **
- ** First Written : Dec 30, 2012                 **
- ** Last Updated  : Oct 28, 2013, May 3, 2015    **
- ** fb.com/pranphy<>http://pranphy.wordpress.com **
- **************************************************/
+// -*- coding: utf-8 -*-
+// vim: ai ts=4 sts=4 et sw=4 ft=cpp
 
-#include "Base/CardStuffs.h"
-#include <algorithm>
+// author : Prakash [प्रकाश]
+// date   : 2019-03-09 22:23
+//
+//
+
+#include "Base/Kitty.h"
 
 
-Taas::Taas(int num):CardNumber(num)
+#include <random>
+
+
+Kitty::Kitty()
 {
-    PositionX=0, PositionY=0;
-    //CardTexture=0;
-    GetCard(CardNumber, Value, Type);
-}
-
-int Taas::GetValue()
-{
-    return CardNumber;
-}
-
-void Taas::SetValue(int value)
-{
-    CardNumber=value;
-    GetCard(CardNumber,Value,Type);
-}
-
-void Taas::GetIt(int&val,int&Typ)
-{
-    val=Value;
-    Typ=Type;
-}
-
-int Taas::GetNumber()
-{
-    return CardNumber;
-}
-
-void Taas::SetTexture(GLuint texture)
-{
-    CardTexture=texture;
-}
-
-bool Taas::SetImage(std::string imagnam)
-{
-
-    return LoadPhoto(imagnam);
 
 }
 
-void Taas::SetPostition(float x,float y)
+Kitty::~Kitty() {}
+
+
+// returns an integer array of random numbers
+// the address of array random numbers(consecutive integers)  of length lng from
+// lb  to ub (inclusive) is returned. if rpt=TRUE==1 the numbers may be repeated
+// and if rpt=FALSE==0 the random numbers are not repeated
+
+std::vector<int> Kitty::RandIntArray(int lb,int ub, unsigned lng, bool rpt)
 {
-    PositionX=x;
-    PositionY=y;
+    std::vector<int> Array(lng);
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    if(!rpt){
+        for (unsigned i = 0; i<lng; ++i)
+            Array[i] = i + lb;
+            
+        std::shuffle(Array.begin(),Array.end(),mt);
+    }
+    else
+    {
+        std::uniform_int_distribution<int> dist(lb,ub);
+        for (unsigned i = 0; i<lng; ++i)
+            Array[i] = dist(mt);
+    }
+    return Array; 
 }
 
 
-void Taas::DrawIt(float angle)
-{
-    glPushMatrix();
-    //glLoadIdentity();
-    //glColor3f(1.0,1.0,1.0);
-    //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
-
-    glTranslatef(PositionX,PositionY,0);
-    glRotatef(angle,0,0,1);
-    glBindTexture(GL_TEXTURE_2D,CardTexture);
-
-    glEnable(GL_TEXTURE_2D);
-    glBegin(GL_QUADS);
-        glTexCoord3f(1.0f,0.0f,0.0f);   glVertex3f(factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(1.0f,1.0f,0.0f);   glVertex3f(factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(0.0f,1.0f,0.0f);   glVertex3f(-factor*factorcard*CARD_WIDTH/2,factor*factorcard*CARD_HEIGHT/2,0);
-        glTexCoord3f(0.0f,0.0f,0.0f);   glVertex3f(-factor*factorcard*CARD_WIDTH/2,-factor*factorcard*CARD_HEIGHT/2,0);
-    glEnd();
-    glPopMatrix();
-}
-
-
-
-void Arrange(std::vector<Taas>& Cards,GLuint* Image)
+void Kitty::Arrange(std::vector<Taas>& Cards,GLuint* Image)
 {
     //int Array[9];
     //std::vector<int> Array(Cards.begin()+9,Cards.end());
@@ -102,7 +68,7 @@ void Arrange(std::vector<Taas>& Cards,GLuint* Image)
     }
 }
 
-std::vector<int> ArrangeKitty(std::vector<int> NineCards)
+std::vector<int> Kitty::ArrangeKitty(std::vector<int> NineCards)
 {
     //cout<<" Calling Rank Make Rank File "<<endl;
     RankAndArray RankStruct = MakeRankFile(NineCards);
@@ -127,7 +93,7 @@ std::vector<int> ArrangeKitty(std::vector<int> NineCards)
     return RankArray;
 }
 
-std::vector<int> AnalyzeStruct(RankAndArray& RankStruct)
+std::vector<int> Kitty::AnalyzeStruct(RankAndArray& RankStruct)
 {
     std::vector<int> CombinationArray=RankStruct.IndexArray;
     std::vector<float> RankArray=RankStruct.RankArray;
@@ -180,7 +146,7 @@ std::vector<int> AnalyzeStruct(RankAndArray& RankStruct)
 }
 
 
-RankAndArray MakeRankFile(std::vector<int>Array)
+RankAndArray Kitty::MakeRankFile(std::vector<int>Array)
 {
 
     ofstream TestFile("TestFileForHere.dat");
@@ -265,7 +231,7 @@ RankAndArray MakeRankFile(std::vector<int>Array)
 
 
 
-float GetRank(std::vector<int> NineCards)
+float Kitty::GetRank(std::vector<int> NineCards)
 {
     float Rank=0.0;
     for(int i=0; i<9; i+=3)
@@ -314,7 +280,7 @@ float GetMiniRank(int a,int b,int c)
 }
 
 
-void GenerateTopTen(void)
+void Kitty::GenerateTopTen(void)
 {
     string RankFile = "./Files/Output/GroupRank.dat";
     string TopTenFile = "./Files/Output/TopTen.dat";
@@ -370,7 +336,7 @@ void GenerateTopTen(void)
 }
 
 
-void UpdateTopTen(std::vector<short>& Array,std::vector<float>& ReceivedRankArray)
+void Kitty::UpdateTopTen(std::vector<short>& Array,std::vector<float>& ReceivedRankArray)
 {
     /*
     *  For statistical purpose i wished to find out the top ranked combination
@@ -451,7 +417,7 @@ void UpdateTopTen(std::vector<short>& Array,std::vector<float>& ReceivedRankArra
     rename(NewFileName.c_str(),OldFileName.c_str());
 }
 
-void DisplayTopTen()
+void Kitty::DisplayTopTen()
 {
 
     /*
@@ -501,26 +467,9 @@ void DisplayTopTen()
 *  so my standard variable naming conventions are hafazard down here.
 */
 
-void GetCard(int deg,int&fcrd,int&ftyp)
-{
-    int cdegn;
-    cdegn=deg%13+1;
-    if(cdegn==1)
-        fcrd=13;
-    else
-        fcrd=cdegn-1;
-    if(deg>=1 && deg <=13)
-        ftyp=HEART;
-    else if(deg>=14 && deg<=26)
-        ftyp=DIAMOND;
-    else if(deg>=27 && deg<=39)
-        ftyp=CLUB;
-    else if(deg>=40 && deg<=52)
-        ftyp=SPADE;
-}
 
 
-bool IsTrial(int a, int b, int c)
+bool Kitty::IsTrial(int a, int b, int c)
 {
     int v1,t1,v2,t2,v3,t3;
     GetCard(a,v1,t1);
@@ -529,7 +478,7 @@ bool IsTrial(int a, int b, int c)
     return((v1==v2)&&(v2==v3));
 }
 
-bool IsRun(int p1, int q, int r)
+bool Kitty::IsRun(int p1, int q, int r)
 {
     int a,t1,b,t2,c,t3;
     GetCard(p1,a,t1);
@@ -552,7 +501,7 @@ bool IsRun(int p1, int q, int r)
         return 0;
 }
 
-bool IsJoute(int p,int q,int r)
+bool Kitty::IsJoute(int p,int q,int r)
 
 {
     int a,t1,b,t2,c,t3;
@@ -566,7 +515,7 @@ bool IsJoute(int p,int q,int r)
         return 0;
 }
 
-bool IsColour(int p,int q,int r)
+bool Kitty::IsColour(int p,int q,int r)
 {
     int a,t1,b,t2,c,t3;
     GetCard(p,a,t1);
@@ -576,7 +525,7 @@ bool IsColour(int p,int q,int r)
     return( IsTrial(t1,t2,t3));
 }
 
-bool IsDoubleRun(int p,int q,int r)
+bool Kitty::IsDoubleRun(int p,int q,int r)
 {
     int a,t1,b,t2,c,t3;
     GetCard(p,a,t1);
@@ -756,21 +705,23 @@ int compare(int a1, int a2, int a3, int b1, int b2, int b3)
 
 GLuint LoadPhoto(string ImageName)
 {
-      GLuint tex_2d = SOIL_load_OGL_texture
-                    (
-                        ImageName.c_str(),
-                        SOIL_LOAD_AUTO,
-                        SOIL_CREATE_NEW_ID,
-                        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-                    );
-    if(!tex_2d)
-    {
-        //wxMessageBox(St,wxT("Alas "));
-    }
-    else
-    {
-        //wxMessageBox(St,wxT(" Bravoo "));
-    }
-    return tex_2d;
+//      GLuint tex_2d = SOIL_load_OGL_texture
+//                    (
+//                        ImageName.c_str(),
+//                        SOIL_LOAD_AUTO,
+//                        SOIL_CREATE_NEW_ID,
+//                        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+//                    );
+//    if(!tex_2d)
+//    {
+//        //wxMessageBox(St,wxT("Alas "));
+//    }
+//    else
+//    {
+//        //wxMessageBox(St,wxT(" Bravoo "));
+//    }
+    GLuint text = 0;
+//    return tex_2d;
+    return text; 
 
 }
