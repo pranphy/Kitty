@@ -5,12 +5,12 @@ Image::Image()
 {
 }
 
-Image::Image(wxString path)
+Image::Image(std::string path)
 {
     load(path);
 }
 
-void Image::load(wxString path)
+void Image::load(std::string path)
 {
     ID=loadImage(path, &width, &height, &textureWidth, &textureHeight);
     
@@ -19,6 +19,11 @@ void Image::load(wxString path)
 }
 
 GLuint* Image::getID()
+{
+    return ID;
+}
+
+GLuint* Image::get_texture()
 {
     return ID;
 }

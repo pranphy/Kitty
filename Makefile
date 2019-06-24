@@ -8,6 +8,7 @@ MYROOT   = /home/$(MYUSER)/MyRoot/usr
 INCDIR   = include
 SRCDIR   = src
 SRCDIRS  = wxGUI Base Utility
+#SRCDIRS  = Base
 OBJDIR   = obj
 BINDIR   = bin
 LIBDIR   = lib
@@ -29,7 +30,7 @@ CXXLIBS   =
 LDLIBS    = $(LINKDIR) $(WXLIBS) $(DYNLIB) $(OGLIB) $(GENLIBS)
 
 
-CXXFLAGS  = -Wall $(INCLUDES) --std=c++11 $(WXFLAGS) $(CXXLIBS)
+CXXFLAGS  = -Wall $(INCLUDES) --std=c++17 $(WXFLAGS) $(CXXLIBS)
 LDFLAGS   = -std=c++11 $(LDLIBS)
 
 
@@ -77,8 +78,8 @@ $(ROBJDIR)/%.o: $(SRCDIR)/%.cpp | $(ROBJDIR)
 
 
 test: $(DOBJECTS)
-	$(CXX) -c src/Test.cpp -o obj/Test.o
-	$(CXX) -o $(BINDIR)/Test $(TOBJECTS) obj/Test.o  $(LDFLAGS)
+	$(CXX) -c src/Test.cpp -o obj/Test.o $(DFLAG) $(CXXFLAGS)
+	$(CXX) -o $(BINDIR)/Test $(TOBJECTS)   $(LDFLAGS)
 
 
 $(OBJDIR):
@@ -104,6 +105,7 @@ $(ROBJDIR): | $(OBJDIR)
 
 
 clean:
+	rm obj/Test.o
 	rm -rf $(DOBJECTS) $(DEXE)
 
 cleanDebug:

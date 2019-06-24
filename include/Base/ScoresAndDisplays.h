@@ -5,13 +5,13 @@
 #include<cstring>
 
 void Cout(char*,float=0,float=0,float=-5);
-class Player
+class Players
 {
     private:
         char *Name;
         int Lives, Scores;
     public:
-        Player(char*,int=3,int=0);
+        Players(char*,int=3,int=0);
 
 };
 

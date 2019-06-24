@@ -9,32 +9,35 @@
 #include <algorithm>
 
 
-Taas::Taas(int num):CardNumber(num)
+Taas::Taas(unsigned num):ID(num)
 {
     PositionX=0, PositionY=0;
     //CardTexture=0;
-    GetCard(CardNumber, Value, Type);
+    val_face = get_card(ID);
 }
 
-int Taas::GetValue()
+int Taas::get_value()
 {
-    return CardNumber;
+    return card_number;
 }
 
-void Taas::SetValue(int value)
+void Taas::set_value(int value)
 {
-    CardNumber=value;
-    GetCard(CardNumber,Value,Type);
+    card_number=value;
+    val_face = get_card(ID);
 }
 
-void Taas::GetIt(int&val,int&Typ)
+void Taas::get_it(int&val,int&Typ)
 {
-    val=Value;
-    Typ=Type;
+    val=value;
+    Typ=type;
 }
 
-void Taas::GetCard(int deg,int&fcrd,int&ftyp)
+ValnFace Taas::get_card(unsigned deg)
 {
+    unsigned fcrd;
+    
+    CardFace ftyp; ftyp=CardFace::SPADE;
     int cdegn;
     cdegn=deg%13+1;
     if(cdegn==1)
@@ -42,33 +45,29 @@ void Taas::GetCard(int deg,int&fcrd,int&ftyp)
     else
         fcrd=cdegn-1;
     if(deg>=1 && deg <=13)
-        ftyp=HEART;
+        ftyp=CardFace::HEART;
     else if(deg>=14 && deg<=26)
-        ftyp=DIAMOND;
+        ftyp=CardFace::DIAMOND;
     else if(deg>=27 && deg<=39)
-        ftyp=CLUB;
+        ftyp=CardFace::CLUB;
     else if(deg>=40 && deg<=52)
-        ftyp=SPADE;
+        ftyp=CardFace::SPADE;
+
+    return ValnFace{fcrd,ftyp};
+
 }
 
-int Taas::GetNumber()
+unsigned Taas::get_id()
 {
-    return CardNumber;
+    return ID;
 }
 
-void Taas::SetTexture(GLuint texture)
+void Taas::set_image(Image imagob)
 {
-    CardTexture=texture;
+    CardImage = imagob; 
 }
 
-bool Taas::SetImage(std::string imagnam)
-{
-
-    return LoadPhoto(imagnam);
-
-}
-
-void Taas::SetPostition(float x,float y)
+void Taas::set_postition(float x,float y)
 {
     PositionX=x;
     PositionY=y;

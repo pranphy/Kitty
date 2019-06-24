@@ -5,12 +5,15 @@
 
 class GLDrawable
 {
+private:
+    float factor, factorcard,CARD_WIDTH, CARD_HEIGHT;
 public:
     int x,y, angle, hotspotX, hotspotY;
     float xscale, yscale;
     Image image;
     bool xflip, yflip;
     
+    GLDrawable();
     GLDrawable(Image);
     void setFlip(bool x, bool y);
     void move(int x, int y);
@@ -21,6 +24,11 @@ public:
     void render();
     void rotate(int angle);
     
+    void DrawIt(float,float,float);
+    void DrawTriangle();
+    void DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture); 
+    void StartDrawing(void);
+    void clear_table();
 };
 
 

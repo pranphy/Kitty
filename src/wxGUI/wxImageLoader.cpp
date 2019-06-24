@@ -5,7 +5,7 @@
 #include "wx/wx.h"
 
 
-GLuint* loadImage(wxString path, int* imageWidth, int* imageHeight, int* textureWidth, int* textureHeight)
+GLuint* loadImage(std::string path, int* imageWidth, int* imageHeight, int* textureWidth, int* textureHeight)
 {
 	
 	GLuint* ID=new GLuint[1];

@@ -23,7 +23,7 @@ void Cout(char *String,float x,float y,float z)
 }
 
 
-Player::Player(char*name,int lives,int scores)
+Players::Players(char*name,int lives,int scores)
 {
     int l=strlen(name);
     Name=new char[l];

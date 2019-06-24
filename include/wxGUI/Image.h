@@ -1,9 +1,10 @@
 #ifndef _image_
 #define _image_
 
+#include <iostream>
+
 #include <GL/gl.h>
 
-#include "wx/wx.h"
 
 class Image
 {
@@ -24,9 +25,10 @@ public:
     
     GLuint* getID();
     Image();
-    Image(wxString path);
+    Image(std::string path);
     ~Image();
-    void load(wxString path);
+    void load(std::string path);
+    GLuint* get_texture();
         
 };
 

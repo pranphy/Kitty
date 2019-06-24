@@ -16,7 +16,7 @@ def GetStdFlags():
     '-x', 'c++',
     '-fexceptions',
     '-DNDEBUG',
-    '-std=c++11',
+    '-std=c++17',
     '-I','include',
     '-I','~/MyRoot/usr/include',
     ]
