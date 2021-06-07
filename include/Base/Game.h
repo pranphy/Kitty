@@ -3,15 +3,9 @@
 
 // author : Prakash [प्रकाश]
 // date   : 2019-03-21 11:03
+//
 
-#ifndef GAME_H
-#define GAME_H
-
-// -*- coding: utf-8 -*-
-// vim: ai ts=4 sts=4 et sw=4 ft=cpp
-
-// author : Prakash [प्रकाश]
-// date   : 2019-03-21 11:03
+#pragma once
 
 #include<iostream>
 #include<map>
@@ -46,24 +40,24 @@ enum GameControls
 class Game 
 {
 private:
-    // Player player;
-    KittyEngine kitty;
-    GLDrawable Table;
+    std::vector<Player> players;
+    GLDrawable table;
 
     std::map<Player,std::vector<Taas>> player_hand;
 
-	static int ActiveCard;
-    std::vector<Taas> cards;
+	static unsigned active_card;
+    Deque cards;
 
 	bool Flipped, Scrambled;
 	int BackId=1;
     
 public:
-    Game();
+    Game(int n_player=2, int n_deque=1);
     ~Game();
+
+    void distribute_cards();
 
     void set_control(GameControls);
 };
 
-#endif
 

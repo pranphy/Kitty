@@ -13,13 +13,49 @@ Taas::Taas(unsigned num):ID(num)
 {
     PositionX=0, PositionY=0;
     //CardTexture=0;
+    card_number = ID;
     val_face = get_card(ID);
+    value = val_face.value;
+    type = val_face.face;
 }
 
-int Taas::get_value()
+unsigned Taas::get_value()
 {
-    return card_number;
+    return val_face.value;
 }
+
+std::string Taas::get_face()
+{
+    std::string face = "Error";
+    switch(val_face.face)
+    {
+        case CardFace::DIAMOND:
+            face = "Ita"; break;
+
+        case CardFace::HEART:
+            face = "Paan"; break;
+
+        case CardFace::CLUB:
+            face = "chidi"; break;
+
+        case CardFace::SPADE:
+            face = "Surath"; break;
+    }
+    return face;
+}
+
+std::string Taas::get_symbol()
+{
+    std::string face = "Error";
+    unsigned value = get_value();
+    if(value == 13) face = "A";
+    else if(value >0 && value <10) face = std::to_string(value + 1 );
+    else if(value  == 10) face = "J";
+    else if(value  == 11) face = "Q";
+    else if(value  == 12) face = "K";
+    return face;
+}
+
 
 void Taas::set_value(int value)
 {
@@ -38,8 +74,7 @@ ValnFace Taas::get_card(unsigned deg)
     unsigned fcrd;
     
     CardFace ftyp; ftyp=CardFace::SPADE;
-    int cdegn;
-    cdegn=deg%13+1;
+    int cdegn = deg%13 + 1;
     if(cdegn==1)
         fcrd=13;
     else
@@ -73,4 +108,9 @@ void Taas::set_postition(float x,float y)
     PositionY=y;
 }
 
+std::ostream& operator<<(std::ostream& os,Taas& ts)
+{
+    os<<ts.get_face()<<"("<<ts.get_symbol()<<") ";
+    return os;
+}
 

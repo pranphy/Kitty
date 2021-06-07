@@ -9,13 +9,15 @@
 #ifndef CARDSTUFFS_H_INCLUDED
 #define CARDSTUFFS_H_INCLUDED
 
-#include <GL/glut.h>
 #include <cstdlib>
+#include<ostream>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-//#include <wx/msgdlg.h>
+
+#include <GL/glut.h>
+
 #include "wxGUI/Image.h"
 
 
@@ -59,12 +61,15 @@ public:
 	void set_texture(GLuint);
 	void set_image(Image);
 	void set_value(int);
-	int  get_value();
+	unsigned get_value();
+    std::string get_face();
+    std::string get_symbol();
     int  set_value();
 	void sraw_it(float);
     ValnFace get_card (unsigned);
-	int card_number, value, type;
+	unsigned card_number, value, type; // id, value, face
 	unsigned get_id();
+
 
     template<typename T>
     void shuffle(std::vector<T> &);
@@ -80,6 +85,6 @@ private:
 	bool set_image(std::string);
 	void get_it(int&,int&);
 };
-
+std::ostream& operator<<(std::ostream&, Taas&);
 
 #endif // CARDSTUFFS_H_INCLUDED

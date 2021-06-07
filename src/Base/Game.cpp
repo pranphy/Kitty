@@ -10,9 +10,9 @@
 #include "Base/Game.h"
 
 
-Game::Game()
+Game::Game(int n_player, int n_deque):players(n_player),cards(Deque::CARDS_PER_DEQUE*n_deque)
 {
-    // make game
+    
 }
 
 Game::~Game() {}

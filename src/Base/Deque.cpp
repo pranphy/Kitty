@@ -6,18 +6,26 @@
 //
 #include "Base/Deque.h"
 
+const unsigned Deque::CARDS_PER_DEQUE = 52;
+
 Deque::Deque(unsigned n_books)
 {
     for(unsigned i = 0; i<n_books; ++i)
     {
-        std::vector<Taas> cur_deque = create_deque();
-        cards.insert(std::end(cards),std::begin(cur_deque),std::end(cur_deque)); 
+        std::deque<Taas> cur_deque = create_deque();
+        for(unsigned j = 0; j<CARDS_PER_DEQUE; ++j)
+        {
+            cards[i*CARDS_PER_DEQUE + j] = cur_deque[i];
+            //cards.insert(std::end(cards),std::begin(cur_deque),std::end(cur_deque)); 
+        }
     } 
 }
 
-std::vector<Taas> Deque::create_deque()
+Deque::~Deque() { }
+
+std::deque<Taas> Deque::create_deque()
 {
-    std::vector<Taas> one_deque;
+    std::deque<Taas> one_deque;
     for(unsigned i = 0; i<52; ++i)
         one_deque.push_back(Taas(i)); 
     return one_deque; 

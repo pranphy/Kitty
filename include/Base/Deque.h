@@ -5,16 +5,19 @@
 // date   : 2019-03-22 18:02
 
 #include<iostream>
+#include<deque>
 
 #include "Base/Taas.h"
+
 
 class Deque
 {
 private:
-    std::vector<Taas> cards;
-    std::vector<Taas> create_deque();
+    std::deque<Taas> cards;
+    std::deque<Taas> create_deque();
 
 public:
+    const static unsigned CARDS_PER_DEQUE;
     Deque(unsigned n_books=1);
     ~Deque();
 
