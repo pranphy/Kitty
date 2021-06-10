@@ -8,7 +8,7 @@
 
 const unsigned Deque::CARDS_PER_DEQUE = 52;
 
-Deque::Deque(unsigned n_books)
+Deque::Deque(unsigned n_books):cards(CARDS_PER_DEQUE*n_books)
 {
     for(unsigned i = 0; i<n_books; ++i)
     {
