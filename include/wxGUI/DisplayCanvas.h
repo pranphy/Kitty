@@ -11,8 +11,6 @@
 
 using namespace std;
 
-
-
 #include "Utility/Mathematical.h"
 #include "Base/ScoresAndDisplays.h"
 #include "Base/Game.h"
@@ -54,6 +52,7 @@ private:
 	//int WindowWidth=800, WindowHeight=600;
 	wxGLContext* MyContext;
     Game KittyGame;
+    wxGLContextAttrs cxtAttrs;
 
 
 	static const long ID_DisplayCanvas;

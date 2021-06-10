@@ -19,8 +19,7 @@ DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
 
 void DisplayCanvas::Initialize()
 {
-	//LoadAllImages();
-	//ShuffleCards();
+	SetCurrent(*MyContext);
 }
 
 
@@ -34,6 +33,11 @@ void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 		//ShuffleCards();
 		OneTime = true;
 	}
+    glClearColor(0.0f,0.5f,0.4f,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    Render();
+    glFlush();
+    SwapBuffers();
 }
 
 void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
@@ -81,20 +85,19 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
     }
     KittyGame.set_control(control);
 
-    wxPaintEvent Dummy = wxPaintEvent();
-    OnPaint(Dummy);
+	this->Refresh();
 }
 
 
 void DisplayCanvas::Render()
 {
-    //Probably start game here
+    KittyGame.table.DrawTriangle();
 }
 
 
 void DisplayCanvas::ChangeSize(int w, int h)
 {
-    // Tell Game that size changed 
+    // Tell Game that size changed
     //
 }
 
@@ -115,6 +118,7 @@ void DisplayCanvas::DrawCube()
 GLuint DisplayCanvas::LoadImageFile(string FileName)
 {
 	//wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
+
 	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
 
 	GLuint texture;

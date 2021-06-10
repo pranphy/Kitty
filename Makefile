@@ -40,7 +40,7 @@ DFLAG    = -DDEBUG
 DBINDIR  =  $(BINDIR)/Debug
 DOBJDIR  =  $(OBJDIR)/Debug
 DEXE     =  $(DBINDIR)/$(EXEFILE)
-DOBJECTS =  $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o))
+DOBJECTS =  $(filter-out $(DOBJDIR)/Test.o, $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o)))
 
 # Test objects
 TOBJECTS =  $(filter-out $(DOBJDIR)/wxGUI/KittyWxApp.o,$(DOBJECTS))
@@ -51,7 +51,7 @@ RFLAG    = -DNDEBUG
 RBINDIR  =  $(BINDIR)/Release
 ROBJDIR  =  $(OBJDIR)/Release
 REXE     =  $(RBINDIR)/$(EXEFILE)
-ROBJECTS  = $(addprefix $(ROBJDIR)/,$(SOURCES:src/%.cpp=%.o))
+ROBJECTS = $(filter-out $(ROBJDIR)/Test.o, $(addprefix $(ROBJDIR)/,$(SOURCES:src/%.cpp=%.o)))
 
 
 ## Default build target Debug
@@ -76,10 +76,15 @@ $(ROBJDIR)/%.o: $(SRCDIR)/%.cpp | $(ROBJDIR)
 	$(CXX) -c -o $@ $< $(RFLAG) $(CXXFLAGS)
 
 
+testrun: test
+	exec $(BINDIR)/Test
 
-test: $(DOBJECTS)
-	$(CXX) -c src/Test.cpp -o obj/Test.o $(DFLAG) $(CXXFLAGS)
-	$(CXX) -o $(BINDIR)/Test $(TOBJECTS)   $(LDFLAGS)
+
+test: $(DOBJECTS) obj/Test.o
+	$(CXX) -o $(BINDIR)/Test $(TOBJECTS) obj/Test.o   $(LDFLAGS)
+
+obj/Test.o: test/Test.cpp
+	$(CXX) -c test/Test.cpp -o obj/Test.o $(CXXFLAGS)
 
 
 $(OBJDIR):

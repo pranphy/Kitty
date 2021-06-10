@@ -33,15 +33,14 @@ enum GameControls
     EIGHT,
     NINE,
     FLIP,
-    SOLVE, 
+    SOLVE,
     CLEAR
 };
 
-class Game 
+class Game
 {
 private:
     std::vector<Player> players;
-    GLDrawable table;
 
     std::map<Player,std::vector<Taas>> player_hand;
 
@@ -50,10 +49,12 @@ private:
 
 	bool Flipped, Scrambled;
 	int BackId=1;
-    
+
 public:
     Game(int n_player=2, int n_deque=1);
     ~Game();
+
+    GLDrawable table;
 
     void distribute_cards();
 
