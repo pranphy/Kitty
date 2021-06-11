@@ -29,14 +29,13 @@ void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 	static bool OneTime = false;
 	if(OneTime == false)
 	{
-		//LoadAllImages();
-		//ShuffleCards();
+        std::string imagepath = "./res/Files/AllCards/Ascending/C13.png";
+        exampletex = LoadImageFile(imagepath);
+        std::cout<<imagepath<<" successfully read "<<std::endl;
 		OneTime = true;
 	}
-    glClearColor(0.0f,0.5f,0.4f,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    KittyGame.table.clear_table();
     Render();
-    glFlush();
     SwapBuffers();
 }
 
@@ -73,7 +72,6 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
         break;
     case WXK_RIGHT:
         control = GameControls::RIGHT;
-
         break;
     case WXK_UP:
         control = GameControls::UP;
@@ -91,14 +89,18 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 
 void DisplayCanvas::Render()
 {
-    KittyGame.table.DrawTriangle();
+    //KittyGame.table.DrawTriangle();
+    KittyGame.table.DisplaySinglePhoto(0.0,0.5,exampletex);
 }
 
 
 void DisplayCanvas::ChangeSize(int w, int h)
 {
-    // Tell Game that size changed
-    //
+    std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (double)w / (double)h, 0.2, 200.0);
 }
 
 
@@ -110,15 +112,8 @@ void DisplayCanvas::TimerFunc(int value)
 }
 
 
-void DisplayCanvas::DrawCube()
-{
-	//
-}
-
 GLuint DisplayCanvas::LoadImageFile(string FileName)
 {
-	//wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
-
 	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
 
 	GLuint texture;

@@ -3,7 +3,7 @@ WXFLAGS   = $$(wx-config --version=$(WXVERSION) --cxxflags)
 WXLIBS    = $$(wx-config --version=$(WXVERSION) --libs all --gl-libs)
 
 MYUSER   = $$(whoami)
-MYROOT   = /home/$(MYUSER)/MyRoot/usr
+MYROOT   = /home/$(MYUSER)/st/usr
 
 INCDIR   = include
 SRCDIR   = src

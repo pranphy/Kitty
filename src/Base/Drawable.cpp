@@ -76,10 +76,7 @@ void GLDrawable::clear_table()
 {
     glClearColor(0.0f,0.5f,0.4f,0);
     glClear(GL_COLOR_BUFFER_BIT);
-    //DrawTriangle();
-    //Render();
     glFlush();
-    //SwapBuffers();
 }
 
 void GLDrawable::DrawIt(float angle,float PositionX,float PositionY)
@@ -88,8 +85,6 @@ void GLDrawable::DrawIt(float angle,float PositionX,float PositionY)
     //glLoadIdentity();
     //glColor3f(1.0,1.0,1.0);
     //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
-    //
-    
 
     glTranslatef(PositionX,PositionY,0);
     glRotatef(angle,0,0,1);
@@ -170,7 +165,7 @@ void GLDrawable::DisplaySinglePhoto(float PositionX, float PositionY, GLuint Ima
     //glColor3f(1.0,1.0,1.0);
     //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
 
-	float PictureWidth = 100;
+	float PictureWidth = 200;
 	float PictureHeight = 300;
 	float Factor = 0.002;
 
@@ -194,14 +189,66 @@ void GLDrawable::StartDrawing(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
-// on change size
 
-//    glViewport(0, 0, w, h);
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    gluPerspective(45.0, (double)w / (double)h, 0.2, 200.0);
-//    upto here
+GLuint GLDrawable::load_image_as_texture(std::string FileName)
+{
+	//wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
 
+	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	GLubyte *bitmapData=img->GetData();
+	GLubyte *alphaData=img->GetAlpha();
+
+	int bytesPerPixel = img->HasAlpha() ?  4 : 3;
+	int imageWidth = img->GetWidth();
+	int imageHeight = img->GetHeight();
+
+	int imageSize = imageWidth * imageHeight * bytesPerPixel;
+	GLubyte *imageData=new GLubyte[imageSize];
+
+	int rev_val=imageHeight-1;
+
+	for(int y=0; y<imageHeight; y++)
+	{
+		for(int x=0; x<imageWidth; x++)
+		{
+			imageData[(x+y*imageWidth)*bytesPerPixel+0]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3];
+
+			imageData[(x+y*imageWidth)*bytesPerPixel+1]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 1];
+
+			imageData[(x+y*imageWidth)*bytesPerPixel+2]=
+					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 2];
+
+			if(bytesPerPixel==4) imageData[(x+y*imageWidth)*bytesPerPixel+3]=
+					alphaData[ x+(rev_val-y)*imageWidth ];
+		}
+	}
+
+	glTexImage2D(GL_TEXTURE_2D,
+					0,
+					bytesPerPixel,
+					imageWidth,
+					imageHeight,
+					0,
+					img->HasAlpha() ?  GL_RGBA : GL_RGB,
+					GL_UNSIGNED_BYTE,
+					imageData);
+
+	delete[] imageData;
+	wxDELETE(img);
+
+	return texture;
+}
 // backup info
 //     glViewport(0, 0, (GLint)GetSize().x, (GLint)GetSize().y);
 //

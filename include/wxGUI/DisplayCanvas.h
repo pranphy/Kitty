@@ -42,6 +42,7 @@ public:
 	void   Render                     ();
 
 	void   Initialize                 ();
+    GLuint exampletex;
 
 
 protected:

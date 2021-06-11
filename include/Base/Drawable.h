@@ -1,5 +1,8 @@
-#ifndef _drawable_
-#define _drawable_
+#pragma once
+
+#include <string>
+#include <wx/string.h>
+#include <wx/image.h>
 
 #include "wxGUI/Image.h"
 
@@ -29,7 +32,6 @@ public:
     void DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture); 
     void StartDrawing(void);
     void clear_table();
+    GLuint load_image_as_texture(std::string);
 };
 
-
-#endif

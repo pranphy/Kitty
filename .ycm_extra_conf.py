@@ -16,7 +16,7 @@ def get_std_flags():
     '-DNDEBUG',
     '-std=c++17',
     '-I','include',
-    '-I','~/MyRoot/usr/include',
+    '-I','~/st/usr/include',
     ]
     return flags
 
