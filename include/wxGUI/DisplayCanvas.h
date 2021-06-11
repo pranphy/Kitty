@@ -11,12 +11,9 @@
 
 using namespace std;
 
-
-
 #include "Utility/Mathematical.h"
 #include "Base/ScoresAndDisplays.h"
-#include "Base/CardStuffs.h"
-#include "Utility/ImageLoader.h"
+#include "Base/Game.h"
 
 
 #define REDBACK    0x34
@@ -43,11 +40,9 @@ public:
 	void   StartDrawing               ();
 	void   ChangeSize                 (int,int);
 	void   Render                     ();
-	//void   Initialize                 ();
-	void   LoadAllImages              ();
-	void   ShuffleCards               ();
-	void   DisplayCards               ();
-	void Initialize();
+
+	void   Initialize                 ();
+    GLuint exampletex;
 
 
 protected:
@@ -56,18 +51,14 @@ private:
 
 
 	//int WindowWidth=800, WindowHeight=600;
-	static int ActiveCard;
-	Taas Card[54],tmp;
-	GLuint Image[54];
-	bool Flipped, Scrambled;
-	int BackId=1;
 	wxGLContext* MyContext;
+    Game KittyGame;
+    wxGLContextAttrs cxtAttrs;
 
 
 	static const long ID_DisplayCanvas;
 	void OnKeyPress(wxKeyEvent&);
 	GLuint LoadImageFile(string);
-	void DisplaySinglePhoto(float,float,GLuint);
 };
 
 #endif // DISPLAYCANVAS_H

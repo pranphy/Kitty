@@ -7,4 +7,5 @@ doc/
 *.o
 *~
 *.swp
+.vscode
 _rough

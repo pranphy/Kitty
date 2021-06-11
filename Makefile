@@ -1,10 +1,14 @@
 WXVERSION = 3.1
-WXFLAGS   = `wx-config --version=$(WXVERSION) --cxxflags`
-WXLIBS    = `wx-config --version=$(WXVERSION) --libs all --gl-libs`
+WXFLAGS   = $$(wx-config --version=$(WXVERSION) --cxxflags)
+WXLIBS    = $$(wx-config --version=$(WXVERSION) --libs all --gl-libs)
+
+MYUSER   = $$(whoami)
+MYROOT   = /home/$(MYUSER)/st/usr
 
 INCDIR   = include
 SRCDIR   = src
 SRCDIRS  = wxGUI Base Utility
+#SRCDIRS  = Base
 OBJDIR   = obj
 BINDIR   = bin
 LIBDIR   = lib
@@ -16,17 +20,17 @@ SOURCES := $(wildcard $(SRCDIRS:%=src/%/*.cpp)) $(wildcard src/*.cpp)
 
 
 
-INCLUDES  = -Iinclude -I/home/pranphy/MyRoot/include
-LINKDIR   = -L$(LIBDIR) -L/home/pranphy/MyRoot/lib
+INCLUDES  = -Iinclude -I$(MYROOT)/include
+LINKDIR   = -L$(LIBDIR) -L$(MYROOT)/lib
 OGLIB     = -lglut -lGL -lGLU
-GENLIBS   = -lSOIL
+GENLIBS   = #-lSOIL
 
 CXX       = g++
 CXXLIBS   =
 LDLIBS    = $(LINKDIR) $(WXLIBS) $(DYNLIB) $(OGLIB) $(GENLIBS)
 
 
-CXXFLAGS  = -Wall $(INCLUDES) --std=c++11 $(WXFLAGS) $(CXXLIBS)
+CXXFLAGS  = -Wall $(INCLUDES) --std=c++17 $(WXFLAGS) $(CXXLIBS)
 LDFLAGS   = -std=c++11 $(LDLIBS)
 
 
@@ -36,7 +40,10 @@ DFLAG    = -DDEBUG
 DBINDIR  =  $(BINDIR)/Debug
 DOBJDIR  =  $(OBJDIR)/Debug
 DEXE     =  $(DBINDIR)/$(EXEFILE)
-DOBJECTS =  $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o))
+DOBJECTS =  $(filter-out $(DOBJDIR)/Test.o, $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o)))
+
+# Test objects
+TOBJECTS =  $(filter-out $(DOBJDIR)/wxGUI/KittyWxApp.o,$(DOBJECTS))
 
 
 #Target specific variables for Release version.
@@ -44,7 +51,7 @@ RFLAG    = -DNDEBUG
 RBINDIR  =  $(BINDIR)/Release
 ROBJDIR  =  $(OBJDIR)/Release
 REXE     =  $(RBINDIR)/$(EXEFILE)
-ROBJECTS  = $(addprefix $(ROBJDIR)/,$(SOURCES:src/%.cpp=%.o))
+ROBJECTS = $(filter-out $(ROBJDIR)/Test.o, $(addprefix $(ROBJDIR)/,$(SOURCES:src/%.cpp=%.o)))
 
 
 ## Default build target Debug
@@ -69,6 +76,17 @@ $(ROBJDIR)/%.o: $(SRCDIR)/%.cpp | $(ROBJDIR)
 	$(CXX) -c -o $@ $< $(RFLAG) $(CXXFLAGS)
 
 
+testrun: test
+	exec $(BINDIR)/Test
+
+
+test: $(DOBJECTS) obj/Test.o
+	$(CXX) -o $(BINDIR)/Test $(TOBJECTS) obj/Test.o   $(LDFLAGS)
+
+obj/Test.o: test/Test.cpp
+	$(CXX) -c test/Test.cpp -o obj/Test.o $(CXXFLAGS)
+
+
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
@@ -90,7 +108,9 @@ $(ROBJDIR): | $(OBJDIR)
 	mkdir $(ROBJDIR) $(SRCDIRS:%=$(ROBJDIR)/%)
 
 
+
 clean:
+	rm obj/Test.o
 	rm -rf $(DOBJECTS) $(DEXE)
 
 cleanDebug:

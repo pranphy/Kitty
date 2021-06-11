@@ -1,9 +1,6 @@
 #include "wxGUI/DisplayCanvas.h"
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
-int DisplayCanvas::ActiveCard = -1;
-
-
 
 BEGIN_EVENT_TABLE(DisplayCanvas,wxGLCanvas)
     EVT_PAINT(DisplayCanvas::OnPaint)
@@ -18,13 +15,11 @@ DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
     glutInit(&argc,argv);
     MyContext = new wxGLContext(this);
-    Scrambled = true;
 }
 
 void DisplayCanvas::Initialize()
 {
-	//LoadAllImages();
-	//ShuffleCards();
+	SetCurrent(*MyContext);
 }
 
 
@@ -34,229 +29,74 @@ void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 	static bool OneTime = false;
 	if(OneTime == false)
 	{
-		LoadAllImages();
-		ShuffleCards();
+        std::string imagepath = "./res/Files/AllCards/Ascending/C13.png";
+        exampletex = LoadImageFile(imagepath);
+        std::cout<<imagepath<<" successfully read "<<std::endl;
 		OneTime = true;
 	}
-    glClearColor(0.0f,0.5f,0.4f,0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    //DrawTriangle();
+    KittyGame.table.clear_table();
     Render();
-    glFlush();
     SwapBuffers();
 }
 
 void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 {
     //wxMessageBox(wxT(" You pressed a key "),wxT("Bravoo "));
+    GameControls control;
 
     int Key = event.GetUnicodeKey();
     if(Key == 13)
     {
-        //wxMessageBox(wxT(" You pressed enter "),wxT(" Ain't that great ??"));
-        ShuffleCards();
-        Scrambled = true;
+        control = GameControls::ENTER;
     }
     else if (Key >= '1' and Key <= '9')
     {
-        ActiveCard = Key - '1';
-        //wxMessageBox(wxT("And yo pressed one "),wxT(" that's great "));
+        control = GameControls::ONE;
     }
     else if(Key == 'f' or Key == 'F')
 	{
-		Flipped = (Flipped ? false : true);
+        control = GameControls::FLIP;
 	}
 	else if(Key == 'u' or Key == 'U')
 	{
-		//wxMessageBox(wxT(" Unscrambling trying now "),wxT(" Tyring tto unscrambe"));
-		if(Scrambled){
-				//wxMessageBox(wxT(" Unscrambling now "),wxT(" Tyring to unscrambe"));
-
-                Scrambled = false;
-                Arrange(Card,Image);
-				//wxMessageBox(wxT(" Unscrambling done"),wxT(" done"));
-            }
+        control = GameControls::SOLVE;
 	}
 	else if(Key == 'r' or Key == 'R')
 	{
-		BackId = (BackId ? 0 : 1);
+        control = GameControls::FLIP;
 	}
     switch(event.GetKeyCode())
     {
     case WXK_LEFT:
-        if(ActiveCard<8 && ActiveCard>=0)
-        {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard+1];
-            Card[ActiveCard+1]=tmp;
-            ActiveCard++;
-        }
+        control = GameControls::LEFT;
         break;
     case WXK_RIGHT:
-        if(ActiveCard>0)
-        {
-            tmp=Card[ActiveCard];
-            Card[ActiveCard]=Card[ActiveCard-1];
-            Card[ActiveCard-1]=tmp;
-            ActiveCard--;
-        }
-
+        control = GameControls::RIGHT;
         break;
     case WXK_UP:
-        ActiveCard = 8;
+        control = GameControls::UP;
         break;
     case WXK_DOWN:
-        ActiveCard = -1;
+        control = GameControls::DOWN;
     default:
         break;
-
     }
-    wxPaintEvent Dummy = wxPaintEvent();
-    OnPaint(Dummy);
+    KittyGame.set_control(control);
+
+	this->Refresh();
 }
 
-
-void DisplayCanvas::DrawTriangle()
-{
-    glPushMatrix();
-
-    glViewport(0, 0, (GLint)GetSize().x, (GLint)GetSize().y);
-    glShadeModel(GL_SMOOTH);
-    glBegin(GL_TRIANGLES);
-        glColor3ub((GLubyte)255,(GLubyte)0,(GLubyte)0);
-        glVertex3f(0.0f,0.5f,0.0f);
-        // Green on the right bottom corner
-        glColor3ub((GLubyte)0,(GLubyte)255,(GLubyte)0);
-        glVertex3f(0.50f,-0.90f,0.0f);
-        // Blue on the left bottom corner
-        glColor3ub((GLubyte)0,(GLubyte)0,(GLubyte)255);
-        glVertex3f(-0.50f, -0.9000f, -0.0f);
-    glEnd();
-    glColor3ub((GLubyte)255,(GLubyte)255,(GLubyte)255); //reset white color.
-    glPopMatrix();
-}
-
-
-void DisplayCanvas::ShuffleCards()
-{
-    int *Number=RandIntArray(1,52,52,0);
-    for(int i=0; i<52; i++)
-    {
-        Card[i].SetValue(Number[i]);
-        Card[i].SetTexture(Image[Number[i]-1]);
-    }
-    Card[52].SetTexture(Image[52]);
-    Card[53].SetTexture(Image[53]);
-}
-
-void DisplayCanvas::DisplayCards()
-{
-
-    glViewport(0, 0, (GLint)GetSize().x, (GLint)GetSize().y);
-
-    for(int i=0; i<9; i++)
-    {
-        glColor3f(1.0,1.0,1.0);
-        float x=0,y=0,angle=0;
-        x=0.9-i*.22;
-        y=0.5;
-        if(i==ActiveCard)
-        {
-            //glColor3f(0.5,0.6,0.7);
-            y+=0.02;
-            angle-=1;
-        }
-        Card[i].SetPostition(x,y);
-        Card[i].DrawIt(angle);
-    }
-
-    for(int i=9; i<18; i++)
-    {
-        int cst;
-        float Group=0.0,SaperationIndex=.22;
-        if(BackId)
-            cst=REDBACK;
-        else
-            cst=BLUEBACK;
-        int index = (Flipped ? i:cst);
-        float x=0.0,y=0.0,angle=0.0;
-        x=0.9-(i-9)*SaperationIndex+Group;
-        y=-0.5;
-        Card[index].SetPostition(x,y);
-        Card[index].DrawIt(angle);
-    }
-
-}
-
-void DisplayCanvas::LoadAllImages()
-{
-    for(int i=0; i<52; i++)
-    {
-        ostringstream ImageName;
-        ImageName << "./res/Files/AllCards/Ascending/";
-        ImageName<<"C"<<i+1<<".png";
-        GLuint CurrentImage = LoadImageFile(ImageName.str());
-        Image[i] = CurrentImage;
-    }
-    Image[52] = LoadImageFile(string("./res/Files/AllCards/Back/RedBack.png"));
-    Image[53] = LoadImageFile(string("./res/Files/AllCards/Back/BlueBack.png"));
-}
 
 void DisplayCanvas::Render()
 {
-
-    DisplayCards();
-    //Image[i] =
-    //GLuint OneImage = LoadImageFile(string("./Files/AllCards/Ascending/C41.png"));
-    //cout<<" While OneImage has "<<OneImage<<endl;
-    //DisplaySinglePhoto(0,0,OneImage);
-
-    glPushMatrix();
-    ostringstream Info;
-    if(ActiveCard>-1)
-        Info<<" Selected Card :- "<<ActiveCard+1;
-    else
-        Info<<"Press 1 through  9 to select corresponding card ";
-    //glColor3f(0.0,0.8,1.0);
-    Cout(const_cast<char*>(Info.str().c_str()),-.8,0,0); //Printing function
-    glPopMatrix();
-
+    //KittyGame.table.DrawTriangle();
+    KittyGame.table.DisplaySinglePhoto(0.0,0.5,exampletex);
 }
 
-void DisplayCanvas::DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture)
-{
-	glPushMatrix();
-    //glLoadIdentity();
-    //glColor3f(1.0,1.0,1.0);
-    //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
-
-	float PictureWidth = 100;
-	float PictureHeight = 300;
-	float Factor = 0.002;
-
-    glTranslatef(PositionX,PositionY,0);
-    glRotatef(0,0,0,1);
-    glBindTexture(GL_TEXTURE_2D,ImageTexture);
-
-    glEnable(GL_TEXTURE_2D);
-    glBegin(GL_QUADS);
-        glTexCoord3f(1.0f,0.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
-        glTexCoord3f(1.0f,1.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,Factor*PictureHeight/2,0);
-        glTexCoord3f(0.0f,1.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,Factor*PictureHeight/2,0);
-        glTexCoord3f(0.0f,0.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
-    glEnd();
-    glPopMatrix();
-}
-
-void DisplayCanvas::StartDrawing(void)
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
 
 void DisplayCanvas::ChangeSize(int w, int h)
 {
+    std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -267,18 +107,13 @@ void DisplayCanvas::ChangeSize(int w, int h)
 void DisplayCanvas::TimerFunc(int value)
 {
     glutPostRedisplay();
+    value++;
     //glutTimerFunc(10, TimerFunc, 0);
 }
 
 
-void DisplayCanvas::DrawCube()
-{
-	//
-}
-
 GLuint DisplayCanvas::LoadImageFile(string FileName)
 {
-	//wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
 	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
 
 	GLuint texture;

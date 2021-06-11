@@ -1,32 +1,26 @@
 #ifndef MATHEMATICAL_H_INCLUDED
 #define MATHEMATICAL_H_INCLUDED
 
-#include "Base/CardStuffs.h"
 
-#include<GL/glut.h>
-#include<ctime>
-#include<cstdlib>
-#include<fstream>
 #include<iostream>
-using namespace std;
+#include<vector>
+#include<string>
 
-#define Wh 920
-#define Ww 600
+#include "Base/Taas.h"
 
-int      Random            (int);
-void     initrand          (void);
-void     ConvertDimension  (int,int,float&,float&);
-void     RotateObjects     (void);
 
-template <class tin>
-void Swap(tin&,tin&);
+template <class T>
+void Swap(T&,T&);
 
-int*     RandIntArray     (int,int,int,int);
-bool     ChkNumInAry      (int,int,int);
+std::vector<int> rand_int_array(int lb,int ub, unsigned lng, bool rpt=false);
 
-void     ArrangeKitty     (int*,int);
+//template<class T>
+//void shuffle_vec(std::vector<Taas>& hand);
 
-int      GenerateRank     (int,int,int);
+/*Generates random number in the range. Look definion on .cpp for more information on this function*/
+/*checks whether the given number is already among teh array contents*/
+std::vector<std::vector<unsigned>> get_combo(std::string);
 
+std::vector<std::vector<unsigned>> read_combo(std::string);
 
 #endif // MATHEMATICAL_H_INCLUDED

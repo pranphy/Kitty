@@ -9,7 +9,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/KittyWx" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/Debug/wxKitty" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/Debug" />
 				<Option object_output="obj/Debug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -30,7 +31,8 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/KittyWx" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/Release/KittyWx" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/Release" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -54,34 +56,45 @@
 			<Add option="-L/opt/lib" />
 			<Add option="-lSOIL" />
 		</Linker>
-		<Unit filename="../include/Base/CardStuffs.h" />
-		<Unit filename="../include/Utility/ImageLoader.h" />
-		<Unit filename="../include/Utility/Mathematical.h" />
+		<Unit filename="../include/Base/Deque.h" />
+		<Unit filename="../include/Base/Drawable.h" />
+		<Unit filename="../include/Base/Game.h" />
+		<Unit filename="../include/Base/KittyEngine.h" />
+		<Unit filename="../include/Base/Player.h" />
 		<Unit filename="../include/Base/ScoresAndDisplays.h" />
-		<Unit filename="../include/Utility/common.h" />
+		<Unit filename="../include/Base/Taas.h" />
+		<Unit filename="../include/Utility/ImageLoader.h" />
+		<Unit filename="../include/Utility/Log.h" />
+		<Unit filename="../include/Utility/Mathematical.h" />
 		<Unit filename="../include/wxGUI/DisplayCanvas.h" />
+		<Unit filename="../include/wxGUI/Image.h" />
 		<Unit filename="../include/wxGUI/KittyWxApp.h" />
 		<Unit filename="../include/wxGUI/KittyWxMain.h" />
-		<Unit filename="../src/Base/CardStuffs.cpp" />
-		<Unit filename="../src/Utility/ImageLoader.cpp" />
-		<Unit filename="../src/Utility/Mathematical.cpp" />
+		<Unit filename="../include/wxGUI/wxImageLoader.h" />
+		<Unit filename="../src/Base/Deque.cpp" />
+		<Unit filename="../src/Base/Drawable.cpp" />
+		<Unit filename="../src/Base/Game.cpp" />
+		<Unit filename="../src/Base/KittyEngine.cpp" />
+		<Unit filename="../src/Base/Player.cpp" />
 		<Unit filename="../src/Base/ScoresAndDisplays.cpp" />
-		<Unit filename="../src/Utility/common.cpp" />
+		<Unit filename="../src/Base/Taas.cpp" />
+		<Unit filename="../src/Utility/ImageLoader.cpp" />
+		<Unit filename="../src/Utility/Log.cpp" />
+		<Unit filename="../src/Utility/Mathematical.cpp" />
 		<Unit filename="../src/wxGUI/DisplayCanvas.cpp" />
+		<Unit filename="../src/wxGUI/Image.cpp" />
 		<Unit filename="../src/wxGUI/KittyWxApp.cpp" />
 		<Unit filename="../src/wxGUI/KittyWxMain.cpp" />
+		<Unit filename="../src/wxGUI/wxImageLoader.cpp" />
 		<Unit filename="wxsmith/KittyWxframe.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
+			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="../src/wxGUI/KittyWxApp.cpp" main="KittyWxFrame" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/KittyWxframe.wxs" src="../src/wxGUI/KittyWxMain.cpp" hdr="../include/wxGUI/KittyWxMain.h" fwddecl="0" i18n="1" name="KittyWxFrame" language="CPP" />
 				</resources>
 			</wxsmith>
-			<lib_finder disable_auto="1" />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
