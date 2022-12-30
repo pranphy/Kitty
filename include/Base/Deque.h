@@ -4,6 +4,8 @@
 // author : Prakash [प्रकाश]
 // date   : 2019-03-22 18:02
 
+#pragma once
+
 #include<iostream>
 #include<deque>
 
@@ -19,6 +21,9 @@ private:
 public:
     const static unsigned CARDS_PER_DEQUE;
     Deque(unsigned n_books=1);
+    std::vector<Taas> deal(int);
+    auto get_cards() { return cards; };
+    Taas deal();
     ~Deque();
 
 };

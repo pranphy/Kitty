@@ -7,14 +7,11 @@
 
 #pragma once
 
-#include<iostream>
-#include<map>
+#include <iostream>
+#include <map>
 
-#include "Base/KittyEngine.h"
 #include "Base/Player.h"
 #include "Base/Deque.h"
-
-#include "Base/Drawable.h"
 
 enum GameControls
 {
@@ -42,7 +39,7 @@ class Game
 private:
     std::vector<Player> players;
 
-    std::map<Player,std::vector<Taas>> player_hand;
+    std::vector<std::vector<Taas>> player_hand;
 
 	static unsigned active_card;
     Deque cards;
@@ -54,11 +51,10 @@ public:
     Game(int n_player=2, int n_deque=1);
     ~Game();
 
-    GLDrawable table;
-
+    //GLDrawable table;
+    std::vector<std::vector<Taas>> get_player_hand() {return player_hand;}
     void distribute_cards();
 
     void set_control(GameControls);
 };
-
 

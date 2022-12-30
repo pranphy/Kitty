@@ -15,7 +15,7 @@ public:
     float xscale, yscale;
     Image image;
     bool xflip, yflip;
-    
+
     GLDrawable();
     GLDrawable(Image);
     void setFlip(bool x, bool y);
@@ -26,10 +26,10 @@ public:
     void setImage(Image image);
     void render();
     void rotate(int angle);
-    
+
     void DrawIt(float,float,float);
     void DrawTriangle();
-    void DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture); 
+    void DisplaySinglePhoto(float PositionX, float PositionY, GLuint ImageTexture);
     void StartDrawing(void);
     void clear_table();
     GLuint load_image_as_texture(std::string);

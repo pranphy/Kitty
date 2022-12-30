@@ -11,28 +11,21 @@
 #include "Base/KittyEngine.h"
 #include "Utility/Mathematical.h"
 
-std::string KittyEngine::combo_file = "./res/Files/Input/Combination.dat";
-
-void shuffle_vec(std::vector<Taas>& hand)
-{
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::shuffle(hand.begin(),hand.end(),mt);
-}
+const std::string KittyEngine::combo_file = "./res/Files/Input/Combination.dat";
 
 KittyEngine::KittyEngine()
 {
+    std::cout<<"I am constructed in engine"<<std::endl;
     unsigned total_cards = 9;
     std::vector<int> card_id = rand_int_array(0,52,total_cards);
     for (int i : card_id)
         Hand.push_back(Taas(i));
 
-    shuffle_vec(Hand);
-
+    //shuffle_vec(Hand);
 }
 
 KittyEngine::KittyEngine(std::vector<Taas> & hand)
-{ 
+{
     Hand = hand;
 }
 KittyEngine::~KittyEngine() {}
@@ -58,7 +51,7 @@ std::vector<Taas> KittyEngine::modern_solve()
     std::vector<std::vector<unsigned>> combo_vec = get_combo(combo_file);
     std::vector<float> scores;
     for(std::vector<unsigned> cur_hand_ary : combo_vec)
-    { 
+    {
         float score = get_score(Hand,cur_hand_ary);
         //std::cout<<"Score for "; print(cur_hand_ary); std::cout<<" is "<<score<<std::endl;
         //std::cout<<std::endl<<std::endl;
@@ -103,7 +96,7 @@ std::vector<Taas> KittyEngine::modern_solve()
     std::vector<std::vector<unsigned>> combo_vec = get_combo(combo_file);
     std::vector<std::vector<float>> scores;
     for(std::vector<unsigned> cur_hand_ary : combo_vec)
-    { 
+    {
         std::vector<float> score = get_mini_ranks(Hand,cur_hand_ary);
         //std::cout<<"Score for "; print(cur_hand_ary); std::cout<<" is "<<score<<std::endl;
         //std::cout<<std::endl<<std::endl;
@@ -122,7 +115,7 @@ std::vector<Taas> KittyEngine::arrange_seq(std::vector<Taas>& hand, std::vector<
     for (unsigned i : seq)
         arranged.push_back(hand[i]);
     return arranged;
-    
+
 }
 
 void KittyEngine::display()
@@ -225,8 +218,8 @@ int KittyEngine::compare(Taas a1, Taas a2, Taas a3, Taas b1, Taas b2, Taas b3)
 }
 
 
-GLuint LoadPhoto(std::string ImageName)
-{
+//GLuint LoadPhoto(std::string ImageName)
+//{
 //      GLuint tex_2d = SOIL_load_OGL_texture
 //                    (
 //                        ImageName.c_str(),
@@ -242,8 +235,8 @@ GLuint LoadPhoto(std::string ImageName)
 //    {
 //        //wxMessageBox(St,wxT(" Bravoo "));
 //    }
-    GLuint text = 0;
+//    GLuint text = 0;
 //    return tex_2d;
-    return text; 
-}
+//    return text;
+//}
 

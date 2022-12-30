@@ -5,19 +5,11 @@
 /** fb.com/pranphy<>http://pranphy.wordpress.com */
 /*************************************************/
 
-#include<fstream>
-#include<random>
-#include<algorithm>
+#include <fstream>
+#include <random>
+#include <algorithm>
 
 #include "Utility/Mathematical.h"
-
-template <class T>
-void Swap(T&a,T&b)
-{
-    T c; c=a;
-    a=b;
-    b=c;
-}
 
 std::vector<int> random_sample(std::vector<int> source,unsigned sample_size)
 {
@@ -40,22 +32,11 @@ std::vector<int> rand_int_array(int lb,int ub, unsigned lng, bool rpt)
     for(unsigned k: Array)
         std::cout<<k<<", ";
     std::cout<<std::endl;
-    return Array; 
+    return Array;
 }
 
-
-
-//template<class  T>
-//void shuffle_vec(std::vector<Taas>& hand)
-//{
-//    std::random_device rd;
-//    std::mt19937 mt(rd());
-//    std::shuffle(hand.begin(),hand.end(),mt);
-//}
-
-
 std::vector<std::vector<unsigned>> read_combo(std::string combo_file)
-{ 
+{
     std::vector<std::vector<unsigned>> vec;
     std::ifstream Combination(combo_file,std::ios::binary);
     unsigned Nos = 84*20;
@@ -71,7 +52,7 @@ std::vector<std::vector<unsigned>> read_combo(std::string combo_file)
         }
         vec.push_back(cur_line);
     }
-    return vec; 
+    return vec;
 }
 
 std::vector<std::vector<unsigned>> get_combo(std::string combo_file)

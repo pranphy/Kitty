@@ -11,7 +11,6 @@
 #include<string>
 
 #include "Base/Taas.h"
-#include "Base/KittyEngine.h"
 
 const static std::string empty = std::string("");
 
@@ -20,7 +19,6 @@ class Player
 private:
     std::string first_name;
     std::string last_name;
-    KittyEngine brain;
     std::vector<Taas> hand;
 
 

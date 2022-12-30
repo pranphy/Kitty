@@ -9,6 +9,7 @@
 #include "Base/KittyEngine.h"
 #include "Base/Game.h"
 #include "Base/Taas.h"
+#include "TUI/TUI.h"
 #include "Utility/Mathematical.h"
 
 void rand_int()
@@ -21,8 +22,7 @@ void hand_shuffle()
 {
     std::vector<Taas> Hand(9);
     std::cout<<"Now shuffling"<<std::endl;
-    shuffle_vec(Hand);
-    
+    //shuffle_deq(Hand);
 }
 
 void combo_read(){
@@ -58,11 +58,11 @@ void score()
     for (int i : card_id)
         Hand.push_back(Taas(i));
 
-    shuffle_vec(Hand);
+    //shuffle_deq(Hand);
 
     std::vector<unsigned> shuf = {0,1,2,3,4,5,6,7,8};
     unsigned score = KE.get_score(Hand,shuf);
-    std::cout<<score<<" is teh score "<<std::endl;
+    std::cout<<score<<" is the score "<<std::endl;
 }
 
 void test_kitty_engine()
@@ -74,11 +74,18 @@ void test_kitty_engine()
     //score();
 }
 
+void make_deque()
+{
+    Game kitty_game = Game(2,1);
+    display_all_players(kitty_game);
+    solve_all_players(kitty_game);
+}
+
 
 int main()
 {
     std::cout<<"Hello World"<<std::endl;
-    test_kitty_engine();
+    make_deque();
     return 0;
 }
 

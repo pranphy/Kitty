@@ -1,4 +1,4 @@
-WXVERSION = 3.1
+WXVERSION = 3.2
 WXFLAGS   = $$(wx-config --version=$(WXVERSION) --cxxflags)
 WXLIBS    = $$(wx-config --version=$(WXVERSION) --libs all --gl-libs)
 
@@ -7,12 +7,13 @@ MYROOT   = /home/$(MYUSER)/st/usr
 
 INCDIR   = include
 SRCDIR   = src
-SRCDIRS  = wxGUI Base Utility
+MAINDIR  = TUI
+SRCDIRS  = $(MAINDIR) Base Utility
 #SRCDIRS  = Base
 OBJDIR   = obj
 BINDIR   = bin
 LIBDIR   = lib
-EXEFILE  = wxKitty 
+EXEFILE  = wxKitty
 
 
 #Source Files to looks for
@@ -30,8 +31,8 @@ CXXLIBS   =
 LDLIBS    = $(LINKDIR) $(WXLIBS) $(DYNLIB) $(OGLIB) $(GENLIBS)
 
 
-CXXFLAGS  = -Wall $(INCLUDES) --std=c++17 $(WXFLAGS) $(CXXLIBS)
-LDFLAGS   = -std=c++11 $(LDLIBS)
+CXXFLAGS  = -Wall $(INCLUDES) --std=c++20 $(WXFLAGS) $(CXXLIBS)
+LDFLAGS   = -std=c++20 $(LDLIBS)
 
 
 
@@ -43,7 +44,7 @@ DEXE     =  $(DBINDIR)/$(EXEFILE)
 DOBJECTS =  $(filter-out $(DOBJDIR)/Test.o, $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o)))
 
 # Test objects
-TOBJECTS =  $(filter-out $(DOBJDIR)/wxGUI/KittyWxApp.o,$(DOBJECTS))
+TOBJECTS =  $(filter-out $(DOBJDIR)/$(MAINDIR)/%Main.o,$(DOBJECTS))
 
 
 #Target specific variables for Release version.
@@ -52,6 +53,9 @@ RBINDIR  =  $(BINDIR)/Release
 ROBJDIR  =  $(OBJDIR)/Release
 REXE     =  $(RBINDIR)/$(EXEFILE)
 ROBJECTS = $(filter-out $(ROBJDIR)/Test.o, $(addprefix $(ROBJDIR)/,$(SOURCES:src/%.cpp=%.o)))
+
+# Test
+
 
 
 ## Default build target Debug
@@ -112,6 +116,7 @@ $(ROBJDIR): | $(OBJDIR)
 clean:
 	rm obj/Test.o
 	rm -rf $(DOBJECTS) $(DEXE)
+	rm -rf $(ROBJECTS) $(REXE)
 
 cleanDebug:
 	rm $(DOBJECTS) $(DEXE)

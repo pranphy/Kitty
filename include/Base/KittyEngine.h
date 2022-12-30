@@ -20,11 +20,11 @@ struct  RankAndArray
 
 #include<iostream>
 
-class KittyEngine   
+class KittyEngine
 {
 private:
     std::vector<Taas> Hand;
-    static std::string combo_file;
+    static const std::string combo_file;
 
     std::vector<std::vector<unsigned>> all_combination;
 
@@ -56,4 +56,4 @@ public:
     void display();
 };
 
-void shuffle_vec(std::vector<Taas>& hand);
+

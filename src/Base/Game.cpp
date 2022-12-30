@@ -6,13 +6,19 @@
 //
 //
 
-#include <map> 
+#include <map>
 #include "Base/Game.h"
+#include "Base/Deque.h"
 
 
-Game::Game(int n_player, int n_deque):players(n_player),cards(Deque::CARDS_PER_DEQUE*n_deque)
+Game::Game(int n_player, int n_deque)
+    :players(n_player),cards(n_deque) // was a bug here
 {
-    
+    for(int i = 0; i < n_player; ++i)
+    {
+        std::vector<Taas> pl_hand = cards.deal(9);
+        player_hand.push_back(pl_hand);
+    }
 }
 
 Game::~Game() {}
@@ -22,5 +28,8 @@ void Game::set_control(GameControls ct)
     std::cout<<"ct received "<<ct<<std::endl;
 }
 
-
+void Game::distribute_cards()
+{
+    std::cout<<"Distributed"<<std::endl;
+}
 

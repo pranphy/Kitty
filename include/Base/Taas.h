@@ -10,16 +10,11 @@
 #define CARDSTUFFS_H_INCLUDED
 
 #include <cstdlib>
-#include<ostream>
+#include <ostream>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-
-#include <GL/glut.h>
-
-#include "wxGUI/Image.h"
-
 
 enum CardFace{
 	SPADE   = 0x03,
@@ -58,8 +53,6 @@ class Taas
 public:
 	Taas(unsigned=1);
 	void set_postition(float,float);
-	void set_texture(GLuint);
-	void set_image(Image);
 	void set_value(int);
 	unsigned get_value();
     std::string get_face();
@@ -78,7 +71,6 @@ public:
 private:
     unsigned ID;
 	float PositionX,PositionY;
-    Image CardImage;
     ValnFace val_face;
 
 	int convert_to_card(void);
