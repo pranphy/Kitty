@@ -1,4 +1,7 @@
-#include "wxGUI/wxImageLoader.h"
+#include <format>
+
+#include "wx/image.h"
+
 #include "OGL/utils.h"
 
 GLuint load_image_file(std::string FileName)
@@ -86,9 +89,8 @@ void display_image(float PositionX, float PositionY, GLuint image_texture)
     //glColor3f(1.0,1.0,1.0);
     //cout<<" Printing card "; if(CardTexture){ cout<<" Texture not null "<<endl;} else { cout<<" Texture null "<<endl;}
 
-	float PictureWidth = 200;
-	float PictureHeight = 300;
-	float Factor = 0.002;
+    float aspect_ratio = 1.0/2.0;
+    float height = 0.4, width = height*aspect_ratio ;
 
     glTranslatef(PositionX,PositionY,0);
     glRotatef(0,0,0,1);
@@ -96,10 +98,10 @@ void display_image(float PositionX, float PositionY, GLuint image_texture)
 
     glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
-        glTexCoord3f(1.0f,0.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
-        glTexCoord3f(1.0f,1.0f,0.0f);   glVertex3f(Factor*PictureWidth/2,Factor*PictureHeight/2,0);
-        glTexCoord3f(0.0f,1.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,Factor*PictureHeight/2,0);
-        glTexCoord3f(0.0f,0.0f,0.0f);   glVertex3f(-Factor*PictureWidth/2,-Factor*PictureHeight/2,0);
+        glTexCoord3f(1.0f,0.0f,0.0f);   glVertex3f(width/2,-height/2,0);
+        glTexCoord3f(1.0f,1.0f,0.0f);   glVertex3f(width/2,height/2,0);
+        glTexCoord3f(0.0f,1.0f,0.0f);   glVertex3f(-width/2,height/2,0);
+        glTexCoord3f(0.0f,0.0f,0.0f);   glVertex3f(-width/2,-height/2,0);
     glEnd();
     glPopMatrix();
 }
@@ -111,6 +113,36 @@ GLuint display_image(float PositionX, float PositionY, std::string imagepath)
     display_image(PositionX,PositionY,texture);
     return texture;
 }
+
+std::vector<GLuint> load_all_images()
+{
+    std::vector<GLuint> all_textures;
+    std::string basepath = "./res/Files/AllCards/Ascending";
+    for(int i = 0; i < 52; ++i)
+    {
+        std::string imagepath = std::format("{}/C{:02d}.png",basepath,i+1);
+        std::cout<<"Loading : "<<imagepath;
+        all_textures.push_back(load_image_file(imagepath));
+        std::cout<<" Done"<<std::endl;
+    }
+    std::string redback = std::format("{}/../Back/RedBack.png",basepath);
+    all_textures.push_back(load_image_file(redback));
+    return all_textures;
+}
+
+void display_player_cards(Game game,std::vector<GLuint> textures,int playerid,float x, float y)
+{
+    auto player_hands = game.get_player_hand();
+    auto fp_cards = player_hands.at(playerid);
+    int cn = 0;
+    for(auto card: fp_cards)
+    {
+        std::cout<<"Card:"<<card<<std::endl;
+        display_image(x+0.15*cn++,y,textures.at(card.get_id()));
+    }
+}
+
+
 
 void StartDrawing(void)
 {
