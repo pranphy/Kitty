@@ -29,7 +29,6 @@ public:
 	DisplayCanvas(wxWindow*,wxGLAttributes&);
 
 	void OnPaint       (wxPaintEvent&);
-	void DrawTriangle  ();
 	void DrawCube      ();
 
 

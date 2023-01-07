@@ -1,4 +1,5 @@
 #include "wxGUI/DisplayCanvas.h"
+#include "OGL/utils.h"
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
 
@@ -9,7 +10,7 @@ END_EVENT_TABLE()
 
 
 DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
-    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(150,100), 0, wxT("GLCanvas"))
+    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(500,500), 0, wxT("GLCanvas"))
 {
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
@@ -30,12 +31,12 @@ void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 	if(OneTime == false)
 	{
         std::string imagepath = "./res/Files/AllCards/Ascending/C13.png";
-        exampletex = LoadImageFile(imagepath);
+        exampletex = load_image_file(imagepath);
         std::cout<<imagepath<<" successfully read "<<std::endl;
 		OneTime = true;
 	}
-    KittyGame.table.clear_table();
     Render();
+
     SwapBuffers();
 }
 
@@ -89,8 +90,9 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 
 void DisplayCanvas::Render()
 {
-    //KittyGame.table.DrawTriangle();
-    KittyGame.table.DisplaySinglePhoto(0.0,0.5,exampletex);
+    DrawTriangle();
+    display_image(0.0,0.0,exampletex);
+    display_image(0.2,0.0,exampletex);
 }
 
 
@@ -109,63 +111,4 @@ void DisplayCanvas::TimerFunc(int value)
     glutPostRedisplay();
     value++;
     //glutTimerFunc(10, TimerFunc, 0);
-}
-
-
-GLuint DisplayCanvas::LoadImageFile(string FileName)
-{
-	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
-
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	GLubyte *bitmapData=img->GetData();
-	GLubyte *alphaData=img->GetAlpha();
-
-	int bytesPerPixel = img->HasAlpha() ?  4 : 3;
-	int imageWidth = img->GetWidth();
-	int imageHeight = img->GetHeight();
-
-	int imageSize = imageWidth * imageHeight * bytesPerPixel;
-	GLubyte *imageData=new GLubyte[imageSize];
-
-	int rev_val=imageHeight-1;
-
-	for(int y=0; y<imageHeight; y++)
-	{
-		for(int x=0; x<imageWidth; x++)
-		{
-			imageData[(x+y*imageWidth)*bytesPerPixel+0]=
-					bitmapData[( x+(rev_val-y)*imageWidth)*3];
-
-			imageData[(x+y*imageWidth)*bytesPerPixel+1]=
-					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 1];
-
-			imageData[(x+y*imageWidth)*bytesPerPixel+2]=
-					bitmapData[( x+(rev_val-y)*imageWidth)*3 + 2];
-
-			if(bytesPerPixel==4) imageData[(x+y*imageWidth)*bytesPerPixel+3]=
-					alphaData[ x+(rev_val-y)*imageWidth ];
-		}
-	}
-
-	glTexImage2D(GL_TEXTURE_2D,
-					0,
-					bytesPerPixel,
-					imageWidth,
-					imageHeight,
-					0,
-					img->HasAlpha() ?  GL_RGBA : GL_RGB,
-					GL_UNSIGNED_BYTE,
-					imageData);
-
-	delete[] imageData;
-	wxDELETE(img);
-
-	return texture;
 }
