@@ -31,9 +31,9 @@ KittyFrame::KittyFrame()
     wxGLAttributes dispAttrs;
     dispAttrs.PlatformDefaults().DoubleBuffer().EndList();
 
-    wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
+    wxStaticBoxSizer *topsizer = new wxStaticBoxSizer( wxVERTICAL,this,"Test Bhaiho" );
     topsizer->Add(
-         new DisplayCanvas(this,dispAttrs),
+        new DisplayCanvas(this,dispAttrs),
         1,            // make vertically stretchable
         wxEXPAND |    // make horizontally stretchable
         wxALL,        //   and make border all around

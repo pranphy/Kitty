@@ -1,26 +1,13 @@
-#ifndef DISPLAYCANVAS_H
-#define DISPLAYCANVAS_H
+#pragma once
 
-#include <wx/glcanvas.h>
-#include <wx/wx.h>
-#include <wx/msgdlg.h>
-#include <GL/glut.h>
-#include <string>
-#include <sstream>
 #include <vector>
+#include <GL/glut.h>
 
-using namespace std;
+#include <wx/wx.h>
+#include <wx/glcanvas.h>
 
-#include "Utility/Mathematical.h"
-#include "Base/ScoresAndDisplays.h"
+
 #include "Base/Game.h"
-
-
-#define REDBACK    0x34
-#define BLUEBACK   0x35
-#define MENUMODE   0x36
-#define PLAYMODE   0x37
-
 
 
 class DisplayCanvas : public wxGLCanvas
@@ -28,34 +15,25 @@ class DisplayCanvas : public wxGLCanvas
 public:
 	DisplayCanvas(wxWindow*,wxGLAttributes&);
 
-	void DrawCube      ();
 
-
-	void   WhenKeyIsPressed           (unsigned char,int,int);
-	void   WhenSpecialKeysPressed     (int,int,int);
-	void   TimerFunc                  (int);
-	void   ControlWithMouse           (int,int,int,int);
-	void   StartDrawing               ();
-	void   ChangeSize                 (int,int);
 	void   Render                     ();
-
 	void   Initialize                 ();
-    GLuint exampletex;
 
+    GLuint exampletex;
 
 private:
 
+    std::vector<GLuint> all_textures;
 
-	//int WindowWidth=800, WindowHeight=600;
 	wxGLContext* MyContext;
-    Game KittyGame;
     wxGLContextAttrs cxtAttrs;
 
 
 	static const long ID_DisplayCanvas;
-	void OnPaint       (wxPaintEvent&);
+    Game KittyGame;
+
+	void OnPaint   (wxPaintEvent&);
+	void ChangeSize(wxSizeEvent&);
 	void OnKeyPress(wxKeyEvent&);
-	GLuint LoadImageFile(string);
 };
 
-#endif // DISPLAYCANVAS_H

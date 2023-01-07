@@ -4,15 +4,16 @@
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
 
 DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
-    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(500,500), 0, "GLCanvas")
+    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(1200,800), 0, "GLCanvas")
 {
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
     glutInit(&argc,argv);
     MyContext = new wxGLContext(this);
 
-    Bind(wxEVT_PAINT, &DisplayCanvas::OnPaint,this);         /* this did not work      */
-    Bind(wxEVT_KEY_DOWN, &DisplayCanvas::OnKeyPress,this); /* both of these actually */
+    Bind(wxEVT_PAINT, &DisplayCanvas::OnPaint,this);
+    Bind(wxEVT_KEY_DOWN, &DisplayCanvas::OnKeyPress,this);
+    Bind(wxEVT_SIZE, &DisplayCanvas::ChangeSize,this);
 
     Initialize();
 }
@@ -24,14 +25,38 @@ void DisplayCanvas::Initialize()
     std::string imagepath = "./res/Files/AllCards/Ascending/C22.png";
     exampletex = load_image_file(imagepath);
     std::cout<<imagepath<<" successfully read "<<std::endl;
+    all_textures = load_all_images();
 }
 
 
 void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
+    SetCurrent(*MyContext);
     Render();
+    display_player_cards(KittyGame,all_textures,0,-0.5,-0.31);
+    display_player_cards(KittyGame,all_textures,1,-0.5,0.31);
+    //glutSwapBuffers();
+    glFlush();
     SwapBuffers();
 }
+
+
+void DisplayCanvas::Render()
+{
+    glClearColor(0.2,0.3,1.0,0.2);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Refresh();
+}
+
+
+void DisplayCanvas::ChangeSize( wxSizeEvent& evt)
+{
+    float w = evt.GetSize().GetX();
+    float h = evt.GetSize().GetY();
+    std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
+    Render();
+}
+
 
 void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 {
@@ -79,30 +104,3 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 	this->Refresh();
 }
 
-
-void DisplayCanvas::Render()
-{
-    glClearColor(1.0,1.0,1.0,1.0);
-    DrawTriangle();
-    display_image(0.0,0.0,exampletex);
-    display_image(0.2,0.0,exampletex);
-    this->Refresh(); // Has no effect
-}
-
-
-void DisplayCanvas::ChangeSize(int w, int h)
-{
-    std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, (double)w / (double)h, 0.2, 200.0);
-}
-
-
-void DisplayCanvas::TimerFunc(int value)
-{
-    glutPostRedisplay();
-    value++;
-    //glutTimerFunc(10, TimerFunc, 0);
-}
