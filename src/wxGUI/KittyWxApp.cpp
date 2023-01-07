@@ -10,8 +10,7 @@
 #include "wxGUI/KittyWxApp.h"
 #include "wxGUI/DisplayCanvas.h"
 //(*AppHeaders
-#include "../include/wxGUI/KittyWxMain.h"
-#include <wx/image.h>
+#include "wxGUI/KittyWxMain.h"
 //*)
 
 IMPLEMENT_APP(KittyWxApp);

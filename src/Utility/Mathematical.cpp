@@ -20,6 +20,15 @@ std::vector<int> random_sample(std::vector<int> source,unsigned sample_size)
     return sampled;
 }
 
+/**
+   My old function that was supposed to make a random integer array.
+   @param lb Lower bound of the random integers
+   @param ub upper bound of the random integers
+   @param lng the length of resulting array
+   @param rtp whether to repeat the random numbers. `rpt=false` will cause
+   all the number in resulting array be unique. This means the parameter lng
+   must be smaller thatn the difference lb and ub $ ub - lb < lng $
+   */
 std::vector<int> rand_int_array(int lb,int ub, unsigned lng, bool rpt)
 {
     std::cout<<"Generating ints from "<<lb<<" to "<<ub<<" of length "<<lng<<" "<<std::endl;
