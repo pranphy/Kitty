@@ -79,13 +79,13 @@ ValnFace Taas::get_card(unsigned deg)
     else
         fcrd=cdegn;
     if(deg>=0 && deg < 13)
-        ftyp=CardFace::HEART;
-    else if(deg>=13 && deg<26)
-        ftyp=CardFace::DIAMOND;
-    else if(deg>=26 && deg<39)
-        ftyp=CardFace::CLUB;
-    else if(deg>=39 && deg<52)
         ftyp=CardFace::SPADE;
+    else if(deg>=13 && deg<26)
+        ftyp=CardFace::CLUB;
+    else if(deg>=26 && deg<39)
+        ftyp=CardFace::HEART;
+    else if(deg>=39 && deg<52)
+        ftyp=CardFace::DIAMOND;
 
     return ValnFace{fcrd,ftyp};
 
