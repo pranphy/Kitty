@@ -1,5 +1,6 @@
 #include "wxGUI/DisplayCanvas.h"
 #include "OGL/utils.h"
+#include "Base/utils.h"
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
 
@@ -33,11 +34,6 @@ void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     SetCurrent(*MyContext);
     Render();
-    display_player_cards(KittyGame,all_textures,0,-0.5,-0.31);
-    display_player_cards(KittyGame,all_textures,1,-0.5,0.31);
-    //glutSwapBuffers();
-    glFlush();
-    SwapBuffers();
 }
 
 
@@ -46,6 +42,10 @@ void DisplayCanvas::Render()
     glClearColor(0.2,0.3,1.0,0.2);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Refresh();
+    display_player_cards(KittyGame,all_textures,0,-0.5,-0.31);
+    display_player_cards(KittyGame,all_textures,1,-0.5,0.31);
+    glFlush();
+    SwapBuffers();
 }
 
 
@@ -74,10 +74,13 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
     else if(Key == 'f' or Key == 'F')
 	{
         control = GameControls::FLIP;
+        shuffle_player(KittyGame,1);
 	}
 	else if(Key == 'u' or Key == 'U')
 	{
         control = GameControls::SOLVE;
+        solve_player(KittyGame,0);
+        solve_player(KittyGame,1);
 	}
 	else if(Key == 'r' or Key == 'R')
 	{

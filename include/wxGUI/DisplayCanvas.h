@@ -16,8 +16,8 @@ public:
 	DisplayCanvas(wxWindow*,wxGLAttributes&);
 
 
-	void   Render                     ();
-	void   Initialize                 ();
+	void   Render();
+	void   Initialize();
 
     GLuint exampletex;
 
@@ -32,7 +32,7 @@ private:
 	static const long ID_DisplayCanvas;
     Game KittyGame;
 
-	void OnPaint   (wxPaintEvent&);
+	void OnPaint(wxPaintEvent&);
 	void ChangeSize(wxSizeEvent&);
 	void OnKeyPress(wxKeyEvent&);
 };

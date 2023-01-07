@@ -52,9 +52,9 @@ public:
     ~Game();
 
     //GLDrawable table;
-    std::vector<std::vector<Taas>> get_player_hand() {return player_hand;}
+    std::vector<std::vector<Taas>> get_player_hand();
     void distribute_cards();
-
+    void set_player_hand(std::vector<Taas> hand,int id );
     void set_control(GameControls);
 };
 

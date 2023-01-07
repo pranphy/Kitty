@@ -25,7 +25,14 @@ Game::~Game() {}
 
 void Game::set_control(GameControls ct)
 {
-    std::cout<<"ct received "<<ct<<std::endl;
+}
+
+std::vector<std::vector<Taas>> Game::get_player_hand() {
+    return player_hand;
+}
+
+void Game::set_player_hand(std::vector<Taas> hand,int id ) {
+    player_hand[id] = std::move(hand);
 }
 
 void Game::distribute_cards()
