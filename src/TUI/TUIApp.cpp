@@ -7,7 +7,7 @@ void play_game(void)
 {
     Game kitty_game = Game(2,1); // Two player and 1 deque
     kitty_game.distribute_cards();
-    display_all_players(kitty_game);
+    display_all_players(kitty_game.get_player_hand());
 }
 
 int main(int argc, char** argv)
