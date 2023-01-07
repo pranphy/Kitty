@@ -8,10 +8,7 @@
  **************************************************************/
 
 #include "wxGUI/KittyWxApp.h"
-#include "wxGUI/DisplayCanvas.h"
-//(*AppHeaders
-#include "wxGUI/KittyWxMain.h"
-//*)
+#include "wxGUI/KittyFrame.h"
 
 IMPLEMENT_APP(KittyWxApp);
 
@@ -22,7 +19,7 @@ bool KittyWxApp::OnInit()
     wxInitAllImageHandlers();
     if ( wxsOK )
     {
-        KittyWxFrame* Frame = new KittyWxFrame(0);
+        KittyFrame* Frame = new KittyFrame();
         Frame->Show();
         SetTopWindow(Frame);
     }
