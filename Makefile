@@ -1,4 +1,4 @@
-WXVERSION = 3.2
+WXVERSION = 3.3
 WXFLAGS   = $$(wx-config --version=$(WXVERSION) --cxxflags)
 WXLIBS    = $$(wx-config --version=$(WXVERSION) --libs all --gl-libs)
 
@@ -7,8 +7,8 @@ MYROOT   = /home/$(MYUSER)/st/usr
 
 INCDIR   = include
 SRCDIR   = src
-MAINDIR  = TUI
-SRCDIRS  = $(MAINDIR) Base Utility
+MAINDIR  = wxGUI
+SRCDIRS  = $(MAINDIR) Base Utility OGL
 #SRCDIRS  = Base
 OBJDIR   = obj
 BINDIR   = bin
@@ -24,7 +24,7 @@ SOURCES := $(wildcard $(SRCDIRS:%=src/%/*.cpp)) $(wildcard src/*.cpp)
 INCLUDES  = -Iinclude -I$(MYROOT)/include
 LINKDIR   = -L$(LIBDIR) -L$(MYROOT)/lib
 OGLIB     = -lglut -lGL -lGLU
-GENLIBS   = #-lSOIL
+GENLIBS   =
 
 CXX       = g++
 CXXLIBS   =
@@ -44,7 +44,7 @@ DEXE     =  $(DBINDIR)/$(EXEFILE)
 DOBJECTS =  $(filter-out $(DOBJDIR)/Test.o, $(addprefix $(DOBJDIR)/,$(SOURCES:$(SRCDIR)/%.cpp=%.o)))
 
 # Test objects
-TOBJECTS =  $(filter-out $(DOBJDIR)/$(MAINDIR)/%Main.o,$(DOBJECTS))
+TOBJECTS =  $(filter-out $(DOBJDIR)/$(MAINDIR)/%App.o,$(DOBJECTS))
 
 
 #Target specific variables for Release version.
@@ -114,7 +114,7 @@ $(ROBJDIR): | $(OBJDIR)
 
 
 clean:
-	rm obj/Test.o
+	rm -rf obj/
 	rm -rf $(DOBJECTS) $(DEXE)
 	rm -rf $(ROBJECTS) $(REXE)
 

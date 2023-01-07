@@ -9,5 +9,6 @@ doc/
 *.swp
 .vscode
 .cache
+.ccls-cache/
 compile_commands.*
 _rough
