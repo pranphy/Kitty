@@ -28,7 +28,6 @@ class DisplayCanvas : public wxGLCanvas
 public:
 	DisplayCanvas(wxWindow*,wxGLAttributes&);
 
-	void OnPaint       (wxPaintEvent&);
 	void DrawCube      ();
 
 
@@ -44,8 +43,6 @@ public:
     GLuint exampletex;
 
 
-protected:
-	DECLARE_EVENT_TABLE()
 private:
 
 
@@ -56,6 +53,7 @@ private:
 
 
 	static const long ID_DisplayCanvas;
+	void OnPaint       (wxPaintEvent&);
 	void OnKeyPress(wxKeyEvent&);
 	GLuint LoadImageFile(string);
 };

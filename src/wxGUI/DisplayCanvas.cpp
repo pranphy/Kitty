@@ -3,46 +3,38 @@
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
 
-BEGIN_EVENT_TABLE(DisplayCanvas,wxGLCanvas)
-    EVT_PAINT(DisplayCanvas::OnPaint)
-    EVT_KEY_DOWN(DisplayCanvas::OnKeyPress)
-END_EVENT_TABLE()
-
-
 DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
-    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(500,500), 0, wxT("GLCanvas"))
+    wxGLCanvas(Parent,dispAttrs, ID_DisplayCanvas,  wxDefaultPosition, wxSize(500,500), 0, "GLCanvas")
 {
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
     glutInit(&argc,argv);
     MyContext = new wxGLContext(this);
+
+    Bind(wxEVT_PAINT, &DisplayCanvas::OnPaint,this);         /* this did not work      */
+    Bind(wxEVT_KEY_DOWN, &DisplayCanvas::OnKeyPress,this); /* both of these actually */
+
+    Initialize();
 }
 
 void DisplayCanvas::Initialize()
 {
 	SetCurrent(*MyContext);
+
+    std::string imagepath = "./res/Files/AllCards/Ascending/C22.png";
+    exampletex = load_image_file(imagepath);
+    std::cout<<imagepath<<" successfully read "<<std::endl;
 }
 
 
 void DisplayCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-	SetCurrent(*MyContext);
-	static bool OneTime = false;
-	if(OneTime == false)
-	{
-        std::string imagepath = "./res/Files/AllCards/Ascending/C13.png";
-        exampletex = load_image_file(imagepath);
-        std::cout<<imagepath<<" successfully read "<<std::endl;
-		OneTime = true;
-	}
     Render();
-
     SwapBuffers();
 }
 
 void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 {
-    //wxMessageBox(wxT(" You pressed a key "),wxT("Bravoo "));
     GameControls control;
 
     int Key = event.GetUnicodeKey();
@@ -90,9 +82,11 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 
 void DisplayCanvas::Render()
 {
+    glClearColor(1.0,1.0,1.0,1.0);
     DrawTriangle();
     display_image(0.0,0.0,exampletex);
     display_image(0.2,0.0,exampletex);
+    this->Refresh(); // Has no effect
 }
 
 
