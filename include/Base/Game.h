@@ -13,6 +13,7 @@
 #include "Base/Player.h"
 #include "Base/Deque.h"
 
+
 enum GameControls
 {
     ENTER,
@@ -37,24 +38,26 @@ enum GameControls
 class Game
 {
 private:
+    int n_players;
+
     std::vector<Player> players;
-
-    std::vector<std::vector<Taas>> player_hand;
-
+    Khal player_hand;
 	static unsigned active_card;
     Deque cards;
 
-	bool Flipped, Scrambled;
-	int BackId=1;
+	bool flipped, scrambled;
+	int backid=1;
 
 public:
     Game(int n_player=2, int n_deque=1);
     ~Game();
 
     //GLDrawable table;
-    std::vector<std::vector<Taas>> get_player_hand();
+    Khal get_player_hand();
     void distribute_cards();
-    void set_player_hand(std::vector<Taas> hand,int id );
+    void fold_all();
+    void set_player_hand(Khal);
+    void set_player_hand(Haat hand,int id );
     void set_control(GameControls);
 };
 

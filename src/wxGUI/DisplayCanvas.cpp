@@ -41,11 +41,12 @@ void DisplayCanvas::Render()
 {
     glClearColor(0.2,0.3,1.0,0.2);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    Refresh();
+    draw_full_box();
     display_player_cards(KittyGame,all_textures,0,-0.5,-0.31);
     display_player_cards(KittyGame,all_textures,1,-0.5,0.31);
     glFlush();
     SwapBuffers();
+    Refresh();
 }
 
 
@@ -53,7 +54,7 @@ void DisplayCanvas::ChangeSize( wxSizeEvent& evt)
 {
     float w = evt.GetSize().GetX();
     float h = evt.GetSize().GetY();
-    std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
+    //std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
     Render();
 }
 
@@ -85,6 +86,8 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
 	else if(Key == 'r' or Key == 'R')
 	{
         control = GameControls::FLIP;
+        KittyGame.fold_all();
+        //KittyGame.distribute_cards();
 	}
     switch(event.GetKeyCode())
     {

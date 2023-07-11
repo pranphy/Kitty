@@ -1,8 +1,9 @@
+#include <iostream>
 #include <format>
 
 #include "wx/image.h"
-
 #include "OGL/utils.h"
+
 
 GLuint load_image_file(std::string FileName)
 {
@@ -62,7 +63,22 @@ GLuint load_image_file(std::string FileName)
 	return texture;
 }
 
-void DrawTriangle()
+void draw_full_box()
+{
+    glPushMatrix();
+    glShadeModel(GL_SMOOTH);
+    glBegin(GL_QUADS);
+        glColor3ub((GLubyte)255,(GLubyte)0,(GLubyte)0);    glVertex3f(-0.50f,-0.50f, 0.0f);
+        glColor3ub((GLubyte)0,(GLubyte)255,(GLubyte)0);    glVertex3f(-0.50f, 0.50f, 0.0f);
+        glColor3ub((GLubyte)0,(GLubyte)0,(GLubyte)255);    glVertex3f( 0.50f, 0.50f, 0.0f);
+        glColor3ub((GLubyte)20,(GLubyte)222,(GLubyte)255); glVertex3f( 0.50f,-0.50f, 0.0f);
+    glEnd();
+    glColor3ub((GLubyte)255,(GLubyte)255,(GLubyte)255); //reset white color.
+    glPopMatrix();
+
+}
+
+void draw_triangle()
 {
     glPushMatrix();
 
@@ -82,7 +98,7 @@ void DrawTriangle()
     glPopMatrix();
 }
 
-void display_image(float PositionX, float PositionY, GLuint image_texture)
+void display_image(float x, float y, GLuint image_texture)
 {
 	glPushMatrix();
     //glLoadIdentity();
@@ -92,7 +108,7 @@ void display_image(float PositionX, float PositionY, GLuint image_texture)
     float aspect_ratio = 1.0/2.0;
     float height = 0.4, width = height*aspect_ratio ;
 
-    glTranslatef(PositionX,PositionY,0);
+    glTranslatef(x,y,0);
     glRotatef(0,0,0,1);
     glBindTexture(GL_TEXTURE_2D,image_texture);
 
@@ -107,10 +123,10 @@ void display_image(float PositionX, float PositionY, GLuint image_texture)
 }
 
 
-GLuint display_image(float PositionX, float PositionY, std::string imagepath)
+GLuint display_image(float x, float y, std::string imagepath)
 {
     GLuint texture = load_image_file(imagepath);
-    display_image(PositionX,PositionY,texture);
+    display_image(x,y,texture);
     return texture;
 }
 
@@ -137,14 +153,14 @@ void display_player_cards(Game game,std::vector<GLuint> textures,int playerid,fl
     int cn = 0;
     for(auto card: fp_cards)
     {
-        std::cout<<"Card:"<<card<<std::endl;
+        //std::cout<<"Card:"<<card<<std::endl;
         display_image(x+0.15*cn++,y,textures.at(card.get_id()));
     }
 }
 
 
 
-void StartDrawing(void)
+void start_drawing(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);

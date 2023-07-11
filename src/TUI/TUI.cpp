@@ -8,7 +8,7 @@
 
 #include "TUI/TUI.h"
 
-void display_all_players(std::vector<std::vector<Taas>> player_hand)
+void display_all_players(Khal player_hand)
 {
     std::cout<<"Displaying all cards"<<std::endl;
     //std::vector<std::vector<Taas>> player_hand = kitty_game.get_player_hand();
@@ -23,10 +23,10 @@ void display_all_players(std::vector<std::vector<Taas>> player_hand)
     }
 }
 
-void solve_all_players(Game kitty_game)
+void solve_all_players(Game& kitty_game)
 {
-    std::vector<std::vector<Taas>> player_hand = kitty_game.get_player_hand();
-    std::vector<std::vector<Taas>> solved_hand;
+    Khal player_hand = kitty_game.get_player_hand();
+    Khal solved_hand;
     for(auto hand: player_hand)
     {
         KittyEngine brain(hand);

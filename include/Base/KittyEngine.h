@@ -10,6 +10,7 @@
 #include<vector>
 #include<deque>
 
+
 #include "Base/Taas.h"
 
 struct  RankAndArray
@@ -18,7 +19,6 @@ struct  RankAndArray
     std::vector<float>  RankArray;
 };
 
-#include<iostream>
 
 class KittyEngine
 {

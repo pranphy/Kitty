@@ -34,10 +34,20 @@ Taas Deque::deal()
     return t;
 }
 
-
-std::vector<Taas> Deque::deal(int n)
+void Deque::mix(Haat olds)
 {
-    std::vector<Taas> hand;
+    for(auto taas: olds) cards.push_back(taas);
+}
+
+void Deque::shuffle()
+{
+    shuffle_deq(cards);
+}
+
+
+Haat Deque::deal(int n)
+{
+    Haat hand;
     for(int i = 0; i < n ; ++i)
     {
         hand.push_back(deal());

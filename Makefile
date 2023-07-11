@@ -8,6 +8,7 @@ MYROOT   = /home/$(MYUSER)/st/usr
 INCDIR   = include
 SRCDIR   = src
 MAINDIR  = wxGUI
+#MAINDIR  = TUI
 SRCDIRS  = $(MAINDIR) Base Utility OGL
 #SRCDIRS  = Base
 OBJDIR   = obj

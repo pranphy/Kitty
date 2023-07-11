@@ -5,13 +5,13 @@
  ** fb.com/pranphy<>http://pranphy.wordpress.com **
  **************************************************/
 
-#include "Base/Taas.h"
 #include <algorithm>
+#include "Base/Taas.h"
 
 
 Taas::Taas(unsigned num):ID(num)
 {
-    PositionX=0, PositionY=0;
+    position_x=0, position_y=0;
     card_number = ID;
     val_face = get_card(ID);
     value = val_face.value;
@@ -98,8 +98,8 @@ unsigned Taas::get_id()
 
 void Taas::set_postition(float x,float y)
 {
-    PositionX=x;
-    PositionY=y;
+    position_x=x;
+    position_y=y;
 }
 
 std::ostream& operator<<(std::ostream& os,Taas& ts)

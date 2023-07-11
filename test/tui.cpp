@@ -71,7 +71,7 @@ void test_kitty_engine()
 
 void make_deque()
 {
-    Game kitty_game = Game(2,1);
+    Game kitty_game = Game(3); // number of players 2
     display_all_players(kitty_game.get_player_hand());
     solve_all_players(kitty_game);
 }

@@ -70,7 +70,7 @@ public:
 	//pahila yaha private: rakhya thyo ahile hataideko.. naramro programming .. tuk tuk
 private:
     unsigned ID;
-	float PositionX,PositionY;
+	float position_x,position_y;
     ValnFace val_face;
 
 	int convert_to_card(void);
@@ -78,5 +78,10 @@ private:
 	void get_it(int&,int&);
 };
 std::ostream& operator<<(std::ostream&, Taas&);
+
+
+typedef std::vector<Taas> Haat;
+typedef std::vector<Haat> Khal;
+
 
 #endif // CARDSTUFFS_H_INCLUDED

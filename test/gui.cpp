@@ -1,6 +1,5 @@
 #include <iostream>
 #include "wxGUI/KittyWxApp.h"
-#include "wxGUI/KittyWxMain.h"
 #include "wxGUI/KittyFrame.h"
 
 typedef KittyFrame MainFrame;

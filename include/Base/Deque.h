@@ -11,7 +11,6 @@
 
 #include "Base/Taas.h"
 
-
 class Deque
 {
 private:
@@ -21,9 +20,11 @@ private:
 public:
     const static unsigned CARDS_PER_DEQUE;
     Deque(unsigned n_books=1);
-    std::vector<Taas> deal(int);
+    Haat deal(int);
     auto get_cards() { return cards; };
     Taas deal();
+    void mix(Haat);
+    void shuffle();
     ~Deque();
 
 };
