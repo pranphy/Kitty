@@ -13,22 +13,14 @@
 
 const std::string KittyEngine::combo_file = "./res/Files/Input/Combination.dat";
 
-KittyEngine::KittyEngine()
-{
-    std::cout<<"I am constructed in engine"<<std::endl;
-    unsigned total_cards = 9;
-    std::vector<int> card_id = rand_int_array(0,52,total_cards);
-    for (int i : card_id)
-        Hand.push_back(Taas(i));
+KittyEngine::KittyEngine() { }
 
-    //shuffle_vec(Hand);
-}
-
-KittyEngine::KittyEngine(std::vector<Taas> & hand)
-{
-    Hand = hand;
-}
 KittyEngine::~KittyEngine() {}
+
+KittyEngine& KittyEngine::Instance() {
+    static KittyEngine engine;
+    return engine;
+}
 
 void print(std::vector<unsigned> const& v) {
     std::cout << "vec "<< " = [" << std::size(v) << "] { ";
@@ -70,7 +62,7 @@ std::vector<unsigned> KittyEngine::select_best(std::vector<std::vector<unsigned>
 {
     unsigned length = combo_vec.size();
     std::vector<float> sum_scores;
-    for (std::vector<float> score : scores)
+    for (auto score : scores)
     {
         float sum = std::accumulate(score.begin(),score.end(),0.0);
         sum_scores.push_back(sum);
@@ -91,21 +83,21 @@ std::vector<unsigned> KittyEngine::select_best(std::vector<std::vector<unsigned>
     return max_seq;
 }
 
-std::vector<Taas> KittyEngine::modern_solve()
+std::vector<Taas> KittyEngine::modern_solve(std::vector<Taas> hand)
 {
     std::vector<std::vector<unsigned>> combo_vec = get_combo(combo_file);
     std::vector<std::vector<float>> scores;
     for(std::vector<unsigned> cur_hand_ary : combo_vec)
     {
-        std::vector<float> score = get_mini_ranks(Hand,cur_hand_ary);
+        std::vector<float> score = get_mini_ranks(hand,cur_hand_ary);
         //std::cout<<"Score for "; print(cur_hand_ary); std::cout<<" is "<<score<<std::endl;
         //std::cout<<std::endl<<std::endl;
         scores.push_back(score);
     }
     std::vector<unsigned> best_seq = select_best(combo_vec,scores);
     //std::vector<Taas> solved = arrange_seq(Hand,max_seq);
-    Hand = arrange_seq(Hand,best_seq);
-    return Hand;
+    auto solved = arrange_seq(hand,best_seq);
+    return solved;
 }
 
 std::vector<Taas> KittyEngine::arrange_seq(std::vector<Taas>& hand, std::vector<unsigned>& seq) const
@@ -115,15 +107,6 @@ std::vector<Taas> KittyEngine::arrange_seq(std::vector<Taas>& hand, std::vector<
     for (unsigned i : seq)
         arranged.push_back(hand[i]);
     return arranged;
-
-}
-
-void KittyEngine::display()
-{
-    for(auto card : Hand)
-        std::cout<<card<<" ";
-
-    std::cout<<std::endl;
 }
 
 std::vector<float> KittyEngine::get_mini_ranks(std::vector<Taas>& hand, std::vector<unsigned> arrange_alt)
@@ -206,7 +189,7 @@ bool KittyEngine::is_colour(Taas p,Taas q,Taas r)
 
 bool KittyEngine::is_double_run(Taas p,Taas q,Taas r)
 {
-    return is_trial(p,q,r) && is_colour(p,q,r);
+    return is_run(p,q,r) && is_colour(p,q,r);
 }
 
 

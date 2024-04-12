@@ -11,8 +11,10 @@
 #include<string>
 
 #include "Base/Taas.h"
+#include "Base/KittyEngine.h"
 
 const static std::string empty = std::string("");
+
 
 class Player
 {
@@ -28,8 +30,11 @@ public:
     ~Player();
     void set_name(std::string& );
     void set_hand(std::vector<Taas>);
+    std::vector<Taas> get_hand(){ return hand;}
+    void clear_hand() { hand.clear();}
     std::string get_name();
-
+    void shuffle();
+    bool arranged, shown;
 };
 
 #endif

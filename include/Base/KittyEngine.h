@@ -23,7 +23,8 @@ struct  RankAndArray
 class KittyEngine
 {
 private:
-    std::vector<Taas> Hand;
+    KittyEngine();
+    KittyEngine(std::vector<Taas>&);
     static const std::string combo_file;
 
     std::vector<std::vector<unsigned>> all_combination;
@@ -41,19 +42,13 @@ private:
     std::vector<float> get_mini_ranks(std::vector<Taas>&, std::vector<unsigned>);
     std::vector<unsigned> select_best(std::vector<std::vector<unsigned>>combo_vec,std::vector<std::vector<float>> scores);
 
-protected:
-    int b;
-
 public:
-    KittyEngine();
-    KittyEngine(std::vector<Taas>&);
     ~KittyEngine();
+    static KittyEngine& Instance();
 
     float get_score(std::vector<Taas>& hand, std::vector<unsigned> arrange_alt);
 
-    void                   solve();
-    std::vector<Taas> modern_solve();
-    void display();
+    std::vector<Taas> modern_solve(std::vector<Taas>);
 };
 
 

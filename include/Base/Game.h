@@ -12,6 +12,7 @@
 
 #include "Base/Player.h"
 #include "Base/Deque.h"
+#include "Base/KittyEngine.h"
 
 
 enum GameControls
@@ -41,23 +42,27 @@ private:
     int n_players;
 
     std::vector<Player> players;
-    Khal player_hand;
-	static unsigned active_card;
     Deque cards;
 
-	bool flipped, scrambled;
-	int backid=1;
 
 public:
-    Game(int n_player=2, int n_deque=1);
+    Game(int n_player=0, int n_deque=1);
+    Game(std::vector<Player>, int n_deque=1);
     ~Game();
 
-    //GLDrawable table;
-    Khal get_player_hand();
-    void distribute_cards();
+    bool created;
+    static Game& Instance();
+
+    int add_player(Player);
+
+    void deal_player(int,int=9);
+    void distribute_cards(int i=-1);
     void fold_all();
-    void set_player_hand(Khal);
-    void set_player_hand(Haat hand,int id );
+    void solve_player(int,KittyEngine&);
+    void shuffle_player(int);
+    void flip_player(int);
+    void flip_all();
     void set_control(GameControls);
+    std::vector<Player> get_players(){ return players; }
 };
 
