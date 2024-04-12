@@ -2,6 +2,7 @@
 
 #include <wx/wxprec.h>
 #include "wxGUI/DisplayCanvas.h"
+#include "wxGUI/TableTop.h"
 
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
@@ -12,6 +13,7 @@ class KittyFrame : public wxFrame
 public:
     KittyFrame();
     KittyFrame(wxWindow* a){KittyFrame();};
+    TableTop* table;
 
 private:
     void OnHello(wxCommandEvent& event);

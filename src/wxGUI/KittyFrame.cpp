@@ -1,4 +1,5 @@
 #include "wxGUI/KittyFrame.h"
+#include "wxGUI/TableTop.h"
 
 enum
 {
@@ -22,12 +23,9 @@ wxMenuBar* create_menubar()
     return menuBar;
 }
 
-DisplayCanvas* get_canvas(wxWindow* parent)
+TableTop* get_canvas(wxWindow* parent)
 {
-    wxGLAttributes dispAttrs;
-    dispAttrs.PlatformDefaults().DoubleBuffer().EndList();
-    return new DisplayCanvas(parent,dispAttrs);
-
+    return new TableTop(parent,wxID_ANY,wxPoint(0,0), wxSize(5,5));
 }
 
 KittyFrame::KittyFrame()
@@ -38,9 +36,10 @@ KittyFrame::KittyFrame()
     wxPanel* main_panel = new wxPanel(this,wxID_ANY);
     //wxStaticBoxSizer *topsizer = new wxStaticBoxSizer( wxVERTICAL,this,"Test Bhaiho" );
     wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
+    table = get_canvas(main_panel);
 
     topsizer->Add(
-        get_canvas(main_panel),
+        table,
         1,            // make vertically stretchable
         wxEXPAND |    // make horizontally stretchable
         wxALL,        //   and make border all around
