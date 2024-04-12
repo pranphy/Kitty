@@ -4,7 +4,6 @@
 #include "wx/image.h"
 
 #include "Base/utils.h"
-#include "Utility/Cursor.h"
 #include "wxGUI/TableTop.h"
 
 
