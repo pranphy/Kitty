@@ -1,6 +1,5 @@
-WXVERSION = 3.3
-WXFLAGS   = $$(wx-config --version=$(WXVERSION) --cxxflags)
-WXLIBS    = $$(wx-config --version=$(WXVERSION) --libs all --gl-libs)
+WXFLAGS   = $$(wx-config --cxxflags)
+WXLIBS    = $$(wx-config --libs core)
 
 MYUSER   = $$(whoami)
 MYROOT   = /home/$(MYUSER)/st/usr
@@ -9,7 +8,7 @@ INCDIR   = include
 SRCDIR   = src
 MAINDIR  = wxGUI
 #MAINDIR  = TUI
-SRCDIRS  = $(MAINDIR) Base Utility OGL
+SRCDIRS  = $(MAINDIR) Base Utility
 #SRCDIRS  = Base
 OBJDIR   = obj
 BINDIR   = bin
@@ -22,8 +21,8 @@ SOURCES := $(wildcard $(SRCDIRS:%=src/%/*.cpp)) $(wildcard src/*.cpp)
 
 
 
-INCLUDES  = -Iinclude -I$(MYROOT)/include
-LINKDIR   = -L$(LIBDIR) -L$(MYROOT)/lib
+INCLUDES  = -Iinclude #-I$(MYROOT)/include
+LINKDIR   = -L$(LIBDIR) #-L$(MYROOT)/lib
 OGLIB     = -lglut -lGL -lGLU
 GENLIBS   =
 
@@ -32,8 +31,8 @@ CXXLIBS   =
 LDLIBS    = $(LINKDIR) $(WXLIBS) $(DYNLIB) $(OGLIB) $(GENLIBS)
 
 
-CXXFLAGS  = -Wall $(INCLUDES) --std=c++20 $(WXFLAGS) $(CXXLIBS)
-LDFLAGS   = -std=c++20 $(LDLIBS)
+CXXFLAGS  = -Wall $(INCLUDES) --std=c++23 $(WXFLAGS) $(CXXLIBS)
+LDFLAGS   = -std=c++23 $(LDLIBS)
 
 
 

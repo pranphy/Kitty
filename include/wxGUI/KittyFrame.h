@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wxprec.h>
-#include "wxGUI/DisplayCanvas.h"
 #include "wxGUI/TableTop.h"
 
 #ifndef WX_PRECOMP

@@ -25,8 +25,9 @@ wxMenuBar* create_menubar()
 
 TableTop* get_canvas(wxWindow* parent)
 {
-    return new TableTop(parent,wxID_ANY,wxPoint(0,0), wxSize(5,5));
+    return new TableTop(parent,wxID_ANY,wxPoint(0,0), wxSize(2300,2300));
 }
+
 
 KittyFrame::KittyFrame()
     : wxFrame(nullptr, wxID_ANY, "Hello World")
@@ -37,6 +38,7 @@ KittyFrame::KittyFrame()
     //wxStaticBoxSizer *topsizer = new wxStaticBoxSizer( wxVERTICAL,this,"Test Bhaiho" );
     wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
     table = get_canvas(main_panel);
+    table->SetScrollbars( 50, 50, 50, 275 );
 
     topsizer->Add(
         table,
@@ -46,7 +48,7 @@ KittyFrame::KittyFrame()
         10 );         // set border width to 10
     wxBoxSizer *two_btn = new wxBoxSizer(wxHORIZONTAL);
     two_btn->Add(new wxButton(main_panel,wxID_ANY,"OK"),0,wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
-    two_btn->Add(new wxButton(main_panel,wxID_ANY,"Cancel"),0,wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
+    two_btn->Add(new wxButton(main_panel,wxID_ANY,"Cancel"),1,wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
     //two_btn->Add( new wxButton(main_panel,wxID_ANY,"OKED"), wxSizerFlags().Border(wxALL,2));
 
     //two_btn->Add( new wxButton(main_panel,wxID_ANY,"Cancel"), wxSizerFlags().Border(wxALL,2));

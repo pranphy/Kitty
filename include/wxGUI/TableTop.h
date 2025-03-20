@@ -2,7 +2,6 @@
 
 #include "wx/scrolwin.h"
 #include "wx/bitmap.h"
-#include "wx/icon.h"
 
 #include "Base/Game.h"
 

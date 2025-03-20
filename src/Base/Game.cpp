@@ -45,7 +45,7 @@ void Game::set_control(GameControls ct)
 }
 
 void Game::solve_player(int pos, KittyEngine& brain){
-    if (! ((size_t)pos > players.size()) )
+    if (! ((size_t)pos > players.size()) and players.size() > 0 )
     {
         Player& player = players[pos];
         auto solved = brain.modern_solve(player.get_hand());
@@ -73,7 +73,7 @@ void Game::distribute_cards(int i){
 
 
 void Game::shuffle_player(int pos){
-    if (! ((size_t)pos > players.size()) )  players[pos].shuffle();
+    if (! ((size_t)pos > players.size())  and players.size() > 0)  players[pos].shuffle();
 }
 
 void Game::flip_all(){
@@ -81,7 +81,7 @@ void Game::flip_all(){
 }
 
 void Game::flip_player(int pos){
-    if (! ((size_t)pos > players.size()) ) players[pos].shown ^= true;
+    if (! ((size_t)pos > players.size()) and players.size() > 0) players[pos].shown ^= true;
 }
 
 void Game::fold_all()

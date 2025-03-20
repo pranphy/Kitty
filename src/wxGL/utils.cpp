@@ -2,7 +2,7 @@
 #include <format>
 
 #include "wx/image.h"
-#include "OGL/utils.h"
+#include "wxGL/utils.h"
 
 
 GLuint load_image_file(std::string FileName)
@@ -148,8 +148,7 @@ std::vector<GLuint> load_all_images()
 
 void display_player_cards(Game game,std::vector<GLuint> textures,int playerid,float x, float y)
 {
-    auto player_hands = game.get_player_hand();
-    auto fp_cards = player_hands.at(playerid);
+    auto fp_cards = game.get_players().at(playerid).get_hand();
     int cn = 0;
     for(auto card: fp_cards)
     {

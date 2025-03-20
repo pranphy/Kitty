@@ -3,7 +3,6 @@
 #include "wx/wx.h"
 #include "wx/image.h"
 
-#include "Base/utils.h"
 #include "wxGUI/TableTop.h"
 
 
@@ -113,7 +112,6 @@ void TableTop::OnChar(wxKeyEvent& event)
 	{
         kitty.distribute_cards();
 	}
-
     else if(Key == 'f' or Key == 'F')
 	{
         control = GameControls::FLIP;

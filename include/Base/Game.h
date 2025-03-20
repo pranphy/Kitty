@@ -7,9 +7,6 @@
 
 #pragma once
 
-#include <iostream>
-#include <map>
-
 #include "Base/Player.h"
 #include "Base/Deque.h"
 #include "Base/KittyEngine.h"

@@ -38,24 +38,21 @@ void game()
 
 void engine()
 {
-    KittyEngine KE;
-    KE.display();
+    auto KE = KittyEngine::Instance();
     std::cout<<" Now solving "<<std::endl;
-    KE.modern_solve();
-    KE.display();
 }
 
 void score()
 {
-    KittyEngine KE;
+    auto KE = KittyEngine::Instance();
     std::vector<Taas> Hand;
-    std::vector<int> card_id = {2,3,4,5,6,7,8,9,10};
+    std::vector<int> card_id{2,3,4,5,6,7,8,9,10};
     for (int i : card_id)
         Hand.push_back(Taas(i));
 
     //shuffle_deq(Hand);
 
-    std::vector<unsigned> shuf = {0,1,2,3,4,5,6,7,8};
+    std::vector<unsigned> shuf{0,1,2,3,4,5,6,7,8};
     unsigned score = KE.get_score(Hand,shuf);
     std::cout<<score<<" is the score "<<std::endl;
 }
@@ -72,7 +69,7 @@ void test_kitty_engine()
 void make_deque()
 {
     Game kitty_game = Game(3); // number of players 2
-    display_all_players(kitty_game.get_player_hand());
+    display_all_players(kitty_game.get_players());
     solve_all_players(kitty_game);
 }
 
@@ -81,7 +78,7 @@ void make_deque()
 
 int main()
 {
-    std::cout<<"Hello World"<<std::endl;
+    std::cout<<"Hello World from tui.cpp"<<std::endl;
     tui::make_deque();
     return 0;
 }

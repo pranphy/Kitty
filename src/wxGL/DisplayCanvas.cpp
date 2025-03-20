@@ -1,5 +1,5 @@
-#include "wxGUI/DisplayCanvas.h"
-#include "OGL/utils.h"
+#include "wxGL/DisplayCanvas.h"
+#include "wxGL/utils.h"
 #include "Base/utils.h"
 
 const long DisplayCanvas::ID_DisplayCanvas = wxNewId();
@@ -11,6 +11,7 @@ DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
     glutInit(&argc,argv);
     MyContext = new wxGLContext(this);
+    KittyGame = Game(2);
 
     Bind(wxEVT_PAINT, &DisplayCanvas::OnPaint,this);
     Bind(wxEVT_KEY_DOWN, &DisplayCanvas::OnKeyPress,this);
