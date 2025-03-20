@@ -2,7 +2,6 @@ WXFLAGS   = $$(wx-config --cxxflags)
 WXLIBS    = $$(wx-config --libs core)
 
 MYUSER   = $$(whoami)
-MYROOT   = /home/$(MYUSER)/st/usr
 
 INCDIR   = include
 SRCDIR   = src
@@ -21,9 +20,9 @@ SOURCES := $(wildcard $(SRCDIRS:%=src/%/*.cpp)) $(wildcard src/*.cpp)
 
 
 
-INCLUDES  = -Iinclude #-I$(MYROOT)/include
-LINKDIR   = -L$(LIBDIR) #-L$(MYROOT)/lib
-OGLIB     = -lglut -lGL -lGLU
+INCLUDES  = -Iinclude
+LINKDIR   = -L$(LIBDIR)
+OGLIB     = 
 GENLIBS   =
 
 CXX       = g++
