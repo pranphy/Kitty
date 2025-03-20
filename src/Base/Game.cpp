@@ -4,10 +4,8 @@
 // author : Prakash [प्रकाश]
 // date   : 2019-03-21 11:04
 
-#include <map>
 #include "Base/Game.h"
 #include "Base/Deque.h"
-#include "Utility/Mathematical.h"
 
 
 Game::Game(int n_player, int n_deque)
