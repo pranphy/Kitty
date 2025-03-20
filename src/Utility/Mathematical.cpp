@@ -5,6 +5,7 @@
 /** fb.com/pranphy<>http://pranphy.wordpress.com */
 /*************************************************/
 
+#include <iostream>
 #include <fstream>
 #include <random>
 #include <algorithm>

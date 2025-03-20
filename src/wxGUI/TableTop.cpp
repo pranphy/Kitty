@@ -7,7 +7,7 @@
 
 
 TableTop::TableTop( wxWindow *parent, wxWindowID id,
-                    const wxPoint &pos, const wxSize &size )
+        const wxPoint &pos, const wxSize &size )
     : wxScrolledWindow( parent, id, pos, size, wxSUNKEN_BORDER )
 {
 
@@ -56,7 +56,7 @@ void TableTop::ShowState(wxDC& dc)
 
             }
         }
-        
+
     } else {
         //std::cout<<" Just hanging around"<<std::endl;
     }
@@ -96,58 +96,58 @@ void TableTop::OnChar(wxKeyEvent& event)
         control = GameControls::ONE;
     }
     else if(Key == 's' or Key == 'S')
-	{
+    {
         kitty.shuffle_player(0);
-	}
+    }
 
     else if(Key == 'a' or Key == 'A')
-	{
+    {
         Player bharat("Bharat","Bhurtel");
         int id = kitty.add_player(bharat);
         kitty.deal_player(id);
         kitty.shuffle_player(id);
-	}
+    }
 
     else if(Key == 'd' or Key == 'D')
-	{
+    {
         kitty.distribute_cards();
-	}
+    }
     else if(Key == 'f' or Key == 'F')
-	{
+    {
         control = GameControls::FLIP;
         kitty.flip_all();
-	}
-	else if(Key == 'u' or Key == 'U')
-	{
+    }
+    else if(Key == 'u' or Key == 'U')
+    {
         control = GameControls::SOLVE;
         auto engine = KittyEngine::Instance();
         kitty.solve_player(0,engine);
         kitty.solve_player(1,engine);
-	}
-	else if(Key == 'r' or Key == 'R')
-	{
+    }
+    else if(Key == 'r' or Key == 'R')
+    {
         kitty.fold_all();
         //kitty.distribute_cards();
-	}
+    }
     switch(event.GetKeyCode())
     {
-    case WXK_LEFT:
-        control = GameControls::LEFT;
-        break;
-    case WXK_RIGHT:
-        control = GameControls::RIGHT;
-        break;
-    case WXK_UP:
-        control = GameControls::UP;
-        break;
-    case WXK_DOWN:
-        control = GameControls::DOWN;
-    default:
-        break;
+        case WXK_LEFT:
+            control = GameControls::LEFT;
+            break;
+        case WXK_RIGHT:
+            control = GameControls::RIGHT;
+            break;
+        case WXK_UP:
+            control = GameControls::UP;
+            break;
+        case WXK_DOWN:
+            control = GameControls::DOWN;
+        default:
+            break;
     }
     kitty.set_control(control);
 
-	this->Refresh();
+    this->Refresh();
 }
 
 wxBitmap get_bitmap(std::string filepath){

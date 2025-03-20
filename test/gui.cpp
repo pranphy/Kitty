@@ -1,4 +1,3 @@
-#include <iostream>
 #include "wxGUI/KittyWxApp.h"
 #include "wxGUI/KittyFrame.h"
 

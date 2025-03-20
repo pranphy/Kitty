@@ -1,6 +1,5 @@
 #include "Base/utils.h"
 #include "Base/KittyEngine.h"
-#include "Utility/Mathematical.h"
 
 void solve_player(Game& kitty_game,int pos)
 {

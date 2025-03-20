@@ -1,8 +1,9 @@
-#include "wxGL/wxImageLoader.h"
 #include <cmath>
 
+#include <wx/wx.h>
 #include "wx/image.h"
 
+#include "wxGL/wxImageLoader.h"
 
 GLuint* loadImage(std::string path, int* imageWidth, int* imageHeight, int* textureWidth, int* textureHeight)
 {

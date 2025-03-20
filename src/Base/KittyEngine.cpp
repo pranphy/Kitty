@@ -5,6 +5,7 @@
 // date   : 2019-03-09 22:23
 //
 
+#include <iostream>
 #include <algorithm>
 
 #include "Base/KittyEngine.h"

@@ -22,7 +22,7 @@ DisplayCanvas::DisplayCanvas(wxWindow*Parent,wxGLAttributes& dispAttrs):
 
 void DisplayCanvas::Initialize()
 {
-	SetCurrent(*MyContext);
+    SetCurrent(*MyContext);
 
     std::string imagepath = "./res/Files/AllCards/Ascending/C22.png";
     exampletex = load_image_file(imagepath);
@@ -53,8 +53,8 @@ void DisplayCanvas::Render()
 
 void DisplayCanvas::ChangeSize( wxSizeEvent& evt)
 {
-    float w = evt.GetSize().GetX();
-    float h = evt.GetSize().GetY();
+    //float w = evt.GetSize().GetX();
+    //float h = evt.GetSize().GetY();
     //std::cout<<"Size Changed to "<<w<<" and h= "<<h<<std::endl;
     Render();
 }
@@ -74,40 +74,40 @@ void DisplayCanvas::OnKeyPress(wxKeyEvent& event)
         control = GameControls::ONE;
     }
     else if(Key == 'f' or Key == 'F')
-	{
+    {
         control = GameControls::FLIP;
         shuffle_player(KittyGame,1);
-	}
-	else if(Key == 'u' or Key == 'U')
-	{
+    }
+    else if(Key == 'u' or Key == 'U')
+    {
         control = GameControls::SOLVE;
         solve_player(KittyGame,0);
         solve_player(KittyGame,1);
-	}
-	else if(Key == 'r' or Key == 'R')
-	{
+    }
+    else if(Key == 'r' or Key == 'R')
+    {
         control = GameControls::FLIP;
         KittyGame.fold_all();
         //KittyGame.distribute_cards();
-	}
+    }
     switch(event.GetKeyCode())
     {
-    case WXK_LEFT:
-        control = GameControls::LEFT;
-        break;
-    case WXK_RIGHT:
-        control = GameControls::RIGHT;
-        break;
-    case WXK_UP:
-        control = GameControls::UP;
-        break;
-    case WXK_DOWN:
-        control = GameControls::DOWN;
-    default:
-        break;
+        case WXK_LEFT:
+            control = GameControls::LEFT;
+            break;
+        case WXK_RIGHT:
+            control = GameControls::RIGHT;
+            break;
+        case WXK_UP:
+            control = GameControls::UP;
+            break;
+        case WXK_DOWN:
+            control = GameControls::DOWN;
+        default:
+            break;
     }
     KittyGame.set_control(control);
 
-	this->Refresh();
+    this->Refresh();
 }
 
