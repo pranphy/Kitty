@@ -6,6 +6,7 @@
 #include <GL/glut.h>
 #include "Base/Game.h"
 
+void Cout(char*,float=0,float=0,float=-5);
 void draw_triangle();
 GLuint load_image_file(std::string filename);
 GLuint display_image(float position_x, float position_y, std::vector<float> image_data);

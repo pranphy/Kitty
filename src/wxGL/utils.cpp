@@ -5,6 +5,21 @@
 #include "wxGL/utils.h"
 
 
+/*
+*   The Following function is not my own but was obtained somewhere from the internet
+*   and I don't exactly remember the source. It was free to copy and use so I used  it
+*/
+void Cout(char *String,float x,float y,float z)
+{
+    char *CurrentCharacter=String;
+    glRasterPos3f(x,y,z);
+    for (; *CurrentCharacter != '\0'; CurrentCharacter++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *CurrentCharacter);
+    }
+}
+
+
 GLuint load_image_file(std::string FileName)
 {
 	wxImage* img = new wxImage(wxString::FromUTF8(FileName.c_str()));
